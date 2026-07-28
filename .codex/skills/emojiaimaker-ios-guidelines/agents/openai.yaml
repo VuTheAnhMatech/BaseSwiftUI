@@ -1,0 +1,4 @@
+interface:
+  display_name: "EmojiAIMaker iOS Guidelines"
+  short_description: "Project UI and architecture rules"
+  default_prompt: "Use $emojiaimaker-ios-guidelines to implement EmojiAIMaker iOS changes consistently."

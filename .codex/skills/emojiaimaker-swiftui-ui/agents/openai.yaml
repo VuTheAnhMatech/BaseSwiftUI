@@ -1,0 +1,4 @@
+interface:
+  display_name: "EmojiAIMaker SwiftUI UI"
+  short_description: "Create normal EmojiAIMaker SwiftUI views."
+  default_prompt: "Use $emojiaimaker-swiftui-ui to create or edit this normal non-IAP EmojiAIMaker SwiftUI view with the project UI, route, and MVI patterns."

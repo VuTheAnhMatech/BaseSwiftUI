@@ -1,0 +1,4 @@
+interface:
+  display_name: "EmojiAIMaker Architecture"
+  short_description: "Refactor EmojiAIMaker app architecture."
+  default_prompt: "Use $emojiaimaker-architecture to implement this non-view EmojiAIMaker architecture change following the existing MVI, router, and feature folder structure."

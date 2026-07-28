@@ -1,0 +1,4 @@
+interface:
+  display_name: "EmojiAIMaker Widget Extension"
+  short_description: "Edit WidgetKit and EmojiAIMaker extension code safely."
+  default_prompt: "Fix this EmojiAIMaker widget or extension feature while keeping extension APIs and target boundaries safe."
