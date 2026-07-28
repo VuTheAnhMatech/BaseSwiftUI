@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Architecture"
+  short_description: "Refactor BaseSwiftUI app architecture."
+  default_prompt: "Use $baseswiftui-architecture to implement this non-view BaseSwiftUI architecture change following the existing MVI, router, and feature folder structure."

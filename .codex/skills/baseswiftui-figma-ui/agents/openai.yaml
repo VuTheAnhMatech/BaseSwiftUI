@@ -1,0 +1,13 @@
+interface:
+  display_name: "BaseSwiftUI Figma UI"
+  short_description: "Build BaseSwiftUI UI accurately from Figma"
+  default_prompt: "Use $baseswiftui-figma-ui to implement this Figma node in BaseSwiftUI."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "figma"
+      description: "Official Figma MCP server"
+
+policy:
+  allow_implicit_invocation: true

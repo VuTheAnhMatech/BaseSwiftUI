@@ -1,4 +1,0 @@
-interface:
-  display_name: "EmojiAIMaker Models"
-  short_description: "Organize app models and static data."
-  default_prompt: "Use $emojiaimaker-model-organization to place EmojiAIMaker models, entities, defaults, and mock data correctly."

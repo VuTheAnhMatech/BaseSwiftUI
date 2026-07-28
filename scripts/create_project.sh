@@ -3,6 +3,7 @@
 set -eu
 
 TEMPLATE_NAME="BaseSwiftUI"
+TEMPLATE_SKILL_PREFIX="baseswiftui"
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 TEMPLATE_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 DESTINATION_ROOT=$(pwd -P)
@@ -87,7 +88,17 @@ if [ -f "$OLD_APP_FILE" ]; then
   mv "$OLD_APP_FILE" "$NEW_APP_FILE"
 fi
 
-export TEMPLATE_NAME PROJECT_NAME
+BUNDLE_SUFFIX=$(printf '%s' "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr '_' '-')
+PROJECT_SKILL_PREFIX="$BUNDLE_SUFFIX"
+
+for skill_dir in "$DESTINATION_ROOT/.codex/skills/$TEMPLATE_SKILL_PREFIX-"*; do
+  [ -d "$skill_dir" ] || continue
+  skill_name=$(basename "$skill_dir")
+  skill_suffix=${skill_name#"$TEMPLATE_SKILL_PREFIX-"}
+  mv "$skill_dir" "$DESTINATION_ROOT/.codex/skills/$PROJECT_SKILL_PREFIX-$skill_suffix"
+done
+
+export TEMPLATE_NAME PROJECT_NAME TEMPLATE_SKILL_PREFIX PROJECT_SKILL_PREFIX
 find "$DESTINATION_ROOT" \
   -path "$DESTINATION_ROOT/.git" -prune -o \
   -path "$DESTINATION_ROOT/Pods" -prune -o \
@@ -107,13 +118,24 @@ find "$DESTINATION_ROOT" \
     -name 'Podfile' \
   \) -exec perl -pi -e 's/\Q$ENV{TEMPLATE_NAME}\E/$ENV{PROJECT_NAME}/g' {} +
 
-BUNDLE_SUFFIX=$(printf '%s' "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]')
-export BUNDLE_SUFFIX
 find "$DESTINATION_ROOT" \
   -path "$DESTINATION_ROOT/.git" -prune -o \
   -path "$DESTINATION_ROOT/Pods" -prune -o \
-  -type f \( -name '*.rb' -o -name '*.pbxproj' \) \
-  -exec perl -pi -e 's/com\.vutheanh\.baseswiftui/com.vutheanh.$ENV{BUNDLE_SUFFIX}/g' {} +
+  -name 'BaseSwiftUI.sh' -prune -o \
+  -type f \( \
+    -name '*.swift' -o \
+    -name '*.rb' -o \
+    -name '*.md' -o \
+    -name '*.plist' -o \
+    -name '*.pbxproj' -o \
+    -name '*.xcscheme' -o \
+    -name '*.json' -o \
+    -name '*.yaml' -o \
+    -name '*.yml' -o \
+    -name '*.xcconfig' -o \
+    -name '*.sh' -o \
+    -name 'Podfile' \
+  \) -exec perl -pi -e 's/\Q$ENV{TEMPLATE_SKILL_PREFIX}\E/$ENV{PROJECT_SKILL_PREFIX}/g' {} +
 
 cd "$DESTINATION_ROOT"
 ruby scripts/generate_project.rb

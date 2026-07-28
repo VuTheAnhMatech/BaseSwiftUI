@@ -1,4 +1,0 @@
-interface:
-  display_name: "EmojiAIMaker iOS"
-  short_description: "Route EmojiAIMaker iOS coding tasks."
-  default_prompt: "Use $emojiaimaker-ios to choose the right EmojiAIMaker skill for this iOS change."

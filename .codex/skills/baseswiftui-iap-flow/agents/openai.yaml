@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI IAP Flow"
+  short_description: "Create BaseSwiftUI IAP and paywall views."
+  default_prompt: "Use $baseswiftui-iap-flow to create or edit this BaseSwiftUI IAP or paywall view while reusing product helpers and purchase integration."

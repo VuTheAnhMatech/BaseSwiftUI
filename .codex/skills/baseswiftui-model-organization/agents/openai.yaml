@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Models"
+  short_description: "Organize app models and static data."
+  default_prompt: "Use $baseswiftui-model-organization to place BaseSwiftUI models, entities, defaults, and mock data correctly."

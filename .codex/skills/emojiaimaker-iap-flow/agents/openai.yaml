@@ -1,4 +1,0 @@
-interface:
-  display_name: "EmojiAIMaker IAP Flow"
-  short_description: "Create EmojiAIMaker IAP and paywall views."
-  default_prompt: "Use $emojiaimaker-iap-flow to create or edit this EmojiAIMaker IAP or paywall view while reusing product helpers and purchase integration."

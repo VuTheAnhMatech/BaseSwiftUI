@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI iOS Guidelines"
+  short_description: "Project UI and architecture rules"
+  default_prompt: "Use $baseswiftui-ios-guidelines to implement BaseSwiftUI iOS changes consistently."

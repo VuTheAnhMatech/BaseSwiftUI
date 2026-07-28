@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI SwiftUI UI"
+  short_description: "Create normal BaseSwiftUI SwiftUI views."
+  default_prompt: "Use $baseswiftui-swiftui-ui to create or edit this normal non-IAP BaseSwiftUI SwiftUI view with the project UI, route, and MVI patterns."
