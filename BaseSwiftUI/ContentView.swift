@@ -14,21 +14,17 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if isShowingSplash {
-                SplashView()
+                Container.shared.splashView {
+                    withAnimation(.easeInOut(duration: 0.45)) {
+                        isShowingSplash = false
+                    }
+                }
                     .transition(.opacity.combined(with: .scale(scale: 1.04)))
             } else {
                 RouterController.Stack {
                     Container.shared.homeView()
                 }
                 .transition(.opacity)
-            }
-        }
-        .task {
-            guard isShowingSplash else { return }
-
-            try? await Task.sleep(for: .seconds(1.8))
-            withAnimation(.easeInOut(duration: 0.45)) {
-                isShowingSplash = false
             }
         }
     }

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SplashView: View {
-    @State private var isPresented = false
+    @StateObject var container: SplashContainer
+    let onFinished: () -> Void
 
     var body: some View {
         ZStack {
@@ -48,8 +49,8 @@ struct SplashView: View {
                         .opacity(0.8)
                 }
             }
-            .scaleEffect(isPresented ? 1 : 0.88)
-            .opacity(isPresented ? 1 : 0)
+            .scaleEffect(container.state.isPresented ? 1 : 0.88)
+            .opacity(container.state.isPresented ? 1 : 0)
 
             VStack {
                 Spacer()
@@ -57,12 +58,18 @@ struct SplashView: View {
                 BaseImageLoadingPlaceholder(indicatorScale: 1.1)
                     .padding(.bottom, 44)
             }
-            .opacity(isPresented ? 1 : 0)
+            .opacity(container.state.isPresented ? 1 : 0)
         }
-        .onAppear {
-            withAnimation(.spring(response: 0.65, dampingFraction: 0.72)) {
-                isPresented = true
-            }
+        .animation(
+            .spring(response: 0.65, dampingFraction: 0.72),
+            value: container.state.isPresented
+        )
+        .task {
+            container.send(.appear)
+        }
+        .onChange(of: container.state.isFinished) { _, isFinished in
+            guard isFinished else { return }
+            onFinished()
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("BaseSwiftUI is starting")
@@ -70,5 +77,5 @@ struct SplashView: View {
 }
 
 #Preview {
-    SplashView()
+    SplashView(container: SplashContainer()) {}
 }

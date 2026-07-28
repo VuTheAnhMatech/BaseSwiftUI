@@ -8,6 +8,10 @@
 import Factory
 
 extension Container {
+    var splashContainer: Factory<SplashContainer> {
+        self { SplashContainer() }
+    }
+
     var homeContainer: Factory<HomeContainer> {
         self { HomeContainer() }
     }

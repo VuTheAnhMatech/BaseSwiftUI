@@ -10,6 +10,14 @@ import SwiftUI
 
 extension Container {
     @MainActor
+    func splashView(onFinished: @escaping () -> Void) -> some View {
+        SplashView(
+            container: self.splashContainer(),
+            onFinished: onFinished
+        )
+    }
+
+    @MainActor
     func homeView() -> some View {
         HomeView(container: self.homeContainer())
     }
