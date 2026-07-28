@@ -1,3 +1,3 @@
 # CoreData
 
-Place the shared Core Data stack and model in this folder when persistence is required.
+Shared Core Data stack, constants, and model used by the project.
