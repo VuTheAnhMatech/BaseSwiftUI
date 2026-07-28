@@ -64,8 +64,8 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 
 ## Create a new project from this template
 
-Create an empty folder whose name is a valid Swift identifier, open Terminal in
-that folder, then run:
+Create a folder whose name is a valid Swift identifier, open Terminal in that
+folder, then run:
 
 ```sh
 sh /Users/vutheanh/Desktop/Githubs/BaseSwiftUI/scripts/create_project.sh
@@ -75,10 +75,14 @@ The script copies the template, renames the app, target, scheme, project and
 bundle identifier, then runs `pod install`. It does not copy Git history,
 generated build files, Pods, Xcode user data, or `.team-tools/.env`.
 
+If the destination already contains an Xcode project, its existing contents are
+moved to a timestamped sibling backup folder first. An existing `.git` directory
+is preserved.
+
 ### Always use the latest version from GitHub
 
 Copy `scripts/BaseSwiftUI.sh` to a stable location such as the
-Desktop. From an empty project folder, run:
+Desktop. From the destination project folder, run:
 
 ```sh
 sh /Users/vutheanh/Desktop/BaseSwiftUI.sh

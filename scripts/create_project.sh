@@ -38,14 +38,25 @@ EXISTING_ENTRY=$(find "$DESTINATION_ROOT" -mindepth 1 -maxdepth 1 \
   ! -name '.DS_Store' \
   -print -quit)
 
-if [ -n "$EXISTING_ENTRY" ]; then
-  fail "Thư mục đích phải trống (ngoại trừ .git và .DS_Store)."
-fi
-
 command -v rsync >/dev/null 2>&1 || fail "Máy chưa có rsync."
 command -v perl >/dev/null 2>&1 || fail "Máy chưa có perl."
 command -v ruby >/dev/null 2>&1 || fail "Máy chưa có Ruby."
 command -v pod >/dev/null 2>&1 || fail "Máy chưa có CocoaPods. Hãy cài bằng: sudo gem install cocoapods"
+
+if [ -n "$EXISTING_ENTRY" ]; then
+  BACKUP_ROOT="${DESTINATION_ROOT}.backup-$(date '+%Y%m%d-%H%M%S')"
+  while [ -e "$BACKUP_ROOT" ]; do
+    BACKUP_ROOT="${BACKUP_ROOT}-copy"
+  done
+
+  mkdir "$BACKUP_ROOT"
+  find "$DESTINATION_ROOT" -mindepth 1 -maxdepth 1 \
+    ! -name '.git' \
+    ! -name '.DS_Store' \
+    -exec mv {} "$BACKUP_ROOT/" \;
+
+  printf 'Existing project backed up to: %s\n' "$BACKUP_ROOT"
+fi
 
 printf 'Creating %s from %s...\n' "$PROJECT_NAME" "$TEMPLATE_ROOT"
 
