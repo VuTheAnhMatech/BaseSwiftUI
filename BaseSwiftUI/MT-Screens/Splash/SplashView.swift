@@ -2,7 +2,7 @@
 //  SplashView.swift
 //  BaseSwiftUI
 //
-//  Created by Codex on 28/7/26.
+//  Created by Vu The Anh on 28/7/26.
 //
 
 import SwiftUI
@@ -31,14 +31,22 @@ struct SplashView: View {
                     .shadow(color: .black.opacity(0.16), radius: 24, y: 12)
 
                 VStack(spacing: 8) {
-                    Text("BaseSwiftUI")
-                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                    BaseText(
+                        "BaseSwiftUI",
+                        font: .plusJakartaSansBold,
+                        textColor: .white,
+                        size: 30
+                    )
 
-                    Text("Build beautifully. Move quickly.")
-                        .font(.system(size: 15, weight: .medium, design: .rounded))
+                    BaseText(
+                        "Build beautifully. Move quickly.",
+                        font: .plusJakartaSansMedium,
+                        textColor: .white,
+                        size: 15
+                    )
+                        .multilineTextAlignment(.center)
                         .opacity(0.8)
                 }
-                .foregroundStyle(.white)
             }
             .scaleEffect(isPresented ? 1 : 0.88)
             .opacity(isPresented ? 1 : 0)
@@ -46,9 +54,7 @@ struct SplashView: View {
             VStack {
                 Spacer()
 
-                ProgressView()
-                    .tint(.white)
-                    .scaleEffect(1.1)
+                BaseImageLoadingPlaceholder(indicatorScale: 1.1)
                     .padding(.bottom, 44)
             }
             .opacity(isPresented ? 1 : 0)

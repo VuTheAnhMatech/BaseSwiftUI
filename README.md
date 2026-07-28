@@ -75,9 +75,10 @@ The script copies the template, renames the app, target, scheme, project and
 bundle identifier, then runs `pod install`. It does not copy Git history,
 generated build files, Pods, Xcode user data, or `.team-tools/.env`.
 
-If the destination already contains an Xcode project, its existing contents are
-moved to a timestamped sibling backup folder first. An existing `.git` directory
-is preserved.
+If the destination already contains an app or Xcode project, its existing
+contents are deleted before generation. No backup is created. An existing
+`.git` directory is preserved. For safety, a non-empty destination must contain
+a top-level `.xcodeproj`; unrelated non-empty folders are rejected.
 
 ### Always use the latest version from GitHub
 
