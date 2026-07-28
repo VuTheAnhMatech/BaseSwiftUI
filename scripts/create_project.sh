@@ -80,6 +80,7 @@ export TEMPLATE_NAME PROJECT_NAME
 find "$DESTINATION_ROOT" \
   -path "$DESTINATION_ROOT/.git" -prune -o \
   -path "$DESTINATION_ROOT/Pods" -prune -o \
+  -name 'create_base_from_github.sh' -prune -o \
   -type f \( \
     -name '*.swift' -o \
     -name '*.rb' -o \
