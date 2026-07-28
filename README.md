@@ -77,11 +77,11 @@ generated build files, Pods, Xcode user data, or `.team-tools/.env`.
 
 ### Always use the latest version from GitHub
 
-Copy `scripts/create_base_from_github.sh` to a stable location such as the
+Copy `scripts/BaseSwiftUI.sh` to a stable location such as the
 Desktop. From an empty project folder, run:
 
 ```sh
-sh /Users/vutheanh/Desktop/create_base_project.sh
+sh /Users/vutheanh/Desktop/BaseSwiftUI.sh
 ```
 
 The bootstrap script downloads the latest `main` branch from GitHub into a
