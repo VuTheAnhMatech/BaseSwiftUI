@@ -11,38 +11,8 @@ struct HomeView: View {
     @StateObject var container: HomeContainer
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
-                    BaseText(container.state.title, font: .plusJakartaSansBold, textColor: .primary, size: 32)
-                    BaseText("A reusable SwiftUI starter extracted from proven app architecture.", font: .plusJakartaSansRegular, textColor: .secondary, size: 16)
-                }
-
-                BaseStackView(dataSource: container.dataSource, spacing: 12) { item in
-                    HStack(spacing: 16) {
-                        Image(systemName: item.symbol)
-                            .font(.system(size: 22, weight: .semibold))
-                            .frame(width: 44, height: 44)
-                            .background(Color.accentColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            BaseText(item.title, font: .plusJakartaSansSemiBold, size: 17)
-                            BaseText(item.subtitle, font: .plusJakartaSansRegular, textColor: .secondary, size: 14)
-                        }
-
-                        Spacer(minLength: 0)
-                        Image(systemName: "chevron.right")
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(16)
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
-                }
-            }
-            .padding(20)
-        }
-        .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("")
-        .task { container.send(.load) }
+        Text(container.state.title)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         .injectRouter(to: container)
     }
 }
