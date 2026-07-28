@@ -74,3 +74,15 @@ sh /Users/vutheanh/Desktop/Githubs/BaseSwiftUI/scripts/create_project.sh
 The script copies the template, renames the app, target, scheme, project and
 bundle identifier, then runs `pod install`. It does not copy Git history,
 generated build files, Pods, Xcode user data, or `.team-tools/.env`.
+
+### Always use the latest version from GitHub
+
+Copy `scripts/create_base_from_github.sh` to a stable location such as the
+Desktop. From an empty project folder, run:
+
+```sh
+sh /Users/vutheanh/Desktop/create_base_project.sh
+```
+
+The bootstrap script downloads the latest `main` branch from GitHub into a
+temporary directory and creates the project from that fresh copy.
