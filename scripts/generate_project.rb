@@ -46,7 +46,7 @@ target.build_configurations.each do |configuration|
   settings["INFOPLIST_FILE"] = "BaseSwiftUI/Resources/Info.plist"
   settings["IPHONEOS_DEPLOYMENT_TARGET"] = "17.0"
   settings["MARKETING_VERSION"] = "1.0"
-  settings["PRODUCT_BUNDLE_IDENTIFIER"] = "com.vutheanh.baseswiftui"
+  settings["PRODUCT_BUNDLE_IDENTIFIER"] = "com.emoji.ai.maker.stickermaker"
   settings["PRODUCT_NAME"] = "$(TARGET_NAME)"
   settings["SWIFT_EMIT_LOC_STRINGS"] = "YES"
   settings["SWIFT_VERSION"] = "5.0"

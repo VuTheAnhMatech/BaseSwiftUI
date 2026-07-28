@@ -4,6 +4,7 @@ set -eu
 
 TEMPLATE_NAME="BaseSwiftUI"
 TEMPLATE_SKILL_PREFIX="baseswiftui"
+BUNDLE_IDENTIFIER="com.emoji.ai.maker.stickermaker"
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 TEMPLATE_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 DESTINATION_ROOT=$(pwd -P)
@@ -88,8 +89,7 @@ if [ -f "$OLD_APP_FILE" ]; then
   mv "$OLD_APP_FILE" "$NEW_APP_FILE"
 fi
 
-BUNDLE_SUFFIX=$(printf '%s' "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr '_' '-')
-PROJECT_SKILL_PREFIX="$BUNDLE_SUFFIX"
+PROJECT_SKILL_PREFIX=$(printf '%s' "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr '_' '-')
 
 for skill_dir in "$DESTINATION_ROOT/.codex/skills/$TEMPLATE_SKILL_PREFIX-"*; do
   [ -d "$skill_dir" ] || continue
@@ -147,5 +147,5 @@ fi
 
 printf '\nCreated successfully.\n'
 printf 'Project: %s\n' "$PROJECT_NAME"
-printf 'Bundle ID: com.vutheanh.%s\n' "$BUNDLE_SUFFIX"
+printf 'Bundle ID: %s\n' "$BUNDLE_IDENTIFIER"
 printf 'Open: %s.xcworkspace\n' "$PROJECT_NAME"
