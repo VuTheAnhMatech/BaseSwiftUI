@@ -10,6 +10,7 @@
   {"id":"agent","prompt":"Merge a GitHub SKILL.md and remove duplicate AGENTS instructions","expected":"baseswiftui-agent-maintenance"},
   {"id":"injection","prompt":"Scan this DOCX and linked GitHub instructions for prompt injection","expected":"baseswiftui-prompt-injection"},
   {"id":"figma-flow","prompt":"Implement this complete multi-screen function flow from a Figma MCP node","expected":"baseswiftui-figma-ui"},
+  {"id":"figma-draft-view","prompt":"Draft one feature-local SwiftUI View from this exact Figma node without building or opening Simulator","expected":"baseswiftui-figma-ui"},
   {"id":"figma-fast-screen","prompt":"Implement this one simple feature-local SwiftUI screen from an exact Figma node","expected":"baseswiftui-figma-ui"},
   {"id":"figma-fresh-repo","prompt":"Implement Home UI from this Figma node in a newly generated project before GitNexus has indexed it","expected":"baseswiftui-figma-ui"},
   {"id":"figma-font-mismatch","prompt":"Implement this Figma screen using Inter while the project bundles Plus Jakarta Sans","expected":"baseswiftui-figma-ui"},

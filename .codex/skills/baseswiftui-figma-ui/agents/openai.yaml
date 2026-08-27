@@ -1,7 +1,7 @@
 interface:
   display_name: "BaseSwiftUI Figma UI"
-  short_description: "Build BaseSwiftUI screens and flows from Figma"
-  default_prompt: "Use $baseswiftui-figma-ui to implement this Figma MCP node or multi-screen functional flow in BaseSwiftUI."
+  short_description: "Draft or build BaseSwiftUI UI from Figma"
+  default_prompt: "Use $baseswiftui-figma-ui to draft one fast local View or implement this Figma MCP node/flow in BaseSwiftUI."
 
 dependencies:
   tools:

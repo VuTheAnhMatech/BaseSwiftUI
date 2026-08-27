@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-figma-ui
-description: Analyze, implement, or compare BaseSwiftUI screens and complete flows from a Figma MCP node. Covers assets, MVI/routes, IAP, shared UI, and visual validation. Requires a node-specific Figma link.
+description: Draft, analyze, implement, or compare BaseSwiftUI screens and complete flows from a Figma MCP node. Covers fast local Views, assets, MVI/routes, IAP, shared UI, and visual validation. Requires a node-specific Figma link.
 ---
 
 # BaseSwiftUI Figma UI
@@ -10,6 +10,8 @@ Adapt Figma output to the project; never copy generated reference code blindly.
 
 ## Mode and scope
 
+- `draft`: fastest path for drawing/prototyping one feature-local View; edit
+  once without build, simulator, or pixel comparison, and report it unbuilt.
 - `analyze`: report structure, reuse, assets, and expected files; do not edit.
 - `implement` (default): use the fast path for one feature-local screen; build
   once after editing.
@@ -26,9 +28,11 @@ the fast path escalates to full validation.
 ## Fast path
 
 Use it only for one selected screen/frame whose edits stay in its View and
-view-local MVI wiring. Escalate to the full flow when the node/request involves
-multiple screens, IAP, a new or changed route/Factory/shared component,
-models/list inputs, domain/data work, or explicit pixel comparison.
+view-local MVI wiring. Select `draft` when the user says draw, draft, or
+prototype one View and does not request build/validation. Escalate to
+`implement` or the full flow when the node/request involves multiple screens,
+IAP, a new or changed route/Factory/shared component, models/list inputs,
+domain/data work, or explicit build/pixel comparison.
 
 On the fast path:
 
@@ -44,22 +48,31 @@ On the fast path:
    `baseswiftui-ios-guidelines`, `WORKFLOW_AI.md`, optional references, or run
    GitNexus for feature-local UI edits unless an escalation condition above is
    met.
-4. Finish all requested edits, then run one incremental workspace build. Never
-   build after intermediate edits; rebuild only to verify a build-failure fix.
+4. Finish all requested edits in one patch. In `draft`, do not build and report
+   that compilation was not verified. In `implement`, run one incremental
+   workspace build after editing; never build between edits, and rebuild only
+   to verify a build-failure fix.
 5. Use the MCP screenshot for a structured visual check. Never launch the
    simulator, capture simulator screenshots, or run pixel diff in `implement`
    mode; those steps require an explicit `compare` request.
 
 ## Acquire design evidence
 
-Before tool calls, read once per task `skill://figma/figma-design-to-code/SKILL.md`,
+For one-screen `draft` or fast `implement`, read only
+`skill://figma/figma-swiftui/SKILL.md`; do not load the generic design-to-code
+skill or its reference. Read all three Figma resources only for a full flow or
+`compare`: `skill://figma/figma-design-to-code/SKILL.md`,
 `skill://figma/figma-swiftui/SKILL.md`, and
-`skill://figma/figma-swiftui/references/design-to-code.md`. Call
-`get_design_context` first with:
+`skill://figma/figma-swiftui/references/design-to-code.md`.
+
+Call `get_design_context` first. On the one-screen fast path use:
 
 - `clientLanguages: "swift"`
 - `clientFrameworks: "swiftui"`
-- `skillNames: "resource:figma-design-to-code,resource:figma-swiftui"`
+- `skillNames: "resource:figma-swiftui"`
+
+For a full flow or `compare`, pass both
+`resource:figma-design-to-code,resource:figma-swiftui`.
 
 Extract `fileKey` and convert URL node IDs such as `337-54348` to
 `337:54348`. If a page/canvas returns sparse context, use metadata to locate
@@ -118,11 +131,13 @@ one View.
 
 ## Validate
 
-For the fast path, run the selected implementation-skill checks and one
-incremental build through `BaseSwiftUI.xcworkspace` when Swift changed. For the
-full path, follow `references/visual-validation.md`. Report files,
+For `draft`, run bounded source/diff checks only and explicitly report that no
+build or runtime validation ran. For fast `implement`, run the selected
+implementation-skill checks and one incremental build through
+`BaseSwiftUI.xcworkspace` when Swift changed. For the full path, follow
+`references/visual-validation.md`. Report files,
 reused/new components/assets/tokens, comparison evidence, ambiguities, and
 untested states. Never claim numeric fidelity without a measuring tool.
 
 Short invocations:
-`$baseswiftui-figma-ui analyze|implement|compare|assets <figma-node-url>`
+`$baseswiftui-figma-ui draft|analyze|implement|compare|assets <figma-node-url>`
