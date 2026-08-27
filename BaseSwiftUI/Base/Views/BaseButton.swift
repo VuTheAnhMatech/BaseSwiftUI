@@ -65,7 +65,7 @@ struct BaseButton: View {
         image: Image? = nil,
         width: CGFloat = 24,
         height: CGFloat = 24,
-        style: BaseButtonStyle = .plain,
+        style: BaseButtonStyle = .liquidAdaptive,
         liquidFrameSize: CGFloat = 44,
         liquidIconSize: CGFloat = 24,
         liquidShape: BaseButtonLiquidShape = .circle,
@@ -87,7 +87,7 @@ struct BaseButton: View {
     init<Label: View>(
         width: CGFloat = 24,
         height: CGFloat = 24,
-        style: BaseButtonStyle = .plain,
+        style: BaseButtonStyle = .liquidAdaptive,
         liquidFrameSize: CGFloat = 44,
         liquidIconSize: CGFloat = 24,
         liquidShape: BaseButtonLiquidShape = .circle,

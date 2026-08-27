@@ -36,6 +36,9 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
+- Let `BaseButton` keep its default adaptive style: it applies Liquid Glass on
+  iOS 26+ when enabled and falls back to plain below iOS 26. Pass `.plain` only
+  when the design explicitly requires a non-glass action.
 - Use the bundled/documented project font even when a design or screenshot
   names another family; map to the closest size/weight without asking. Add font
   files only when explicitly requested.
@@ -45,8 +48,13 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.
-- Keep layouts responsive to compact width, long localization, and Dynamic
-  Type. `Image("ic_close")` remains exactly 40×40.
+- Treat a design/device height above 844pt as layout evidence, not a reason to
+  add `ScrollView`. Prefer flexible spacing, layout priority, safe-area-aware
+  sizing, and responsive constraints from iPhone SE through iPhone 17 Pro Max.
+  Add scrolling only when content would otherwise become inaccessible under
+  Dynamic Type, keyboard presentation, or long localization.
+- Keep layouts responsive to compact width. `Image("ic_close")` remains
+  exactly 40×40.
 - Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local
   type extensions or feature color namespaces.
 - Keep simple one-off layout values at the callsite. Extract only meaningful

@@ -87,6 +87,12 @@ matching project asset exists, preserving catalog naming and scope. Treat
 React/Tailwind output as structural evidence only. Keep edits limited to the
 selected node/flow and new/updated headers as `Created by Vu The Anh`.
 
+A Figma frame or reference device taller than 844pt does not by itself justify
+a `ScrollView`. First adapt the composition from iPhone SE through iPhone 17
+Pro Max with flexible spacing, priorities, safe-area-aware sizing, and Auto
+Layout intent. Use scrolling only when Dynamic Type, the keyboard, long
+localization, or irreducible content would otherwise make content inaccessible.
+
 Typography uses the font family already bundled and documented by the project,
 even when Figma specifies another family. Map Figma size, weight, and line
 height to the closest available project style and continue without asking;
@@ -96,6 +102,10 @@ For raster assets exported through Figma MCP or extracted from a supplied
 screenshot, create only correctly sized `@2x` and `@3x` renditions for the same
 point size; omit `@1x`. Never label one bitmap as both scales or upscale an
 insufficient source.
+
+Use `BaseButton` without overriding its adaptive style so it renders Liquid
+Glass on iOS 26+ when enabled and falls back to plain on earlier iOS. Override
+with `.plain` only when the selected design explicitly requires no glass.
 
 For a flow, establish `frame → State → Intent → Route → Factory → justified
 Domain` ownership before writing Views. Do not flatten multiple screens into

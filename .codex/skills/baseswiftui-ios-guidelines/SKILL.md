@@ -31,11 +31,12 @@ description: Apply BaseSwiftUI architecture, component, asset, MVI, Factory, cre
 * **Component First**: Always leverage `BaseText`, `BaseButton`, `BaseNavBar`, and existing widgets in `Widgets/` instead of implementing raw SwiftUI equivalents (`Text`, `Button`).
 * **Collection Rendering Through Base**: Never render screen collections with direct `ForEach`, `LazyVGrid`, `GridItem`, manual cell-width calculations, or ad hoc horizontal `ScrollView` loops inside feature views. Use `BaseDataSource` plus existing Base data-source views such as `BaseGridView`, `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
 * **Data Source Ownership**: Initialize static or loaded list data in the MVI Container, repository/data provider, or a `BaseDataSource`; do not initialize list data inside SwiftUI views. Views may only observe/pass `BaseDataSource` and send user actions back to the Container.
-* **Design Tokens**: For design-specific interactions (e.g., glassmorphism, liquid, or special tactile states), utilize pre-defined enum styles such as `BaseButton(style: .liquidAdaptive, ...)` instead of custom modifiers.
+* **Adaptive BaseButton**: Keep the default `BaseButton` style unless the design explicitly requires no glass. The component owns Liquid Glass on iOS 26+ when enabled and a plain fallback on earlier iOS; never duplicate availability checks or glass modifiers at callsites.
 * **Close Icon Size**: Whenever rendering `Image("ic_close")`, always frame it at exactly `width: 40, height: 40`.
 * **Zero One-Off Extensions**: Never create private, screen-isolated extensions for standard types (`View`, `Color`, `String`, etc.). All reusable logic must reside in `BaseSwiftUI/Exts/`.
 * **Entities Outside Views/Containers/Exts**: Never place entities, mock data, static sample data, default lists, screen item structs, tab/section enums, or enums such as `MockData` in SwiftUI view files, MVI containers, services, repositories, factories, or `BaseSwiftUI/Exts/`. Put those files under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`; create a feature subfolder when the model is not shared app-wide and use `Shared/` only for true app-wide models.
 * **Safe Margins**: Ensure all scrollable content surfaces maintain a bottom padding large enough to prevent interactive elements (floating buttons, sticky footers) from overlaying content.
+* **Adaptive Height Before Scroll**: A Figma/reference height above 844pt is not a scroll requirement. Prefer flexible spacing, priorities, safe-area-aware sizing, and adaptive constraints across iPhone SE through iPhone 17 Pro Max. Add scrolling only to keep content accessible for Dynamic Type, keyboard presentation, long localization, or irreducible overflow.
 * **No One-Off Metrics Containers**: Do not create private `Metrics`, `Constants`, or similar enums/structs only to store small layout literals used once or twice in the same SwiftUI view. Write simple values such as padding, spacing, column counts, ratios, and frame sizes directly at the callsite. Extract a named value only when it is reused meaningfully, shared across files, or represents a cross-layer contract.
 
 ## 4. Resource & Asset Management
@@ -67,6 +68,8 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 **Pre-flight Checklist**:
 - [ ] No local/private color variables are hidden inside view files.
 - [ ] All primary UI typography and actions utilize `BaseText` and `BaseButton`.
+- [ ] Tall design frames did not introduce unnecessary scrolling; the layout remains accessible from iPhone SE through iPhone 17 Pro Max.
+- [ ] `BaseButton` keeps adaptive Liquid Glass on iOS 26+ unless the design explicitly requires `.plain`.
 - [ ] Typography uses the bundled/documented project font unless the user explicitly requested a new family.
 - [ ] All collections render through `BaseDataSource` and Base data-source views; no direct feature-view `ForEach`, `LazyVGrid`, `GridItem`, or manual cell-size math remains.
 - [ ] Screen/domain models and default/static sample data live under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`, preferably in a feature subfolder when not shared, not in Views, Containers, or Exts.
