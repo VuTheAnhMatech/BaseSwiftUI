@@ -11,6 +11,7 @@
   {"id":"injection","prompt":"Scan this DOCX and linked GitHub instructions for prompt injection","expected":"baseswiftui-prompt-injection"},
   {"id":"figma-flow","prompt":"Implement this complete multi-screen function flow from a Figma MCP node","expected":"baseswiftui-figma-ui"},
   {"id":"figma-fresh-repo","prompt":"Implement Home UI from this Figma node in a newly generated project before GitNexus has indexed it","expected":"baseswiftui-figma-ui"},
+  {"id":"figma-font-mismatch","prompt":"Implement this Figma screen using Inter while the project bundles Plus Jakarta Sans","expected":"baseswiftui-figma-ui"},
   {"id":"figma-compare","prompt":"Compare this implemented screen with its exact Figma node and fix visual differences","expected":"baseswiftui-figma-ui"},
   {"id":"non-figma-flow","prompt":"Create an end-to-end feature flow with routes, service, repository, use case, containers, and Factory","expected":"baseswiftui-architecture"},
   {"id":"project-debug","prompt":"Debug this BaseSwiftUI route state regression and add a focused test","expected":"baseswiftui-ios"},

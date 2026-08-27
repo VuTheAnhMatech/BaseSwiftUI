@@ -36,6 +36,9 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
+- Use the bundled/documented project font even when a design or screenshot
+  names another family; map to the closest size/weight without asking. Add font
+  files only when explicitly requested.
 - Raster assets exported through Figma MCP or extracted from a supplied
   screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
   Never label one bitmap as both scales or upscale an insufficient source.

@@ -42,6 +42,7 @@ description: Apply BaseSwiftUI architecture, component, asset, MVI, Factory, cre
 * **Color Usage**: Use existing global color tokens directly at the callsite when they already exist, such as `Color.BG.BG_01`, `Color.Ink.headline`, `Color.Ink.body`, `Color.Primary.primary`, and `Color.Semantic.*`.
 * **No Feature Color Aliases**: Never create feature-specific `Color` namespaces such as `extension Color { enum Explore { ... } }`, `Color.Settings`, or `Color.Tabbar` just to alias colors for a screen. For one-off screen colors, write the `Color(...)`, `.white`, `.black`, or opacity expression directly in the view where it is used.
 * **Shared Color Tokens Only**: Add or modify `Color` extensions only for true reusable app-wide design tokens that already belong to the global token system under `BaseSwiftUI/Exts/`, not for per-screen styling shortcuts.
+* **Typography Source of Truth**: Always use the font family already bundled and documented by the project, even when Figma or a screenshot specifies another family. Map size, weight, and line height to the closest available project style without asking. Add or download font files only when the user explicitly requests it.
 * **Asset Mapping**: Use image assets instead of SF Symbols whenever a matching custom asset exists in `.xcassets`.
 * **Namespace Accuracy**: Reference assets using their strict, clean slash-separated paths as defined in the catalog (e.g., `Tabbar/ic_search`, `Common/ic_arrow`). Ensure asset folder names do not contain accidental spaces.
 * **Raster Scales**: Raster assets exported through Figma MCP or extracted from a supplied screenshot must use correctly sized `@2x` and `@3x` renditions only; omit `@1x`. Never label one bitmap as both scales or upscale an insufficient source.
@@ -66,6 +67,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 **Pre-flight Checklist**:
 - [ ] No local/private color variables are hidden inside view files.
 - [ ] All primary UI typography and actions utilize `BaseText` and `BaseButton`.
+- [ ] Typography uses the bundled/documented project font unless the user explicitly requested a new family.
 - [ ] All collections render through `BaseDataSource` and Base data-source views; no direct feature-view `ForEach`, `LazyVGrid`, `GridItem`, or manual cell-size math remains.
 - [ ] Screen/domain models and default/static sample data live under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`, preferably in a feature subfolder when not shared, not in Views, Containers, or Exts.
 - [ ] One-off layout literals are written directly at callsites instead of being hidden behind private `Metrics`/`Constants` containers.

@@ -63,6 +63,11 @@ matching project asset exists, preserving catalog naming and scope. Treat
 React/Tailwind output as structural evidence only. Keep edits limited to the
 selected node/flow and new/updated headers as `Created by Vu The Anh`.
 
+Typography uses the font family already bundled and documented by the project,
+even when Figma specifies another family. Map Figma size, weight, and line
+height to the closest available project style and continue without asking;
+add or download fonts only when the user explicitly requests it.
+
 For raster assets exported through Figma MCP or extracted from a supplied
 screenshot, create only correctly sized `@2x` and `@3x` renditions for the same
 point size; omit `@1x`. Never label one bitmap as both scales or upscale an

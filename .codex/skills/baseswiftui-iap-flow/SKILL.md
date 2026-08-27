@@ -31,6 +31,9 @@ Config, analytics, and SDK calls as fragile integration behavior.
   navigation.
 - Reuse matching Base views and paywall components. Keep price, trial, sale,
   legal text, and CTA layout resilient to compact width and localization.
+- Use the bundled/documented project font even when the design names another
+  family; map to the closest size/weight without asking. Add font files only
+  when explicitly requested.
 - Raster assets exported through Figma MCP or extracted from a supplied
   screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
   Never label one bitmap as both scales or upscale an insufficient source.
