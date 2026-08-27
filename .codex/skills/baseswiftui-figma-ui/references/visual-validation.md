@@ -1,7 +1,8 @@
 # Figma visual validation
 
-Read this for `implement` and `compare`; skip it for analysis-only or
-asset-only work.
+Read this for `compare`, pixel-exact work, multi-screen flows, or when the fast
+path has ambiguous visual evidence. Skip it for routine single-screen
+implementation, analysis-only, and asset-only work.
 
 ## Evidence
 
