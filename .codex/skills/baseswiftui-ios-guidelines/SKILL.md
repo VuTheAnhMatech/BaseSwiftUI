@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-ios-guidelines
-description: Apply BaseSwiftUI architecture, component, asset, MVI, Factory, credential, and workspace rules. Use when guidelines are requested or another project skill routes here; otherwise prefer the task-specific skill.
+description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory, credential, and workspace rules only when guidelines are explicitly requested or a specialist routes here. Never load for a one-node Figma/local-View task.
 ---
 # BaseSwiftUI iOS Architecture & Guidelines
 

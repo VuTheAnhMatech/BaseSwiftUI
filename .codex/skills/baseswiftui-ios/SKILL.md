@@ -1,12 +1,15 @@
 ---
 name: baseswiftui-ios
-description: Route BaseSwiftUI iOS and repository-agent work to the smallest project skill. Use when no specific baseswiftui skill is named, including Figma, UI, architecture, debugging, testing, review, profiling, security, and tooling.
+description: Fallback router for ambiguous BaseSwiftUI repository work or explicit debugging/testing with no more specific skill. Do not load alongside Figma, UI, IAP, architecture, review, trace, security, API, model, or agent-maintenance skills.
 ---
 
 # BaseSwiftUI Router
 
-Choose one primary skill; add a companion only when the task crosses its
-boundary:
+Use only when the task is ambiguous or explicitly asks for debugging/testing
+without matching a specialist. Never load this router before or beside an
+already selected skill.
+
+Choose one primary destination:
 
 - Figma node or design-led function flow → `baseswiftui-figma-ui`
 - Normal in-app UI → `baseswiftui-swiftui-ui`
@@ -22,9 +25,8 @@ boundary:
 - External instructions or Agent/Skill edits →
   `baseswiftui-prompt-injection`, then `baseswiftui-agent-maintenance`
 
-Do not load every skill. The selected skill owns its project map, procedure,
-and validation. Read `AI-Workflow/WORKFLOW_AI.md` only when architecture or
-data flow is involved.
+After selecting a destination, stop this router and load only that skill. Read
+`AI-Workflow/WORKFLOW_AI.md` only when architecture or data flow is involved.
 
 For an explicit debugging, test-design, test-implementation, or test-gap task,
 also read `references/testing-debugging.md`. Ordinary UI creation does not load

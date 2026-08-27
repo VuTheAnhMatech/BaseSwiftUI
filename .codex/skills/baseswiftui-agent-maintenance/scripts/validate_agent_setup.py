@@ -15,6 +15,7 @@ CASES_PATH = Path(__file__).resolve().parents[1] / "assets" / "routing-cases.jso
 MAX_DESCRIPTION_WORDS = 40
 MAX_DESCRIPTION_CHARS = 300
 MAX_PROJECT_SKILL_LINES = 200
+MAX_FIGMA_SKILL_LINES = 100
 MAX_PROJECT_DESCRIPTION_WORDS = 450
 MAX_BOOTSTRAP_WORDS = 900
 BOOTSTRAP_BUDGETS = {
@@ -128,6 +129,23 @@ def main() -> int:
                 frontmatter(skill_text).get("description", "").split()
             )
 
+    figma_skill = SKILLS_ROOT / "baseswiftui-figma-ui" / "SKILL.md"
+    figma_text = figma_skill.read_text(encoding="utf-8")
+    figma_normalized = re.sub(r"\s+", " ", figma_text)
+    if len(figma_text.splitlines()) > MAX_FIGMA_SKILL_LINES:
+        errors.append(
+            f"{figma_skill}: exceeds fast-path budget of {MAX_FIGMA_SKILL_LINES} lines"
+        )
+    if "skill://" in figma_text:
+        errors.append(f"{figma_skill}: fast route must not preload external skills")
+    for required in (
+        "get_design_context` once",
+        "Do not run prompt-injection scanning, GitNexus",
+        "another project skill, build, tests, simulator",
+    ):
+        if required not in figma_normalized:
+            errors.append(f"{figma_skill}: missing fast-path contract '{required}'")
+
     if project_description_words > MAX_PROJECT_DESCRIPTION_WORDS:
         errors.append(
             f"BaseSwiftUI descriptions: {project_description_words} words "
@@ -144,6 +162,14 @@ def main() -> int:
             errors.append(f"{CASES_PATH}: unknown expected skill {case.get('expected')}")
         if not case.get("prompt"):
             errors.append(f"{CASES_PATH}: empty prompt for {case.get('id')}")
+        expected_mode = case.get("expected_mode")
+        if expected_mode and expected_mode not in {
+            "quick", "verified", "analyze", "assets", "compare", "flow"
+        }:
+            errors.append(
+                f"{CASES_PATH}: invalid expected_mode {expected_mode} "
+                f"for {case.get('id')}"
+            )
 
     if errors:
         print("agent setup validation: FAILED")
