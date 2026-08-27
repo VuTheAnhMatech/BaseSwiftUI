@@ -44,6 +44,15 @@ command -v rsync >/dev/null 2>&1 || fail "Máy chưa có rsync."
 command -v perl >/dev/null 2>&1 || fail "Máy chưa có perl."
 command -v ruby >/dev/null 2>&1 || fail "Máy chưa có Ruby."
 command -v pod >/dev/null 2>&1 || fail "Máy chưa có CocoaPods. Hãy cài bằng: sudo gem install cocoapods"
+command -v git >/dev/null 2>&1 || fail "Máy chưa có Git."
+
+if [ -z "${DEVELOPER_DIR:-}" ] && [ -d "/Applications/Xcode.app/Contents/Developer" ]; then
+  DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
+  export DEVELOPER_DIR
+fi
+
+xcrun xcodebuild -version >/dev/null 2>&1 || \
+  fail "Không tìm thấy Xcode đầy đủ. Hãy cài/mở Xcode trước khi tạo project."
 
 if [ -n "$EXISTING_ENTRY" ]; then
   EXISTING_XCODE_PROJECT=$(find "$DESTINATION_ROOT" -mindepth 1 -maxdepth 1 \
@@ -149,7 +158,32 @@ if [ ! -d "$PROJECT_NAME.xcworkspace" ]; then
   fail "CocoaPods không tạo được $PROJECT_NAME.xcworkspace."
 fi
 
+if ! git -C "$DESTINATION_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+  git -C "$DESTINATION_ROOT" init --quiet
+  git -C "$DESTINATION_ROOT" symbolic-ref HEAD refs/heads/main
+fi
+
+if ! git -C "$DESTINATION_ROOT" rev-parse --verify HEAD >/dev/null 2>&1; then
+  git -C "$DESTINATION_ROOT" add --all
+  if [ -f "$DESTINATION_ROOT/.team-tools/report.py" ]; then
+    git -C "$DESTINATION_ROOT" add --force .team-tools/report.py
+  fi
+
+  if git -C "$DESTINATION_ROOT" config user.name >/dev/null 2>&1 && \
+     git -C "$DESTINATION_ROOT" config user.email >/dev/null 2>&1; then
+    git -C "$DESTINATION_ROOT" -c commit.gpgSign=false commit --quiet \
+      --no-verify -m "Initial $PROJECT_NAME baseline"
+  else
+    git -C "$DESTINATION_ROOT" \
+      -c user.name="Project Bootstrap" \
+      -c user.email="bootstrap@localhost" \
+      -c commit.gpgSign=false commit --quiet --no-verify \
+      -m "Initial $PROJECT_NAME baseline"
+  fi
+fi
+
 printf '\nCreated successfully.\n'
 printf 'Project: %s\n' "$PROJECT_NAME"
 printf 'Bundle ID: %s\n' "$BUNDLE_IDENTIFIER"
+printf 'Git: ready with a baseline commit.\n'
 printf 'Open: %s.xcworkspace\n' "$PROJECT_NAME"

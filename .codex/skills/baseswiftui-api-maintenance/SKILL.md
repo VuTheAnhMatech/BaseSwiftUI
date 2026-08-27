@@ -31,7 +31,7 @@ optional evidence, not project defaults.
 4. Keep iOS 18+ and iOS 26+ APIs behind availability checks and do not make
    them mandatory for an iOS 17 path.
 5. Update only the affected baseline/reference. Code changes require an
-   explicit implementation request and GitNexus impact analysis.
+   explicit implementation request and the root code-intelligence gate.
 
 ## Safety rules
 

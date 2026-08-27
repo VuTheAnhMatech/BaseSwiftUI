@@ -20,8 +20,8 @@ when they are available to the current deployment target or explicitly guarded.
    the review touches animation, focus, scrolling, images, localization,
    Charts, or previews.
 5. Inspect the closest working feature before declaring a local pattern wrong.
-6. Use GitNexus impact analysis before changing Swift symbols. A read-only
-   review does not authorize fixes and does not require symbol impact analysis.
+6. Follow the root code-intelligence gate before fixes. A read-only review does
+   not authorize edits or require impact analysis.
 
 ## Review order
 
@@ -66,8 +66,8 @@ confirmed defects from optional improvements. If no material finding exists,
 say so and list any validation gaps.
 
 When the user asks for improvements but not implementation, stop after the
-evidence-backed report. When fixes are explicitly requested, run impact
-analysis first, apply only accepted/in-scope fixes, then build through
+evidence-backed report. When fixes are explicitly requested, follow the root
+code-intelligence gate, apply only accepted/in-scope fixes, then build through
 `BaseSwiftUI.xcworkspace`.
 
 Route a dedicated `.trace` capture/analysis to

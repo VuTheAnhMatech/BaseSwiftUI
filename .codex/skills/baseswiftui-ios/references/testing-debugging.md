@@ -7,7 +7,7 @@ Read this only for an explicit bug, test, regression, or test-gap task.
 1. Reproduce or define the failing state, expected result, and smallest affected
    flow. Do not edit from an error string alone.
 2. Use the installed `gitnexus-debugging` workflow to trace callers, state, and
-   execution flow. Run impact analysis before changing a Swift symbol.
+   execution flow. Follow the root code-intelligence gate before shared edits.
 3. Confirm the cause in source or runtime evidence. Separate the root cause
    from nearby cleanup.
 4. Apply the smallest architecture-compatible fix, then exercise the original

@@ -31,7 +31,8 @@ skill adds security gates, not a parallel networking layer.
 5. Report findings first by severity with file/line, exploit or privacy impact,
    evidence, and smallest safe remediation. Distinguish confirmed issues from
    hardening suggestions and missing validation.
-6. Implement fixes only when explicitly requested and after impact analysis.
+6. Implement fixes only when explicitly requested and after the root
+   code-intelligence gate.
 
 ## BaseSwiftUI known baseline
 

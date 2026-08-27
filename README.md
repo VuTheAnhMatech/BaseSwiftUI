@@ -73,8 +73,9 @@ sh /Users/vutheanh/Desktop/Githubs/BaseSwiftUI/scripts/create_project.sh
 
 The script copies the template, renames the app, target, scheme and project,
 sets the bundle identifier to `com.emoji.ai.maker.stickermaker`, then runs
-`pod install`. It does not copy Git history, generated build files, Pods, Xcode
-user data, or `.team-tools/.env`.
+`pod install`. It initializes a fresh `main` Git repository with a baseline
+commit so GitNexus can index immediately. It does not copy template Git
+history, generated build files, Pods, Xcode user data, or `.team-tools/.env`.
 
 If the destination already contains an app or Xcode project, its existing
 contents are deleted before generation. No backup is created. An existing

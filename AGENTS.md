@@ -6,17 +6,22 @@ Keep changes scoped and inspect the closest working feature before editing.
 
 ## Code intelligence
 
-For a Swift function, class, or method change:
+For edits to existing shared Swift symbols in `Base`, `Widgets`, `Exts`,
+routes, Factory, services, repositories, or use cases:
 
-1. Run GitNexus upstream impact analysis first. Report the blast radius and
-   warn before a HIGH or CRITICAL change.
-2. Use GitNexus query/context for unfamiliar flows and semantic rename for
-   symbols; do not use broad text replacement.
-3. Before committing, run `detect_changes()` and confirm the affected scope.
+1. Use GitNexus impact first when indexed; refresh a stale index and report
+   HIGH or CRITICAL blast radius before editing.
+2. If the repo is absent from GitNexus but has `.git`, index it automatically.
+   Do not block new files or feature-local UI/View-body edits solely because
+   GitNexus is unavailable; use bounded `rg` references, inspect the nearest
+   feature, and build.
+3. For a shared/high-risk edit when indexing cannot run, pause only if bounded
+   source inspection cannot establish the blast radius.
+4. Before committing, use `detect_changes()` when available; otherwise inspect
+   `git diff --name-only` and the relevant build.
 
-Documentation, metadata, and skill-only edits do not need symbol impact
-analysis. If the index is stale, run `node .gitnexus/run.cjs analyze` or use the
-installed GitNexus CLI skill.
+Use GitNexus query/context for unfamiliar flows and semantic rename for shared
+symbols. Documentation, metadata, and skill-only edits need no impact analysis.
 
 ## Routing and context
 

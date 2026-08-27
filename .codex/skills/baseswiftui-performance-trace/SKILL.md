@@ -25,8 +25,8 @@ changes. Recording and analysis do not authorize edits.
    and user-code symbols. Match symbols to repository files; do not infer a
    source line from a system frame alone.
 7. Return findings ordered by user impact, evidence, suspected owner, and the
-   smallest verification/fix. Edit only when requested and after GitNexus
-   impact analysis.
+   smallest verification/fix. Edit only when requested and after the root
+   code-intelligence gate.
 
 ## Privacy
 
