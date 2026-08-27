@@ -28,6 +28,9 @@ boundary. Widget code should be deterministic, lightweight, and extension-safe.
 - Avoid APIs that are unavailable or unsafe in extensions.
 - Do not import app-only SDK wrappers into the widget extension unless the existing project already does so for that path.
 - Keep widget UI predictable; avoid runtime network or long-running work in rendering code.
+- Raster assets exported through Figma MCP or extracted from a supplied
+  screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
+  Never label one bitmap as both scales or upscale an insufficient source.
 - Check target membership expectations when adding files that should be visible to the extension.
 
 ## Validation

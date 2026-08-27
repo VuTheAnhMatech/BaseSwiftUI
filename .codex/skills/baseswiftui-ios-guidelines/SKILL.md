@@ -44,6 +44,7 @@ description: Apply BaseSwiftUI architecture, component, asset, MVI, Factory, cre
 * **Shared Color Tokens Only**: Add or modify `Color` extensions only for true reusable app-wide design tokens that already belong to the global token system under `BaseSwiftUI/Exts/`, not for per-screen styling shortcuts.
 * **Asset Mapping**: Use image assets instead of SF Symbols whenever a matching custom asset exists in `.xcassets`.
 * **Namespace Accuracy**: Reference assets using their strict, clean slash-separated paths as defined in the catalog (e.g., `Tabbar/ic_search`, `Common/ic_arrow`). Ensure asset folder names do not contain accidental spaces.
+* **Raster Scales**: Raster assets exported through Figma MCP or extracted from a supplied screenshot must use correctly sized `@2x` and `@3x` renditions only; omit `@1x`. Never label one bitmap as both scales or upscale an insufficient source.
 * **Icon Composition**: For grouped lists or rows featuring icons, prefer dedicated custom asset icons over building compound views out of SF Symbols with custom background frames.
 
 ## 5. Flow & Architecture (MVI + Factory)
@@ -69,6 +70,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 - [ ] Screen/domain models and default/static sample data live under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`, preferably in a feature subfolder when not shared, not in Views, Containers, or Exts.
 - [ ] One-off layout literals are written directly at callsites instead of being hidden behind private `Metrics`/`Constants` containers.
 - [ ] Asset references precisely match their `.xcassets` paths.
+- [ ] New Figma/screenshot raster assets contain valid `@2x` and `@3x` renditions and no `@1x` rendition.
 - [ ] CocoaPods setup and existing workspace structures remain perfectly intact.
 - [ ] `push -> sheet -> dismiss -> Back` flows keep one page stack and let the sheet dismiss its own presentation.
 - [ ] Production credentials and tokens are not persisted in `UserDefaults` or written to logs.

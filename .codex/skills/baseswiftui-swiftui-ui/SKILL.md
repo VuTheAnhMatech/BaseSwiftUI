@@ -37,6 +37,9 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
+- Raster assets exported through Figma MCP or extracted from a supplied
+  screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
+  Never label one bitmap as both scales or upscale an insufficient source.
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.

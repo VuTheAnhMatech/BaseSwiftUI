@@ -64,6 +64,11 @@ matching project asset exists, preserving catalog naming and scope. Treat
 React/Tailwind output as structural evidence only. Keep edits limited to the
 selected node/flow and new/updated headers as `Created by Vu The Anh`.
 
+For raster assets exported through Figma MCP or extracted from a supplied
+screenshot, create only correctly sized `@2x` and `@3x` renditions for the same
+point size; omit `@1x`. Never label one bitmap as both scales or upscale an
+insufficient source.
+
 For a flow, establish `frame → State → Intent → Route → Factory → justified
 Domain` ownership before writing Views. Do not flatten multiple screens into
 one View.
