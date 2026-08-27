@@ -106,7 +106,9 @@ find "$DESTINATION_ROOT" \
   -type f \( \
     -name '*.swift' -o \
     -name '*.rb' -o \
+    -name '*.py' -o \
     -name '*.md' -o \
+    -name '*.txt' -o \
     -name '*.plist' -o \
     -name '*.pbxproj' -o \
     -name '*.xcscheme' -o \
@@ -125,7 +127,9 @@ find "$DESTINATION_ROOT" \
   -type f \( \
     -name '*.swift' -o \
     -name '*.rb' -o \
+    -name '*.py' -o \
     -name '*.md' -o \
+    -name '*.txt' -o \
     -name '*.plist' -o \
     -name '*.pbxproj' -o \
     -name '*.xcscheme' -o \
