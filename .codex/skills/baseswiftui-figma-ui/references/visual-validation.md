@@ -4,12 +4,18 @@ Read this for `compare`, pixel-exact work, multi-screen flows, or when the fast
 path has ambiguous visual evidence. Skip it for routine single-screen
 implementation, analysis-only, and asset-only work.
 
+Do not select a Simulator destination, build, boot, run, or capture Simulator
+output unless the user explicitly requests Simulator validation. A `compare`
+or pixel-exact request alone does not grant Simulator use.
+
 ## Evidence
 
 1. Keep the Figma MCP screenshot for the exact selected node as the design
    reference.
-2. Build and run the relevant screen on the smallest supported width and one
-   representative larger device. Capture simulator output with:
+2. Without an explicit Simulator request, compare Figma evidence with the
+   implementation structure and report that runtime visual validation did not
+   run. When Simulator validation is explicitly requested, build and run the
+   relevant screen on the requested device(s), then capture with:
 
    ```sh
    xcrun simctl io booted screenshot /private/tmp/baseswiftui-actual.png

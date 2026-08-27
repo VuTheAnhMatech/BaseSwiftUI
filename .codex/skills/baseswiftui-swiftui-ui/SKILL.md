@@ -66,7 +66,8 @@ Check render-only View ownership, model/list placement, reuse, route/Factory
 consistency, compact width, clipping, Dynamic Type, VoiceOver labels/order,
 touch targets, Reduce Motion where relevant, and the states changed by the
 task. Exercise affected navigation and dismissal edges. Build through
-`BaseSwiftUI.xcworkspace` when Swift changed.
+`BaseSwiftUI.xcworkspace` for `generic/platform=iOS` when Swift changed. Never
+select, build, boot, or open Simulator unless the user explicitly requests it.
 
 Use `baseswiftui-swiftui-review` for a dedicated audit,
 `baseswiftui-performance-trace` for Instruments, and

@@ -141,10 +141,24 @@ def main() -> int:
     for required in (
         "get_design_context` once",
         "Do not run prompt-injection scanning, GitNexus",
-        "another project skill, build, tests, simulator",
+        "another project skill, tests, simulator",
+        "build the workspace once for `generic/platform=iOS`",
+        "word `compare` alone does not grant it",
     ):
         if required not in figma_normalized:
             errors.append(f"{figma_skill}: missing fast-path contract '{required}'")
+
+    visual_reference = (
+        SKILLS_ROOT / "baseswiftui-figma-ui" / "references" /
+        "visual-validation.md"
+    )
+    visual_text = re.sub(
+        r"\s+", " ", visual_reference.read_text(encoding="utf-8")
+    )
+    if "unless the user explicitly requests Simulator validation" not in visual_text:
+        errors.append(
+            f"{visual_reference}: Simulator validation must require explicit request"
+        )
 
     if project_description_words > MAX_PROJECT_DESCRIPTION_WORDS:
         errors.append(
@@ -164,7 +178,7 @@ def main() -> int:
             errors.append(f"{CASES_PATH}: empty prompt for {case.get('id')}")
         expected_mode = case.get("expected_mode")
         if expected_mode and expected_mode not in {
-            "quick", "verified", "analyze", "assets", "compare", "flow"
+            "quick", "draft", "analyze", "assets", "compare", "flow"
         }:
             errors.append(
                 f"{CASES_PATH}: invalid expected_mode {expected_mode} "

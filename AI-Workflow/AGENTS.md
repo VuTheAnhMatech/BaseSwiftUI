@@ -15,6 +15,9 @@
 6. Before completion, apply only the relevant design, architecture, routing,
    DI, test, build, or tooling checks.
 
+Build verification defaults to `generic/platform=iOS`; Simulator destinations,
+boot, capture, and interaction require an explicit user request.
+
 For repeated/list UI, default to `BaseDataSource` and the closest Base view.
 Ask a blocking question only when repository evidence cannot resolve a choice
 that materially changes the result.
