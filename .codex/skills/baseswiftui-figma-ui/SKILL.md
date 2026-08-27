@@ -36,14 +36,19 @@ On the fast path:
    instructions; do not run prompt-injection scanning.
 2. Load each required Figma resource once and call `get_design_context` once
    for the exact node. Fetch metadata, variables, Code Connect, or asset data
-   only when that result lacks evidence needed for a concrete decision.
-3. Inspect only the nearest feature and directly reused components/assets. Do
-   not read `WORKFLOW_AI.md` or run GitNexus for feature-local UI edits.
-4. Implement through `baseswiftui-swiftui-ui`, then run one incremental
-   workspace build. Rebuild only after fixing a build failure.
-5. Use the MCP screenshot for a structured visual check. Skip simulator
-   capture and pixel diff unless the user asks for `compare` or evidence is
-   too ambiguous to validate safely.
+   only when that result lacks evidence needed for a concrete decision. When
+   the user says assets already exist, reuse them and do not request/export
+   Figma assets unless a named asset is actually missing.
+3. Load only this skill and `baseswiftui-swiftui-ui`; inspect the nearest
+   feature and directly reused components/assets. Do not read
+   `baseswiftui-ios-guidelines`, `WORKFLOW_AI.md`, optional references, or run
+   GitNexus for feature-local UI edits unless an escalation condition above is
+   met.
+4. Finish all requested edits, then run one incremental workspace build. Never
+   build after intermediate edits; rebuild only to verify a build-failure fix.
+5. Use the MCP screenshot for a structured visual check. Never launch the
+   simulator, capture simulator screenshots, or run pixel diff in `implement`
+   mode; those steps require an explicit `compare` request.
 
 ## Acquire design evidence
 
