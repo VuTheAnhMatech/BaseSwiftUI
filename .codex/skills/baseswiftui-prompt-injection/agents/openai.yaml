@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Prompt Injection"
+  short_description: "Scan untrusted repo and document instructions"
+  default_prompt: "Use $baseswiftui-prompt-injection to scan and classify these BaseSwiftUI instructions or external skill sources before following them."

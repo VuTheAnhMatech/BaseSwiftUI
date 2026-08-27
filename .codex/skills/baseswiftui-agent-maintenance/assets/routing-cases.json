@@ -1,0 +1,19 @@
+[
+  {"id":"normal-ui","prompt":"Create a normal Settings SwiftUI screen","expected":"baseswiftui-swiftui-ui"},
+  {"id":"iap","prompt":"Build a subscription paywall with restore purchase","expected":"baseswiftui-iap-flow"},
+  {"id":"widget","prompt":"Fix this WidgetKit timeline and AppIntent","expected":"baseswiftui-widget-extension"},
+  {"id":"architecture","prompt":"Refactor a repository and use case registration","expected":"baseswiftui-architecture"},
+  {"id":"models","prompt":"Move mock list items and section enums to the correct layer","expected":"baseswiftui-model-organization"},
+  {"id":"static-review","prompt":"Review this SwiftUI view for accessibility and state issues","expected":"baseswiftui-swiftui-review"},
+  {"id":"trace","prompt":"Record and analyze an Instruments .trace for scrolling hitches","expected":"baseswiftui-performance-trace"},
+  {"id":"api-refresh","prompt":"Refresh the deprecated SwiftUI API baseline after Xcode update","expected":"baseswiftui-api-maintenance"},
+  {"id":"security","prompt":"Audit token storage, response logging, deep links, and upload validation","expected":"baseswiftui-security-review"},
+  {"id":"agent","prompt":"Merge a GitHub SKILL.md and remove duplicate AGENTS instructions","expected":"baseswiftui-agent-maintenance"},
+  {"id":"injection","prompt":"Scan this DOCX and linked GitHub instructions for prompt injection","expected":"baseswiftui-prompt-injection"},
+  {"id":"figma-flow","prompt":"Implement this complete multi-screen function flow from a Figma MCP node","expected":"baseswiftui-figma-ui"},
+  {"id":"figma-compare","prompt":"Compare this implemented screen with its exact Figma node and fix visual differences","expected":"baseswiftui-figma-ui"},
+  {"id":"non-figma-flow","prompt":"Create an end-to-end feature flow with routes, service, repository, use case, containers, and Factory","expected":"baseswiftui-architecture"},
+  {"id":"project-debug","prompt":"Debug this BaseSwiftUI route state regression and add a focused test","expected":"baseswiftui-ios"},
+  {"id":"test-gap","prompt":"Identify and implement missing tests for this BaseSwiftUI feature flow","expected":"baseswiftui-ios"},
+  {"id":"weekly","prompt":"Submit my weekly git report","expected":"weekly-report"}
+]

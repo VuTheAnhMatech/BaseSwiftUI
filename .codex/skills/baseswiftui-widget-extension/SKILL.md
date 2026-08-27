@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-widget-extension
-description: Use when editing an BaseSwiftUI widget extension, WidgetKit timelines, widget configuration, AppIntent, controls, Live Activity code, extension entitlements, extension-safe SwiftUI, or shared widget views under BaseSwiftUI/Widgets that are rendered by a widget extension.
+description: Build or edit BaseSwiftUI WidgetKit extensions, timelines, configurations, AppIntents, controls, Live Activities, entitlements, and extension-rendered shared UI. Not for ordinary in-app SwiftUI screens.
 ---
 
 # BaseSwiftUI Widget Extension

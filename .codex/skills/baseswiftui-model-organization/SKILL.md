@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-model-organization
-description: Use when creating, moving, reviewing, or refactoring BaseSwiftUI models, entities, screen item structs, section/tab enums, default/static lists, mock/sample data, or data-source inputs anywhere in the app. Applies to all features, containers, views, repositories, services, factories, and files under BaseSwiftUI/MT-CleanArchitecture/Domain/Entities.
+description: Create, move, or review BaseSwiftUI models, entities, screen items, enums, defaults, mock data, and data-source inputs. Use whenever model placement or ownership changes anywhere in the app.
 ---
 
 # BaseSwiftUI Model Organization
@@ -23,12 +23,10 @@ repositories, helpers, or `BaseSwiftUI/Exts`.
 
 - Put feature-specific models in a feature folder:
   - `Domain/Entities/Home/HomeEntities.swift`
-  - `Domain/Entities/Settings/SettingsEntities.swift`
-  - `Domain/Entities/CreateEmojiFromText/CreateEmojiFromTextEntities.swift`
+  - `Domain/Entities/<Feature>/<Feature>Entities.swift`
 - Put route/tab/presentation entities in their feature folder when they are not
   shared domain concepts:
-  - `Domain/Entities/MainTabbar/MainTabbarEntities.swift`
-  - `Domain/Entities/Legal/LegalEntities.swift`
+  - `Domain/Entities/<Feature>/<Feature>Presentation.swift`
 - Put truly shared app-wide entities in:
   - `Domain/Entities/Shared/`
 - Do not leave unrelated feature models together in one flat file.

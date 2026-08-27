@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Agent Maintenance"
+  short_description: "Maintain and test repo agent skills"
+  default_prompt: "Use $baseswiftui-agent-maintenance to merge or validate these BaseSwiftUI agent and skill instructions without duplicating repository rules."

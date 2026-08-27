@@ -1,4 +1,4 @@
 interface:
   display_name: "BaseSwiftUI iOS"
-  short_description: "Route BaseSwiftUI iOS coding tasks."
-  default_prompt: "Use $baseswiftui-ios to choose the right BaseSwiftUI skill for this iOS change."
+  short_description: "Route BaseSwiftUI app and agent tasks"
+  default_prompt: "Use $baseswiftui-ios to choose the smallest BaseSwiftUI skill for this app, review, trace, security, or agent-maintenance task."

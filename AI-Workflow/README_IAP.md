@@ -1,61 +1,40 @@
-# IAP Introduction (For Next Dev)
+# IAP Integration Status
 
-## 1. Purpose
-This folder contains all custom IAP UIs and shared components used by `IAPSDK` presentation callbacks.
+## Current state
 
-## 2. Current Architecture
-- Route type: `CustomRoute.iap(payload: IAPRoutePayload)` in `Base/AppRouter/CustomRoute.swift`.
-- Binding bridge: `Libs/IAPSDK/IAPRouteBindingStore.swift` stores `BaseIAPScreenBinding` by `routeId` because route payload must be `Codable`.
-- Screen host: `IAPRouteHostView` maps `screenId` to `IAP01View`.
+BaseSwiftUI does not currently contain a complete paywall flow, IAP route,
+purchase SDK bridge, product-selection screen, restore flow, or Remote Config
+mapping. `AppNavigationRoute` currently exposes only the sample Home/detail
+routes. StoreKit-related error helpers alone do not constitute an IAP feature.
 
-## 3. How IAP Is Opened
-1. Call `IAPMTSDK.present(position: ...)`.
-2. In `onIAP` callback, create `routeId`.
-3. Save binding to `IAPRouteBindingStore.shared.set(binding, for: routeId)`.
-4. Push route: `.iap(payload: .init(routeId: routeId, screenId: iapId))`.
+Do not generate references to `CustomRoute.iap`, `IAPMTSDK`,
+`BaseIAPScreenBinding`, `IAPRouteHostView`, or numbered companion-project
+paywalls unless those dependencies are explicitly introduced and verified in
+this repository.
 
-Reference: `MT-Screens/Onboarding/Main/OnboardingContainer.swift`.
+## Adding IAP deliberately
 
-## 4. Implementing A New IAP Screen
-1. Create new folder `IAPXX` with `IAPXXView` and `IAPXXContainer`.
-2. Conform view to `IAPScreen` and set `static var screenId`.
-3. Keep `@StateObject internal var binding: BaseIAPScreenBinding`.
-4. Use SDK actions from binding:
-- `binding.purchaseTapped(product:)`
-- `binding.restore()`
-- `binding.closeTapped()`
-5. Register mapping in `IAPRouteHostView.iapView(screenId:binding:)`.
+When the user requests an IAP implementation:
 
-## 5. Terms/Privacy Flow (Common)
-- Shared component: `MT-Screens/IAP/Common/IAPLegalSheet.swift`.
-- Use `@State private var legalSheet: IAPLegalSheet?` in each IAP view.
-- Present with `.fullScreenCover(item: $legalSheet) { IAPLegalFullScreenView(sheet: $0) }`.
-- Open by assigning `.termsOfUse` or `.privacyPolicy`.
+1. Read `.codex/skills/baseswiftui-iap-flow/SKILL.md`.
+2. Confirm the selected purchase SDK or StoreKit architecture and product-ID
+   source. This is a material integration choice and must not be guessed.
+3. Add the smallest complete boundary: product loading, purchase, restore,
+   entitlement state, errors, and test/store configuration.
+4. Keep StoreKit/SDK calls behind a service protocol and inject dependencies
+   through Factory. Paywall Views render state and forward actions.
+5. Add a typed `AppNavigationRoute` case only when the paywall is routed.
+6. Store no secrets in source. Product identifiers and Remote Config keys are
+   configuration contracts; change them deliberately.
+7. Add legal links, accessibility, localization, loading/error states, and
+   purchase restoration before treating the flow as production-ready.
+8. Build through `BaseSwiftUI.xcworkspace` and test with StoreKit configuration
+   or the selected SDK sandbox.
 
-<!--## 6. Important Behaviors-->
-<!--- IAP04 is full-screen dim overlay (`Color.Opacity.OP_4`) with bottom white panel.-->
-<!--- IAP04 `No Thanks` posts `.didRequestFinishIAPFlow` via `IAP04Container`; onboarding listens and moves to main tabbar.-->
-<!--- IAP03 countdown duration comes from `binding.payload.content?.countdownSale`, default `300` seconds.-->
+## Porting from a companion project
 
-## 7. Purchase-Gate Trigger Pattern (Outside IAP UI)
-When gating a feature by IAP access, use:
-
-```swift
-let access = await IAPMTSDK.triggerWithPurchaseDebug(position: .your_position)
-guard access == .allowed else { return }
-```
-
-Current position constants live in `Libs/IAPSDK/Position+Ext.swift`.
-Note: some keys intentionally use `postion_` spelling (follow existing constant names exactly).
-
-## 8. Purchased State Flag
-- Persisted key: `UserDefaultManager.isAppPurchased`.
-- Publisher: `UserDefaultManager.isAppPurchasedPublisher`.
-- Use it to hide premium entry points and banners when user already purchased.
-
-## 9. Quick Checklist Before Merge
-1. New screen is mapped in `IAPRouteHostView`.
-2. Terms/Privacy open via `IAPLegalFullScreenView`.
-3. Close/purchase/restore actions are wired to `binding`.
-4. Safe area behavior matches design (content and background checked separately).
-5. Any feature gate uses correct `PositionID` constant.
+Port behavior only after verifying every dependency exists or is intentionally
+being added. Do not copy Firebase Coin, Native Ads, onboarding-IAP, Lottie, or a
+project-specific purchase SDK merely because another app uses it. Adapt routes,
+Factory registrations, product helpers, analytics, and legal UI to BaseSwiftUI
+instead of retaining foreign names or hidden assumptions.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI SwiftUI Review"
+  short_description: "Review modern SwiftUI quality and performance"
+  default_prompt: "Use $baseswiftui-swiftui-review to review this BaseSwiftUI code for correctness, modern APIs, accessibility, and performance."

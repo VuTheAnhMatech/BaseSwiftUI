@@ -1,0 +1,30 @@
+name: Agent setup check
+
+on:
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - "AI-Workflow/**"
+      - ".codex/skills/**"
+      - ".github/workflows/agent-setup-check.yml"
+  push:
+    paths:
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - "AI-Workflow/**"
+      - ".codex/skills/**"
+      - ".github/workflows/agent-setup-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Agent and Skill setup
+        run: python3 .codex/skills/baseswiftui-agent-maintenance/scripts/validate_agent_setup.py
+      - name: Compile maintenance scripts
+        run: python3 -m compileall -q .codex/skills/baseswiftui-agent-maintenance/scripts .codex/skills/baseswiftui-prompt-injection/scripts

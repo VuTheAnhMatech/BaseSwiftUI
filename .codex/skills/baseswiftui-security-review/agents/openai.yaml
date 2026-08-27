@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Security Review"
+  short_description: "Audit iOS trust boundaries and sensitive data"
+  default_prompt: "Use $baseswiftui-security-review to audit this BaseSwiftUI authentication, networking, storage, logging, or privacy-sensitive flow."

@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-architecture
-description: Use when adding or refactoring non-view BaseSwiftUI architecture, broad feature structure, routes, MVI containers, repositories, services, use cases, factories, shared app infrastructure, navigation behavior, or feature folder structure under BaseSwiftUI/Base, BaseSwiftUI/MT-Screens, BaseSwiftUI/MT-CleanArchitecture, and BaseSwiftUI/MT-Factory. Do not use for ordinary normal SwiftUI view creation; baseswiftui-swiftui-ui already includes normal view architecture guidance. Do not use for IAP/paywall view work; use baseswiftui-iap-flow.
+description: Build or refactor BaseSwiftUI non-view architecture, routes, MVI, services, repositories, use cases, factories, and end-to-end flows without Figma. Use figma-ui for Figma-led flows and dedicated UI skills for views.
 ---
 
 # BaseSwiftUI Architecture
@@ -26,6 +26,10 @@ Use `baseswiftui-swiftui-ui` instead for ordinary normal view creation. Use
   Read `.codex/skills/baseswiftui-model-organization/SKILL.md` before moving,
   creating, or reviewing models, default data, mock data, tab/section/item
   enums, or datasource-input types.
+- MVI module contract: `BaseSwiftUI/Base/MVI/Module_README.md`.
+- Network contract: `BaseSwiftUI/Base/Network/Network_README.md`.
+- Repeated UI/data-source contract:
+  `BaseSwiftUI/Base/DataSource/BaseListView_README.md`.
 
 ## Before Editing
 
@@ -42,6 +46,12 @@ Use `baseswiftui-swiftui-ui` instead for ordinary normal view creation. Use
 - Keep networking and persistence out of SwiftUI views.
 - Put reusable business logic in use cases, services, repositories, or extensions based on the closest existing pattern.
 - Prefer router abstractions over direct presentation hacks.
+- Keep page navigation on the originating router stack. `ObservedStack.sheet`
+  wraps presented content in a nested `AppRouter.Stack`, so the injected sheet
+  router does not own the parent's `sheetRoute`.
+- Presented sheet Views self-dismiss with `@Environment(\.dismiss)`. For async
+  completion, publish a dismissal request from the Container and observe it in
+  the View. Reserve `router.dismissSheet()` for the presenting parent router.
 - Keep feature-specific code near the feature folder.
 - Keep all models/entities/default/static/mock data under
   `MT-CleanArchitecture/Domain/Entities` feature/shared subfolders; do not
@@ -54,3 +64,5 @@ Use `baseswiftui-swiftui-ui` instead for ordinary normal view creation. Use
 - Confirm new code belongs to the selected layer.
 - Check whether names and file placement match neighboring code.
 - Verify no screen gained service or persistence logic that should live in a lower layer.
+- Exercise `push -> sheet -> dismiss -> Back` after navigation changes and
+  confirm presentation ownership remains synchronized.

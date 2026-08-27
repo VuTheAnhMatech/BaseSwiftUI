@@ -1,4 +1,4 @@
 interface:
   display_name: "BaseSwiftUI Widget Extension"
   short_description: "Edit WidgetKit and BaseSwiftUI extension code safely."
-  default_prompt: "Fix this BaseSwiftUI widget or extension feature while keeping extension APIs and target boundaries safe."
+  default_prompt: "Use $baseswiftui-widget-extension to fix this BaseSwiftUI widget or extension feature while keeping extension APIs and target boundaries safe."
