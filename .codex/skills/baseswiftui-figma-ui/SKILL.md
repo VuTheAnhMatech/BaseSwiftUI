@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-figma-ui
-description: Analyze, implement, or compare BaseSwiftUI screens and complete flows from a Figma MCP node. Covers assets, MVI/routes, IAP, widgets, and visual validation. Requires a node-specific Figma link.
+description: Analyze, implement, or compare BaseSwiftUI screens and complete flows from a Figma MCP node. Covers assets, MVI/routes, IAP, shared UI, and visual validation. Requires a node-specific Figma link.
 ---
 
 # BaseSwiftUI Figma UI
@@ -43,7 +43,6 @@ decision. Label inferred values; do not attribute them to Figma.
 
 - Normal app UI → `baseswiftui-swiftui-ui`
 - Paywall/IAP → `baseswiftui-iap-flow`
-- WidgetKit/extension surface → `baseswiftui-widget-extension`
 - Models, defaults, mocks, or list inputs → also
   `baseswiftui-model-organization`
 - Broad non-view functional flow → also `baseswiftui-architecture`

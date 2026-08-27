@@ -1,7 +1,6 @@
 [
   {"id":"normal-ui","prompt":"Create a normal Settings SwiftUI screen","expected":"baseswiftui-swiftui-ui"},
   {"id":"iap","prompt":"Build a subscription paywall with restore purchase","expected":"baseswiftui-iap-flow"},
-  {"id":"widget","prompt":"Fix this WidgetKit timeline and AppIntent","expected":"baseswiftui-widget-extension"},
   {"id":"architecture","prompt":"Refactor a repository and use case registration","expected":"baseswiftui-architecture"},
   {"id":"models","prompt":"Move mock list items and section enums to the correct layer","expected":"baseswiftui-model-organization"},
   {"id":"static-review","prompt":"Review this SwiftUI view for accessibility and state issues","expected":"baseswiftui-swiftui-review"},

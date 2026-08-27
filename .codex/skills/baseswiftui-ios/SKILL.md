@@ -11,7 +11,6 @@ boundary:
 - Figma node or design-led function flow → `baseswiftui-figma-ui`
 - Normal in-app UI → `baseswiftui-swiftui-ui`
 - IAP/paywall/purchase → `baseswiftui-iap-flow`
-- WidgetKit/AppIntent/extension UI → `baseswiftui-widget-extension`
 - Non-view architecture or a non-Figma end-to-end flow →
   `baseswiftui-architecture`
 - Models/defaults/mock/list inputs → `baseswiftui-model-organization`

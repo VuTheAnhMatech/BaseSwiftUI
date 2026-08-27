@@ -1,13 +1,12 @@
 ---
 name: baseswiftui-swiftui-ui
-description: Build, edit, or polish normal BaseSwiftUI views, screens, shared UI, layouts, view routes, and view-local MVI wiring. Excludes IAP/paywalls and extension-rendered WidgetKit UI.
+description: Build, edit, or polish normal BaseSwiftUI views, screens, shared UI, layouts, view routes, and view-local MVI wiring. Excludes IAP and paywalls.
 ---
 
 # BaseSwiftUI SwiftUI UI
 
 Complete workflow for normal in-app UI. Route paywalls/IAP to
-`baseswiftui-iap-flow` and extension-rendered UI to
-`baseswiftui-widget-extension`.
+`baseswiftui-iap-flow`.
 
 ## Inspect only what is needed
 
