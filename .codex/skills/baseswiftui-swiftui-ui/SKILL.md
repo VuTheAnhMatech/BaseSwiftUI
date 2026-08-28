@@ -48,11 +48,11 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.
-- Treat a design/device height above 844pt as layout evidence, not a reason to
-  add `ScrollView`. Prefer flexible spacing, layout priority, safe-area-aware
-  sizing, and responsive constraints from iPhone SE through iPhone 17 Pro Max.
-  Add scrolling only when content would otherwise become inaccessible under
-  Dynamic Type, keyboard presentation, or long localization.
+- Make every layout adaptive from iPhone SE through iPhone 17 Pro Max,
+  independent of design height. Separately, height above 844pt does not itself
+  require `ScrollView`; scroll only for inaccessible irreducible content,
+  Dynamic Type, keyboard presentation, or long localization. Never use 844pt
+  as an Auto Layout trigger.
 - Keep layouts responsive to compact width. `Image("ic_close")` remains
   exactly 40×40.
 - Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local
