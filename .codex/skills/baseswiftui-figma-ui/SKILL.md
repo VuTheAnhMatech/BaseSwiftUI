@@ -15,9 +15,8 @@ Use Figma as design evidence and preserve the existing BaseSwiftUI structure.
 - `analyze`: report only; do not edit.
 - `assets`: acquire only explicitly requested missing assets.
 - `compare`: use `references/visual-validation.md`.
-- `flow`: multiple screens or any route, Factory, shared/Base component,
-  model/list input, IAP, domain, data, or network change; read
-  `references/feature-flow.md` and route to the smallest companion skill.
+- `flow`: multiple screens or any route, Factory, shared/Base, model/list, IAP,
+  domain, data, or network change; read `references/feature-flow.md`.
 
 Require a node-specific link. Ask for **Copy link to selection** only when its
 `node-id` is absent. Decide the route before inspecting repository code.
@@ -42,14 +41,14 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      `ScrollView` and must adapt responsively from iPhone SE through iPhone 17
      Pro Max. Intrinsically scrolling lists/grids keep their Base component
      contract regardless of frame height.
-   - Preserve Figma baseline geometry: hierarchy, frames, spacing, alignment,
-     radius, borders, shadows, blur, opacity, typography, and safe-area intent.
-     Never scale the entire screen or silently resize a design element merely
-     to make it fit; express only genuinely flexible regions responsively.
+   - Preserve Figma baseline geometry and effects; never scale the whole screen.
+   - Only backgrounds may `ignoresSafeArea()`; foreground anchors to iOS's dynamic top/bottom safe areas. Never hard-code 44pt/34pt insets or branch by device.
+   - Separate system insets from design spacing. If Figma shows a status bar or home indicator, do not reuse its canvas coordinates as padding.
+   - Prefer native safe-area layout; use `proxy.safeAreaInsets` only in full-screen coordinates and never add an inset twice.
    - Reuse a matching app asset. If none exists and the visible asset is needed
      for fidelity, acquire the exact Figma asset instead of drawing a substitute
-     or using a similar SF Symbol. Raster imports use valid `@2x` and `@3x`
-     renditions only; omit `@1x` and never upscale an insufficient source.
+     or using a similar SF Symbol. Raster imports use valid `@2x` and `@3x` only;
+     omit `@1x` and never upscale an insufficient source.
 5. Before editing with incomplete evidence, escalate only the missing part:
    screenshot when no usable node screenshot exists; variables for unresolved
    tokens; metadata for sparse/page context; asset data for a required missing
@@ -62,6 +61,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      not simplified or guessed when evidence exists;
    - no asset was silently omitted, redrawn, or replaced with a near match;
    - every Figma glass layer maps to `BaseButton(style: .liquidAdaptive, ...)` when interactive, or an equivalent glass implementation with fallback;
+   - headers anchor to the dynamic top safe area and bottom content anchors to the dynamic bottom safe area without double insets;
    - baseline geometry is not implemented with whole-screen `scaleEffect` or
      absolute coordinate duplication;
    - responsive and 844pt scroll rules do not alter the baseline design.
@@ -73,13 +73,12 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    and any unresolved Figma ambiguity. Do not claim runtime pixel validation
    unless an explicitly authorized comparison actually ran.
 
-If the edit crosses a quick boundary, switch to `flow` before architecture
-changes; never weaken MVI, Factory, model placement, or Base ownership.
+If the edit crosses a quick boundary, switch to `flow`; never weaken MVI,
+Factory, model placement, or Base ownership.
 
 ## Draft, flow, assets, and compare
 
-- `draft`: follow the quick edit rules but skip the build and report unverified
-  compilation. Never infer `draft` merely to save time.
+- `draft`: follow quick rules, skip the build, and report unverified compilation.
 - `flow`: inspect the parent node's child screens, read
   `references/feature-flow.md`, then use only the skill owning the crossed
   boundary. Establish `frame → State → Intent → Route → Factory → justified
