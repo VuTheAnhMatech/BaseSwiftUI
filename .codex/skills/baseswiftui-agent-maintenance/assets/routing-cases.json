@@ -1,5 +1,6 @@
 [
   {"id":"normal-ui","prompt":"Create a normal Settings SwiftUI screen","expected":"baseswiftui-swiftui-ui"},
+  {"id":"typed-reusable-ui","prompt":"Move the same card UI used by several Containers into Widgets, configure it by type and closures, document its contract, and keep Container state and intents separate","expected":"baseswiftui-swiftui-ui"},
   {"id":"iap","prompt":"Build a subscription paywall with restore purchase","expected":"baseswiftui-iap-flow"},
   {"id":"architecture","prompt":"Refactor a repository and use case registration","expected":"baseswiftui-architecture"},
   {"id":"models","prompt":"Move mock list items and section enums to the correct layer","expected":"baseswiftui-model-organization"},
@@ -13,6 +14,7 @@
   {"id":"figma-draft-view","prompt":"Draft one feature-local SwiftUI View from this exact Figma node without building or opening Simulator","expected":"baseswiftui-figma-ui","expected_mode":"draft"},
   {"id":"figma-fast-screen","prompt":"Implement this one simple feature-local SwiftUI screen from an exact Figma node","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-existing-assets","prompt":"Implement this exact Figma View; all required assets already exist in the app, so reuse them without exporting","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
+  {"id":"figma-screen-assets","prompt":"Implement this Home Figma View and organize new image sets under the namespaced Home folder rather than flattening them at the asset-catalog root","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-missing-exact-asset","prompt":"Implement this exact Figma View and acquire only the required visible asset that is missing from the app","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-glass-layer","prompt":"Implement this exact Figma View and map every glass action to BaseButton liquidAdaptive with an equivalent fallback","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-dynamic-safe-area","prompt":"Implement this exact Figma View with a full-bleed background while foreground headers and bottom actions follow dynamic iOS safe areas without hard-coded device insets","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
@@ -20,6 +22,7 @@
   {"id":"figma-no-simulator","prompt":"Implement this exact Figma View and verify a generic iOS build without using Simulator","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-fresh-repo","prompt":"Implement Home UI from this Figma node in a newly generated project before GitNexus has indexed it","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-bundled-font","prompt":"Implement this Figma screen using Inter, which is already bundled in the app, with its exact size and weight","expected":"baseswiftui-figma-ui"},
+  {"id":"figma-catalog-colors","prompt":"Implement this exact Figma View using generated Color resources such as Color(.OP.OP_01), without string lookups or inline RGB literals","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-font-mismatch","prompt":"Implement this Figma screen using Avenir Next, which is not bundled in the app","expected":"baseswiftui-figma-ui"},
   {"id":"figma-tall-scroll","prompt":"Implement this 932pt-high fixed-content Figma screen using a screen-level ScrollView","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-standard-responsive","prompt":"Implement this 844pt fixed-content Figma screen without screen-level ScrollView and adapt it from iPhone SE through iPhone 17 Pro Max","expected":"baseswiftui-figma-ui","expected_mode":"quick"},

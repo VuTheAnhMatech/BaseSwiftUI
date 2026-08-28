@@ -29,6 +29,10 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Views render state, keep truly local UI state, and forward user actions.
   Containers own screen state and `BaseDataSource`; networking, persistence,
   and business logic stay in the existing lower layer.
+- Put cross-screen reusable UI, generic UI layouts/adapters, and app-wide
+  overlays in `Widgets`. Configure visual widgets by focused types/models and
+  action closures, document the contract and call site in `Widgets/README.md`,
+  and keep Container state/intents and feature-specific UI outside.
 - Put screen/domain entities and reusable default/mock data under
   `MT-CleanArchitecture/Domain/Entities`, using a feature folder unless truly
   shared app-wide.
@@ -36,6 +40,11 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
+- Before adding a color, search `Resources/Colors.xcassets` by RGBA and reuse
+  its generated typed resource, such as `Color(.OP.OP_01)`; never use string
+  lookup or View-local RGB/hex. If missing, create its supplied semantic path;
+  otherwise use `Color<RRGGBB><AA-percent>` (`ColorFFFFFF10`) and omit alpha at
+  100%.
 - Let `BaseButton` keep its default adaptive style: it applies Liquid Glass on
   iOS 26+ when enabled and uses a material fallback below iOS 26. Pass `.plain`
   only when the design explicitly requires a non-glass action.
@@ -46,6 +55,11 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Raster assets exported through Figma MCP or extracted from a supplied
   screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
   Never label one bitmap as both scales or upscale an insufficient source.
+- Put image sets in namespaced screen folders and reference paths such as
+  `Home/ic_setting`; only genuinely cross-screen assets belong in `Shared`.
+  Do not leave feature assets flat at the catalog root.
+- Use generated resources in Swift (`Image(.Home.icSetting)`), never string
+  asset lookup or wrapper variables for a static image.
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.

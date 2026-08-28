@@ -32,9 +32,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    material unknowns with the specific evidence call needed. Load no generic
    Figma guideline resources.
 4. Edit the View once while keeping these contracts:
-   - Render state and forward intents; keep business logic, networking, and
-     persistence outside Views. Reuse Base components, tokens, fonts, and assets.
-     Do not modify `Base` or shared architecture for a local View.
+   - Render state and forward intents; keep business logic outside Views. Reuse Base components/tokens. Put cross-screen typed UI, generic UI adapters/layouts, and app-wide overlays in `Widgets` with a README contract; never bind them to one Container or move feature-local UI there.
    - Preserve explicit Figma icon, button, artwork, card-height, radius, spacing,
      typography, and effect values. Only Auto Layout stretch/fill regions become
      flexible. Compress flexible space first on small devices; never apply a
@@ -47,13 +45,20 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    - Prefer native safe-area layout. Use `proxy.safeAreaInsets` only in a
      full-screen coordinate space. Assign each edge one inset owner—container,
      `safeAreaInset`, or explicit calculation—so it is never added twice.
-   - Reuse an exact app asset. If a required visible asset is missing, acquire
-     the exact Figma asset rather than substitute or redraw it. Raster imports
-     use valid `@2x` and `@3x` only; omit `@1x` and never upscale.
+   - Reuse an exact app asset. Group new sets in namespaced screen folders and
+     reference paths such as `Home/ic_setting`; cross-screen assets belong in
+     `Shared`. If missing, acquire the exact Figma asset rather than redraw it.
+     Raster imports use `@2x`/`@3x` only; omit `@1x` and never upscale.
+   - Reuse catalog RGBA via typed resources (`Color(.OP.OP_01)`), never strings;
+     never RGB/hex. If missing, use the Figma variable/style path
+     (for example `Semantic/Croal`), else `Color<RRGGBB><AA-percent>`
+     (`ColorFFFFFF10`); omit alpha at 100%.
 5. Run the source fidelity gate:
    - all visible regions, text, states, outer frames, and inner glyphs match
      evidence; spacing, type, color, radius, border, shadow, blur, and opacity
      are not simplified when evidence exists;
+   - every color uses a catalog-generated typed accessor; no string lookup,
+     View-local color property, or inline RGB/hex duplicates it;
    - no asset is omitted, redrawn, exported unnecessarily, or replaced by a
      near match;
    - interactive Figma glass maps to
@@ -80,7 +85,7 @@ Factory, model placement, or Base ownership.
   boundary. Establish `frame → State → Intent → Route → Factory → justified
   Domain` before writing Views.
 - `assets`: prefer an exact existing asset; otherwise acquire only the exact
-  selected-node asset. Preserve catalog naming and raster scale rules.
+  selected-node asset. Preserve screen/shared namespaces and scale rules.
 - `compare`: read `references/visual-validation.md`. Simulator build, boot,
   capture, and pixel comparison require an explicit Simulator request; the
   word `compare` alone does not grant it.

@@ -64,6 +64,14 @@ xcodebuild.log
 .claude/
 .gitnexus
 
+# Local AI agent configuration (copied by bootstrap, not committed downstream)
+/.codex/skills/baseswiftui-*/
+/AI-Workflow/
+/AGENTS.md
+/CLAUDE.md
+/.agents/
+/.mcp.json
+
 # git-team-tools
 .team-tools/
 /_workspace

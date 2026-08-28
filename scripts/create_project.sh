@@ -126,6 +126,7 @@ find "$DESTINATION_ROOT" \
     -name '*.yml' -o \
     -name '*.xcconfig' -o \
     -name '*.sh' -o \
+    -name '.gitignore' -o \
     -name 'Podfile' \
   \) -exec perl -pi -e 's/\Q$ENV{TEMPLATE_NAME}\E/$ENV{PROJECT_NAME}/g' {} +
 
@@ -147,6 +148,7 @@ find "$DESTINATION_ROOT" \
     -name '*.yml' -o \
     -name '*.xcconfig' -o \
     -name '*.sh' -o \
+    -name '.gitignore' -o \
     -name 'Podfile' \
   \) -exec perl -pi -e 's/\Q$ENV{TEMPLATE_SKILL_PREFIX}\E/$ENV{PROJECT_SKILL_PREFIX}/g' {} +
 

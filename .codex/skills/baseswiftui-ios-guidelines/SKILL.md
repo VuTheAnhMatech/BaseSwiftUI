@@ -19,7 +19,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **Domain Entities**: `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/` (App data models, screen/domain entities, static mock data, and sample data such as `MockData`). Use `baseswiftui-model-organization` for all model placement. Put feature-specific entities in a feature subfolder such as `Domain/Entities/CreateEmojiFromText/`; put truly shared app-wide entities under `Domain/Entities/Shared/`; do not leave unrelated feature models together in flat root files.
 * **Core Infrastructure**: `BaseSwiftUI/Base/` (Reusable base components and foundation logic).
 * **Global Extensions**: `BaseSwiftUI/Exts/` (Shared Swift system/UI extensions only).
-* **Shared Widgets**: `BaseSwiftUI/Widgets/` (Domain-specific reusable UI blocks).
+* **Shared Widgets**: `BaseSwiftUI/Widgets/` owns cross-screen reusable UI, generic UI layouts/adapters, and app-wide overlays. Configure visual widgets through focused types/models and actions rather than a concrete Container. Keep feature UI near its screen and document every Widget contract and call site in `Widgets/README.md`.
 * **Resources**:
   * `BaseSwiftUI/Resources/Assets.xcassets` (Global images, icons, and vector assets).
   * `BaseSwiftUI/Resources/Colors.xcassets` (Color palettes mapped via `Exts`).
@@ -40,11 +40,13 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **No One-Off Metrics Containers**: Do not create private `Metrics`, `Constants`, or similar enums/structs only to store small layout literals used once or twice in the same SwiftUI view. Write simple values such as padding, spacing, column counts, ratios, and frame sizes directly at the callsite. Extract a named value only when it is reused meaningfully, shared across files, or represents a cross-layer contract.
 
 ## 4. Resource & Asset Management
-* **Color Usage**: Use existing global color tokens directly at the callsite when they already exist, such as `Color.BG.BG_01`, `Color.Ink.headline`, `Color.Ink.body`, `Color.Primary.primary`, and `Color.Semantic.*`.
-* **No Feature Color Aliases**: Never create feature-specific `Color` namespaces such as `extension Color { enum Explore { ... } }`, `Color.Settings`, or `Color.Tabbar` just to alias colors for a screen. For one-off screen colors, write the `Color(...)`, `.white`, `.black`, or opacity expression directly in the view where it is used.
+* **Color Usage**: Match RGBA against `Resources/Colors.xcassets` first and use its generated resource, such as `Color(.OP.OP_01)`, `Color(.Ink.body)`, or `Color(.Semantic.green)`. Never use `Color("path")`, a wrapper variable, or inline RGB/hex for a catalog color.
+* **Missing Colors**: Add a color set using the supplied Figma semantic path. If no meaningful name exists, use `Color<RRGGBB><AA-percent>`, omitting alpha at 100% (for example `ColorFFFFFF10`). Never create feature-specific `Color` namespaces or View-local color properties merely to alias colors.
 * **Shared Color Tokens Only**: Add or modify `Color` extensions only for true reusable app-wide design tokens that already belong to the global token system under `BaseSwiftUI/Exts/`, not for per-screen styling shortcuts.
 * **Typography Source of Truth**: Use the Figma or screenshot font family when it is already bundled and registered in the app. Otherwise use the app's primary bundled font. Preserve the requested size and line height, and map weight to the exact or closest bundled face. Add or download a missing family only when the user explicitly requests it.
 * **Asset Mapping**: Use image assets instead of SF Symbols whenever a matching custom asset exists in `.xcassets`.
+* **Asset Organization**: Put feature image sets in a namespaced screen folder and reference them as `Screen/asset_name`, for example `Home/ic_setting`. Put only genuinely cross-screen assets in `Shared`; keep AppIcon and AccentColor at the catalog root.
+* **Typed Asset Usage**: Use Xcode-generated resources such as `Image(.Home.icSetting)`, never `Image("Home/ic_setting")` or static wrapper variables.
 * **Namespace Accuracy**: Reference assets using their strict, clean slash-separated paths as defined in the catalog (e.g., `Tabbar/ic_search`, `Common/ic_arrow`). Ensure asset folder names do not contain accidental spaces.
 * **Raster Scales**: Raster assets exported through Figma MCP or extracted from a supplied screenshot must use correctly sized `@2x` and `@3x` renditions only; omit `@1x`. Never label one bitmap as both scales or upscale an insufficient source.
 * **Icon Composition**: For grouped lists or rows featuring icons, prefer dedicated custom asset icons over building compound views out of SF Symbols with custom background frames.
