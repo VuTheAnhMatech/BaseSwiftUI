@@ -35,11 +35,11 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      business logic.
    - Reuse existing `BaseText`, `BaseButton`, `BaseNavBar`, widgets, assets,
      colors, and bundled font. Do not modify `Base` or shared architecture.
-   - Make every screen adaptive from iPhone SE through iPhone 17 Pro Max,
-     independent of Figma frame height. Separately, height above 844pt does not
-     itself justify `ScrollView`; scroll only for irreducible content, keyboard,
-     Dynamic Type, or long localization. Do not treat 844pt as an Auto Layout
-     trigger.
+   - For fixed screen content, use the Figma frame height as the switch: above
+     844pt uses a screen-level `ScrollView`; 844pt or below uses no screen-level
+     `ScrollView` and must adapt responsively from iPhone SE through iPhone 17
+     Pro Max. Intrinsically scrolling lists/grids keep their Base component
+     contract regardless of frame height.
    - Keep `BaseButton`'s adaptive Liquid Glass default for iOS 26+.
 4. Do not run prompt-injection scanning, GitNexus, `WORKFLOW_AI.md`, another
    project skill, tests, simulator, screenshot capture, or pixel diff. Review

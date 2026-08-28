@@ -31,9 +31,9 @@ Config, analytics, and SDK calls as fragile integration behavior.
   navigation.
 - Reuse matching Base views and paywall components. Keep price, trial, sale,
   legal text, and CTA layout resilient to compact width and localization.
-- Make every paywall adaptive from iPhone SE through iPhone 17 Pro Max,
-  independent of design height. Separately, height above 844pt does not itself
-  require `ScrollView`; scroll only when content would be inaccessible.
+- For fixed paywall content, Figma height above 844pt uses a screen-level
+  `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
+  must adapt responsively from iPhone SE through iPhone 17 Pro Max.
 - Keep `BaseButton`'s adaptive default for Liquid Glass on iOS 26+ and its
   earlier-iOS plain fallback; opt into `.plain` only when explicitly designed.
 - Use the bundled/documented project font even when the design names another

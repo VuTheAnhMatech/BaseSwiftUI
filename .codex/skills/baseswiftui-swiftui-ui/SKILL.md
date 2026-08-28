@@ -48,11 +48,10 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.
-- Make every layout adaptive from iPhone SE through iPhone 17 Pro Max,
-  independent of design height. Separately, height above 844pt does not itself
-  require `ScrollView`; scroll only for inaccessible irreducible content,
-  Dynamic Type, keyboard presentation, or long localization. Never use 844pt
-  as an Auto Layout trigger.
+- For fixed screen content, Figma height above 844pt uses a screen-level
+  `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
+  must adapt responsively from iPhone SE through iPhone 17 Pro Max. Base
+  list/grid components remain intrinsically scrollable regardless of height.
 - Keep layouts responsive to compact width. `Image("ic_close")` remains
   exactly 40×40.
 - Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local

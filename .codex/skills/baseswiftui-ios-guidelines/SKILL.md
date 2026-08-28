@@ -36,7 +36,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **Zero One-Off Extensions**: Never create private, screen-isolated extensions for standard types (`View`, `Color`, `String`, etc.). All reusable logic must reside in `BaseSwiftUI/Exts/`.
 * **Entities Outside Views/Containers/Exts**: Never place entities, mock data, static sample data, default lists, screen item structs, tab/section enums, or enums such as `MockData` in SwiftUI view files, MVI containers, services, repositories, factories, or `BaseSwiftUI/Exts/`. Put those files under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`; create a feature subfolder when the model is not shared app-wide and use `Shared/` only for true app-wide models.
 * **Safe Margins**: Ensure all scrollable content surfaces maintain a bottom padding large enough to prevent interactive elements (floating buttons, sticky footers) from overlaying content.
-* **Adaptive Layout vs Scroll**: Make every screen adaptive from iPhone SE through iPhone 17 Pro Max regardless of design height. Separately, height above 844pt does not itself require `ScrollView`; scroll only for accessibility under irreducible content, Dynamic Type, keyboard presentation, or long localization. Never treat 844pt as an Auto Layout trigger.
+* **844pt Scroll Switch**: For fixed screen content, a Figma frame above 844pt uses a screen-level `ScrollView`; a frame at or below 844pt uses no screen-level `ScrollView` and must adapt responsively from iPhone SE through iPhone 17 Pro Max. Intrinsically scrolling Base list/grid components are exempt from this screen-level switch.
 * **No One-Off Metrics Containers**: Do not create private `Metrics`, `Constants`, or similar enums/structs only to store small layout literals used once or twice in the same SwiftUI view. Write simple values such as padding, spacing, column counts, ratios, and frame sizes directly at the callsite. Extract a named value only when it is reused meaningfully, shared across files, or represents a cross-layer contract.
 
 ## 4. Resource & Asset Management
@@ -68,7 +68,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 **Pre-flight Checklist**:
 - [ ] No local/private color variables are hidden inside view files.
 - [ ] All primary UI typography and actions utilize `BaseText` and `BaseButton`.
-- [ ] Tall design frames did not introduce unnecessary scrolling; the layout remains accessible from iPhone SE through iPhone 17 Pro Max.
+- [ ] Fixed Figma content uses screen-level scroll only above 844pt; content at or below 844pt adapts from iPhone SE through iPhone 17 Pro Max without screen-level scroll.
 - [ ] `BaseButton` keeps adaptive Liquid Glass on iOS 26+ unless the design explicitly requires `.plain`.
 - [ ] Typography uses the bundled/documented project font unless the user explicitly requested a new family.
 - [ ] All collections render through `BaseDataSource` and Base data-source views; no direct feature-view `ForEach`, `LazyVGrid`, `GridItem`, or manual cell-size math remains.

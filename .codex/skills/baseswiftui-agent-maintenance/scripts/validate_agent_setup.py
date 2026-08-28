@@ -144,8 +144,8 @@ def main() -> int:
         "another project skill, tests, simulator",
         "build the workspace once for `generic/platform=iOS`",
         "word `compare` alone does not grant it",
-        "independent of Figma frame height",
-        "Do not treat 844pt as an Auto Layout trigger",
+        "above 844pt uses a screen-level `ScrollView`",
+        "844pt or below uses no screen-level `ScrollView`",
     ):
         if required not in figma_normalized:
             errors.append(f"{figma_skill}: missing fast-path contract '{required}'")
