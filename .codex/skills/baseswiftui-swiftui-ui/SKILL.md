@@ -37,10 +37,11 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
 - Let `BaseButton` keep its default adaptive style: it applies Liquid Glass on
-  iOS 26+ when enabled and falls back to plain below iOS 26. Pass `.plain` only
-  when the design explicitly requires a non-glass action.
-- Use the bundled/documented project font even when a design or screenshot
-  names another family; map to the closest size/weight without asking. Add font
+  iOS 26+ when enabled and uses a material fallback below iOS 26. Pass `.plain`
+  only when the design explicitly requires a non-glass action.
+- Use the design's font family when that family is already bundled and
+  registered; otherwise use the app's primary bundled font. Preserve the
+  requested size and map weight to the exact or closest bundled face. Add font
   files only when explicitly requested.
 - Raster assets exported through Figma MCP or extracted from a supplied
   screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.

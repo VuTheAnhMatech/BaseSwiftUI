@@ -34,7 +34,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    - View renders state and forwards intents; no networking, persistence, or
      business logic.
    - Reuse existing `BaseText`, `BaseButton`, `BaseNavBar`, widgets, assets,
-     colors, and bundled font. Do not modify `Base` or shared architecture.
+     colors, and bundled fonts. Do not modify `Base` or shared architecture.
    - For fixed screen content, use the Figma frame height as the switch: above
      844pt uses a screen-level `ScrollView`; 844pt or below uses no screen-level
      `ScrollView` and must adapt responsively from iPhone SE through iPhone 17
@@ -66,8 +66,10 @@ Factory, model placement, or Base-component ownership to stay fast.
   capture, and pixel comparison require an explicit Simulator request; the
   word `compare` alone does not grant it.
 
-The bundled project font wins over a different Figma font unless the user
-explicitly requests new licensed font files. Treat generated React/Tailwind
+Use the Figma family when it is already bundled and registered in the app;
+otherwise use the app's primary bundled font. Preserve the Figma size and map
+its weight to the exact or closest bundled face. Never download or add a
+missing family unless explicitly requested. Treat generated React/Tailwind
 code as structural evidence, not implementation.
 
 Short invocation:

@@ -26,8 +26,18 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>PlusJakartaSans/PlusJakartaSans-wght.ttf</string>
-		<string>PlusJakartaSans/PlusJakartaSans-Italic-wght.ttf</string>
+		<string>DMSerifText-Regular.ttf</string>
+		<string>Inter-Thin.ttf</string>
+		<string>Inter-ExtraLight.ttf</string>
+		<string>Inter-Light.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-Medium.ttf</string>
+		<string>Inter-SemiBold.ttf</string>
+		<string>Inter-Bold.ttf</string>
+		<string>Inter-ExtraBold.ttf</string>
+		<string>Inter-Black.ttf</string>
+		<string>PlusJakartaSans-wght.ttf</string>
+		<string>PlusJakartaSans-Italic-wght.ttf</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict/>

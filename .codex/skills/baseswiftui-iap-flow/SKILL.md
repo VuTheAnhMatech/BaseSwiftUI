@@ -35,10 +35,12 @@ Config, analytics, and SDK calls as fragile integration behavior.
   `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
   must adapt responsively from iPhone SE through iPhone 17 Pro Max.
 - Keep `BaseButton`'s adaptive default for Liquid Glass on iOS 26+ and its
-  earlier-iOS plain fallback; opt into `.plain` only when explicitly designed.
-- Use the bundled/documented project font even when the design names another
-  family; map to the closest size/weight without asking. Add font files only
-  when explicitly requested.
+  earlier-iOS material fallback; opt into `.plain` only when explicitly
+  designed.
+- Use the design's font family when that family is already bundled and
+  registered; otherwise use the app's primary bundled font. Preserve the
+  requested size and map weight to the exact or closest bundled face. Add font
+  files only when explicitly requested.
 - Raster assets exported through Figma MCP or extracted from a supplied
   screenshot use correctly sized `@2x` and `@3x` renditions only; omit `@1x`.
   Never label one bitmap as both scales or upscale an insufficient source.

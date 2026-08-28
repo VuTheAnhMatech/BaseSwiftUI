@@ -8,6 +8,18 @@
 import SwiftUI
 
 enum AppFont: String {
+    case dmSerifTextRegular = "DMSerifText-Regular"
+
+    case interThin = "Inter-Thin"
+    case interExtraLight = "Inter-ExtraLight"
+    case interLight = "Inter-Light"
+    case interRegular = "Inter-Regular"
+    case interMedium = "Inter-Medium"
+    case interSemiBold = "Inter-SemiBold"
+    case interBold = "Inter-Bold"
+    case interExtraBold = "Inter-ExtraBold"
+    case interBlack = "Inter-Black"
+
     case plusJakartaSansExtraLight = "PlusJakartaSans-Regular_ExtraLight"
     case plusJakartaSansLight = "PlusJakartaSans-Regular_Light"
     case plusJakartaSansRegular = "PlusJakartaSans-Regular"

@@ -30,12 +30,12 @@ private struct GlassShapeButton: ButtonStyle {
                 configuration.label
                     .fixedSize()
                     .contentShape(.circle)
-                    .glassEffect(isInteractive ? .clear.interactive() : .clear, in: .circle)
+                    .glassEffect(isInteractive ? .regular.interactive() : .regular, in: .circle)
             case .capsule:
                 configuration.label
                     .fixedSize()
                     .contentShape(.capsule)
-                    .glassEffect(isInteractive ? .clear.interactive() : .clear, in: .capsule)
+                    .glassEffect(isInteractive ? .regular.interactive() : .regular, in: .capsule)
             }
         } else {
             configuration.label
@@ -139,8 +139,21 @@ struct BaseButton: View {
                 )
             }
             .buttonStyle(.glassShape(liquidShape, isInteractive: isInteractive))
+        } else if Constant.isEnableLiquidGlass {
+            plainButton
+                .background(.ultraThinMaterial, in: fallbackShape)
+                .shadow(color: Color.black.opacity(0.06), radius: 8, y: 4)
         } else {
             plainButton
+        }
+    }
+
+    private var fallbackShape: AnyShape {
+        switch liquidShape {
+        case .circle:
+            AnyShape(Circle())
+        case .capsule:
+            AnyShape(Capsule())
         }
     }
 
