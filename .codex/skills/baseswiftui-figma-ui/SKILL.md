@@ -42,7 +42,6 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      `ScrollView` and must adapt responsively from iPhone SE through iPhone 17
      Pro Max. Intrinsically scrolling lists/grids keep their Base component
      contract regardless of frame height.
-   - Keep `BaseButton`'s adaptive Liquid Glass default for iOS 26+.
    - Preserve Figma baseline geometry: hierarchy, frames, spacing, alignment,
      radius, borders, shadows, blur, opacity, typography, and safe-area intent.
      Never scale the entire screen or silently resize a design element merely
@@ -62,6 +61,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    - spacing, typography, color, radius, border, shadow, blur, and opacity were
      not simplified or guessed when evidence exists;
    - no asset was silently omitted, redrawn, or replaced with a near match;
+   - every Figma glass layer maps to `BaseButton(style: .liquidAdaptive, ...)` when interactive, or an equivalent glass implementation with fallback;
    - baseline geometry is not implemented with whole-screen `scaleEffect` or
      absolute coordinate duplication;
    - responsive and 844pt scroll rules do not alter the baseline design.

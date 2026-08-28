@@ -14,6 +14,7 @@
   {"id":"figma-fast-screen","prompt":"Implement this one simple feature-local SwiftUI screen from an exact Figma node","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-existing-assets","prompt":"Implement this exact Figma View; all required assets already exist in the app, so reuse them without exporting","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-missing-exact-asset","prompt":"Implement this exact Figma View and acquire only the required visible asset that is missing from the app","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
+  {"id":"figma-glass-layer","prompt":"Implement this exact Figma View and map every glass action to BaseButton liquidAdaptive with an equivalent fallback","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-verified-screen","prompt":"Implement this one local SwiftUI screen from Figma and verify it builds","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-no-simulator","prompt":"Implement this exact Figma View and verify a generic iOS build without using Simulator","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
   {"id":"figma-fresh-repo","prompt":"Implement Home UI from this Figma node in a newly generated project before GitNexus has indexed it","expected":"baseswiftui-figma-ui","expected_mode":"quick"},
