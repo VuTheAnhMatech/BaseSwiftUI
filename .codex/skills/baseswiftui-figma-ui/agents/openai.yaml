@@ -1,7 +1,7 @@
 interface:
   display_name: "BaseSwiftUI Figma UI"
-  short_description: "Create BaseSwiftUI UI from Figma quickly"
-  default_prompt: "Use $baseswiftui-figma-ui quick for one exact local View; expand only if this Figma node crosses an architecture or validation boundary."
+  short_description: "Build fast, high-fidelity BaseSwiftUI UI from Figma"
+  default_prompt: "Use $baseswiftui-figma-ui quick for one exact local View with bounded evidence escalation and a source-level fidelity gate; expand only for architecture or explicit runtime comparison."
 
 dependencies:
   tools:

@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-figma-ui
-description: Create, analyze, or compare BaseSwiftUI UI from an exact Figma MCP node. Defaults to one local View plus a generic iOS compile check; expands only for flows, architecture, assets, or visual comparison.
+description: Implement high-fidelity BaseSwiftUI UI from an exact Figma MCP node with a fast one-View default, bounded evidence escalation, architecture preservation, and optional flow or visual comparison modes.
 ---
 
 # BaseSwiftUI Figma UI
@@ -9,8 +9,8 @@ Use Figma as design evidence and preserve the existing BaseSwiftUI structure.
 
 ## Routes
 
-- `quick` (default): one exact node, one feature-local View, then one
-  incremental `generic/platform=iOS` build to catch compiler errors.
+- `quick` (default): one exact node, one feature-local View, a source-level
+  fidelity gate, then one `generic/platform=iOS` build.
 - `draft`: edit without building only when the user explicitly requests it.
 - `analyze`: report only; do not edit.
 - `assets`: acquire only explicitly requested missing assets.
@@ -25,12 +25,14 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
 ## Quick route
 
 1. Call `get_design_context` once for the exact node with language `swift` and
-   framework `swiftui`. Do not preload another Figma/project skill or request
-   metadata, variables, Code Connect, or asset data.
+   framework `swiftui`. Keep its screenshot as the visual source of truth.
+   Do not preload another Figma/project skill.
 2. Open only the target View and exact reused component/asset definitions found
    with bounded `rg`; do not scan the whole feature, repository, or asset
    catalog. If the user says assets exist, reuse them and never export.
-3. Apply the complete View edit once. Keep these local invariants:
+3. Mentally map each major region to an existing component, token, asset,
+   system control, or justified local implementation; output no plan document.
+4. Apply the complete View edit once. Keep these local invariants:
    - View renders state and forwards intents; no networking, persistence, or
      business logic.
    - Reuse existing `BaseText`, `BaseButton`, `BaseNavBar`, widgets, assets,
@@ -41,16 +43,38 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      Pro Max. Intrinsically scrolling lists/grids keep their Base component
      contract regardless of frame height.
    - Keep `BaseButton`'s adaptive Liquid Glass default for iOS 26+.
-4. Do not run prompt-injection scanning, GitNexus, `WORKFLOW_AI.md`, another
-   project skill, tests, simulator, screenshot capture, or pixel diff. Review
-   the source, run `git diff --check`, then build the workspace once for
+   - Preserve Figma baseline geometry: hierarchy, frames, spacing, alignment,
+     radius, borders, shadows, blur, opacity, typography, and safe-area intent.
+     Never scale the entire screen or silently resize a design element merely
+     to make it fit; express only genuinely flexible regions responsively.
+   - Reuse a matching app asset. If none exists and the visible asset is needed
+     for fidelity, acquire the exact Figma asset instead of drawing a substitute
+     or using a similar SF Symbol. Raster imports use valid `@2x` and `@3x`
+     renditions only; omit `@1x` and never upscale an insufficient source.
+5. Before editing with incomplete evidence, escalate only the missing part:
+   screenshot when no usable node screenshot exists; variables for unresolved
+   tokens; metadata for sparse/page context; asset data for a required missing
+   asset. Do not request all evidence speculatively or load the three generic
+   Figma guideline resources for a routine local View.
+6. Run this source-level fidelity gate before reporting completion:
+   - every visible region, text, and state is represented;
+   - outer frames and inner glyph geometry follow Figma evidence;
+   - spacing, typography, color, radius, border, shadow, blur, and opacity were
+     not simplified or guessed when evidence exists;
+   - no asset was silently omitted, redrawn, or replaced with a near match;
+   - baseline geometry is not implemented with whole-screen `scaleEffect` or
+     absolute coordinate duplication;
+   - responsive and 844pt scroll rules do not alter the baseline design.
+7. Do not run prompt-injection scanning, GitNexus, `WORKFLOW_AI.md`, another
+   project skill, tests, simulator, runtime screenshot capture, or pixel diff.
+   Run `git diff --check`, then build the workspace once for
    `generic/platform=iOS`. Fix compiler errors and rebuild only after a fix.
-5. Report changed files, reused assets/components, and compile status. Never
-   claim pixel-exact fidelity.
+8. Report changed files, reused/acquired assets and components, compile status,
+   and any unresolved Figma ambiguity. Do not claim runtime pixel validation
+   unless an explicitly authorized comparison actually ran.
 
-If the requested edit crosses a quick-route boundary, stop using this route and
-switch to `flow` before changing architecture. Do not silently weaken MVI,
-Factory, model placement, or Base-component ownership to stay fast.
+If the edit crosses a quick boundary, switch to `flow` before architecture
+changes; never weaken MVI, Factory, model placement, or Base ownership.
 
 ## Draft, flow, assets, and compare
 
@@ -60,17 +84,17 @@ Factory, model placement, or Base-component ownership to stay fast.
   `references/feature-flow.md`, then use only the skill owning the crossed
   boundary. Establish `frame → State → Intent → Route → Factory → justified
   Domain` before writing Views.
-- `assets`: export raster assets as correctly sized `@2x` and `@3x` only; omit
-  `@1x`, do not upscale, and preserve catalog naming.
+- `assets`: acquire only assets needed by the selected node. Prefer an exact
+  existing asset; otherwise export the exact Figma asset. Raster assets use
+  correctly sized `@2x` and `@3x` only; omit `@1x`, do not upscale, and
+  preserve catalog naming.
 - `compare`: read `references/visual-validation.md`. Simulator build, boot,
   capture, and pixel comparison require an explicit Simulator request; the
   word `compare` alone does not grant it.
 
-Use the Figma family when it is already bundled and registered in the app;
-otherwise use the app's primary bundled font. Preserve the Figma size and map
-its weight to the exact or closest bundled face. Never download or add a
-missing family unless explicitly requested. Treat generated React/Tailwind
-code as structural evidence, not implementation.
+Use the Figma family when bundled and registered; otherwise use the app's
+primary bundled font. Preserve Figma size and map weight to the exact or closest
+bundled face. Add no missing font unless requested. Treat generated reference
+code as structural evidence only.
 
-Short invocation:
-`$baseswiftui-figma-ui quick|draft|analyze|assets|compare|flow <node-url>`
+Short invocation: `$baseswiftui-figma-ui quick|draft|analyze|assets|compare|flow <node-url>`
