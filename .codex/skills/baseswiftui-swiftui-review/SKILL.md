@@ -11,7 +11,8 @@ when they are available to the current deployment target or explicitly guarded.
 
 ## Required context
 
-1. Read `AI-Workflow/WORKFLOW_AI.md` and the nearest feature/base guide.
+1. Read the nearest feature/base guide. Read `AI-Workflow/WORKFLOW_AI.md` only
+   when the review touches architecture or data flow.
 2. Read `references/review-checklist.md` for every review.
 3. Read `references/modern-swiftui.md` when the review touches API choice,
    state, identity, navigation, layout, performance, or accessibility.
