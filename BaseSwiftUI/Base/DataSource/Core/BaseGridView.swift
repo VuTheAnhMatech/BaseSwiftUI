@@ -110,18 +110,19 @@ struct BaseGridView<
     }
 
     private var gridContent: some View {
-        let filteredItems = Array(dataSource.listItem.enumerated()).filter { itemFilter($0.element) }
+        let filteredItems = dataSource.listItem.filter(itemFilter)
 
         return LazyVGrid(columns: columns, spacing: spacing) {
-            ForEach(filteredItems, id: \.element.id) { sourceIndex, item in
+            ForEach(filteredItems) { item in
                 sizedContent(item)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        dataSource.selectedItem(at: IndexPath(row: sourceIndex, section: section))
-                        onSelect?(item)
+                        if let selectedItem = dataSource.select(item, section: section) {
+                            onSelect?(selectedItem)
+                        }
                     }
                     .onAppear {
-                        dataSource.itemDidAppear(at: IndexPath(row: sourceIndex, section: section))
+                        dataSource.markVisible(item, section: section)
                     }
             }
         }

@@ -23,6 +23,8 @@ Maintain one concise repository workflow and small, non-overlapping skills.
 ## Workflow
 
 1. Inventory current capability before adding files.
+   Keep the nine repo entry points; simple explanations bypass skills.
+   Preserve specialized procedures as conditional owner references.
 2. Classify each proposal as `enhance existing`, `new distinct skill`, or
    `reject`, with a concrete BaseSwiftUI compatibility reason.
 3. Preserve MVI, Combine, ObservableObject, Factory, iOS 17, Swift 5, CocoaPods,
@@ -36,7 +38,12 @@ Maintain one concise repository workflow and small, non-overlapping skills.
 
    ```sh
    python3 .codex/skills/baseswiftui-agent-maintenance/scripts/validate_agent_setup.py
+   python3 -B .codex/skills/baseswiftui-agent-maintenance/scripts/validate_agent_setup.py --self-test
    ```
+
+   These check configuration and the observation checker, not live routing.
+   Use `--observations` with recorded sessions per the regression reference
+   before claiming behavioral or latency improvements.
 
 ## Boundaries
 

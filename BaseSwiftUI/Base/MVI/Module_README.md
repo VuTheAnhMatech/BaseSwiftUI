@@ -18,7 +18,44 @@ Keep `State` conforming to `DefaultInitializable`, intents action-based, and
 business/network/persistence work outside the View.
 
 Every concrete Container must override `handleIntent`. The Base implementation
-is an abstract-style trap and calls `fatalError` if an intent reaches it.
+is an abstract-style trap and calls `preconditionFailure` if an intent reaches it.
+
+Containers and the `MVIContainer` contract are `@MainActor`. State is read-only
+outside its owner; change it through `updateState { $0.property = value }` in
+Container intent handlers or their helpers. Views continue to read state and
+send intents.
+
+## Async work
+
+- `runTask(id:showsLoading:_:)` owns cancellable work by a stable ID. Reusing
+  an ID cancels the old task; other IDs keep running. Completion of an older
+  task cannot remove a newer task with the same ID.
+- `runLoadingTask(_:)` remains available. Each call creates independent work,
+  and loading stays visible until every registered loading task has finished
+  or been cancelled through the Container.
+- Use `cancelTask(id:)` or `cancelAllTasks()` when the owning flow no longer
+  needs the work. Deinitialization cancels remaining tasks; view disappearance
+  does not automatically mean the Container has been deinitialized.
+- Capture the Container weakly and check cancellation after suspension before
+  changing state. Avoid upgrading weak `self` to a strong reference across a
+  long await. Cancellation is cooperative; the manager cannot stop a service
+  that ignores it or undo side effects already performed.
+
+```swift
+runTask(id: "load") { [weak self] in
+    do {
+        let result = try await useCase.execute()
+        try Task.checkCancellation()
+        self?.updateState { $0.result = result }
+    } catch {
+        guard !Task.isCancelled else { return }
+        self?.updateState { $0.errorMessage = error.localizedDescription }
+    }
+}
+```
+
+The example assumes a feature-specific `useCase`, `result`, and `errorMessage`.
+`isLoading` is derived from registered tasks and cannot be set directly.
 
 ## Non-routed module
 
@@ -89,10 +126,15 @@ navigation abstraction.
 Register the Container in `FactoryContainer.swift`:
 
 ```swift
+@MainActor
 var profileContainer: Factory<ProfileContainer> {
-    self { ProfileContainer() }
+    self { MainActor.assumeIsolated { ProfileContainer() } }
 }
 ```
+
+Factory stores synchronous closures without actor isolation in the installed
+version. Resolve these UI factories on MainActor; `MainActor.assumeIsolated`
+checks that requirement when creating the Container.
 
 Build the View using the current `@MainActor` function style in
 `FactoryView.swift`:

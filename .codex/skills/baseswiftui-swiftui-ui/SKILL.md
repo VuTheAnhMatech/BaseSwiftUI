@@ -1,21 +1,25 @@
 ---
 name: baseswiftui-swiftui-ui
-description: Build, edit, or polish normal BaseSwiftUI views, screens, shared UI, layouts, view routes, and view-local MVI wiring. Excludes IAP and paywalls.
+description: Edit normal BaseSwiftUI UI or add one screen with existing-pattern Container, UI items, route and Factory wiring. Excludes exact Figma nodes, paywalls, and changes to shared architecture contracts or data flow.
 ---
 
 # BaseSwiftUI SwiftUI UI
 
-Complete workflow for normal in-app UI. Route paywalls/IAP to
-`baseswiftui-iap-flow`.
+Use `local` for an existing View/component edit; `screen` for one screen with
+existing-pattern Container/items/route/Factory. Exact Figma nodes belong to
+`baseswiftui-figma-ui`, paywalls to `baseswiftui-iap-flow`. Changed shared
+contracts or source-backed data flow belong to `baseswiftui-architecture`.
 
 ## Inspect only what is needed
 
-1. Inspect the closest screen with the same shape and reuse from
-   `BaseSwiftUI/Base`, `Widgets`, `Exts`, resources, and the nearby feature.
+1. Read the target and direct reused definitions. For `screen`, inspect one
+   closest feature and `references/navigation-ownership.md`; do not survey all Base,
+   Widgets, Exts, or screens. Reuse unchanged context within the task.
 2. For repeated UI, inspect the closest component under
    `BaseSwiftUI/Base/DataSource`; use its documented contract.
-3. If models, enums, defaults, mocks, or list inputs change, also use
-   `baseswiftui-model-organization`.
+3. Local UI items/defaults stay beside the feature in separate files. Follow
+   the model ownership in `MT-CleanArchitecture/README.md` only when unclear;
+   adding a UI item does not require the model-organization skill.
 4. For routes, sheets, or dismissal, read
    `references/navigation-ownership.md`.
 5. For animation, focus, programmatic scrolling, remote images, localization,
@@ -33,9 +37,9 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
   overlays in `Widgets`. Configure visual widgets by focused types/models and
   action closures, document the contract and call site in `Widgets/README.md`,
   and keep Container state/intents and feature-specific UI outside.
-- Put screen/domain entities and reusable default/mock data under
-  `MT-CleanArchitecture/Domain/Entities`, using a feature folder unless truly
-  shared app-wide.
+- Keep business entities in Domain and UI-only items in `MT-Screens/<Feature>`;
+  defaults stay beside their model. Preserve legacy placement unless moving
+  models is requested. Keep Feature/State/Intent with the Container.
 - Use existing router and Factory patterns for navigation and dependencies.
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
@@ -79,10 +83,10 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 Check render-only View ownership, model/list placement, reuse, route/Factory
 consistency, compact width, clipping, Dynamic Type, VoiceOver labels/order,
 touch targets, Reduce Motion where relevant, and the states changed by the
-task. Exercise affected navigation and dismissal edges. Build through
-`BaseSwiftUI.xcworkspace` for `generic/platform=iOS` when Swift changed. Never
+task. Inspect affected navigation and dismissal edges; runtime checks require
+an available authorized device. Build once through `BaseSwiftUI.xcworkspace`
+for `generic/platform=iOS` when Swift changed; repeat after fixes/new changes. Never
 select, build, boot, or open Simulator unless the user explicitly requests it.
 
-Use `baseswiftui-swiftui-review` for a dedicated audit,
-`baseswiftui-performance-trace` for Instruments, and
+Use `baseswiftui-swiftui-review` for a dedicated audit or Instruments trace, and
 `baseswiftui-security-review` for a dedicated trust-boundary review.

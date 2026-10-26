@@ -2,6 +2,8 @@
 //  BaseStackView.swift
 //  BaseSwiftUI
 //
+//  Created by Vu The Anh on 12/10/26.
+//
 
 import SwiftUI
 
@@ -57,8 +59,8 @@ struct BaseStackView<
         }
     }
 
-    private var filteredItems: [(offset: Int, element: Item)] {
-        Array(dataSource.listItem.enumerated()).filter { itemFilter($0.element) }
+    private var filteredItems: [Item] {
+        dataSource.listItem.filter(itemFilter)
     }
 
     private var verticalContent: some View {
@@ -102,7 +104,7 @@ struct BaseStackView<
 
     @ViewBuilder
     private func cells(itemLength: CGFloat? = nil) -> some View {
-        ForEach(filteredItems, id: \.element.id) { sourceIndex, item in
+        ForEach(filteredItems) { item in
             content(item)
                 .frame(
                     width: axis == .horizontal ? itemLength : nil,
@@ -110,11 +112,12 @@ struct BaseStackView<
                 )
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    dataSource.selectedItem(at: IndexPath(row: sourceIndex, section: section))
-                    onSelect?(item)
+                    if let selectedItem = dataSource.select(item, section: section) {
+                        onSelect?(selectedItem)
+                    }
                 }
                 .onAppear {
-                    dataSource.itemDidAppear(at: IndexPath(row: sourceIndex, section: section))
+                    dataSource.markVisible(item, section: section)
                 }
         }
     }

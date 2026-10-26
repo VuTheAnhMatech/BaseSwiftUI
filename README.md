@@ -82,14 +82,23 @@ contents are deleted before generation. No backup is created. An existing
 `.git` directory is preserved. For safety, a non-empty destination must contain
 a top-level `.xcodeproj`; unrelated non-empty folders are rejected.
 
-### Always use the latest version from GitHub
+### Use a committed template snapshot
 
-Copy `scripts/BaseSwiftUI.sh` to a stable location such as the
-Desktop. From the destination project folder, run:
+Copy `scripts/BaseSwiftUI.sh` to `~/Desktop/SDKBase/`. From the destination
+project folder, run:
 
 ```sh
-sh /Users/vutheanh/Desktop/BaseSwiftUI.sh
+sh /Users/vutheanh/Desktop/SDKBase/BaseSwiftUI.sh
 ```
 
-The bootstrap script downloads the latest `main` branch from GitHub into a
-temporary directory and creates the project from that fresh copy.
+The launcher prefers the committed HEAD of the nearby
+`~/Desktop/Githubs/BaseSwiftUI` checkout (or its own parent when run from this
+repo's `scripts/`). It exports a clean snapshot, including committed skills
+and references, and validates the agent setup before project generation.
+Uncommitted changes and ignored, untracked files are not included.
+
+Without a nearby checkout it downloads GitHub `main`. Use `--remote` to force
+that source, or `--local /path/to/BaseSwiftUI` to select a checkout explicitly.
+Local commits reach the local launcher immediately; remote users receive them
+only after they are pushed. Run `--help` for usage. The destination replacement
+rules above still apply; the launcher refuses to run in the source checkout.

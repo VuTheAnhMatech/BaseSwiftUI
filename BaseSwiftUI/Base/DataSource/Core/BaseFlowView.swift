@@ -34,15 +34,16 @@ struct BaseFlowView<
 
     var body: some View {
         FlowLayout(horizontalSpacing: horizontalSpacing, verticalSpacing: verticalSpacing) {
-            ForEach(Array(dataSource.listItem.enumerated()), id: \.element.id) { index, item in
+            ForEach(dataSource.listItem) { item in
                 content(item)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        dataSource.selectedItem(at: IndexPath(row: index, section: 0))
-                        onSelect?(item)
+                        if let selectedItem = dataSource.select(item) {
+                            onSelect?(selectedItem)
+                        }
                     }
                     .onAppear {
-                        dataSource.itemDidAppear(at: IndexPath(row: index, section: 0))
+                        dataSource.markVisible(item)
                     }
             }
         }

@@ -1,4 +1,4 @@
 interface:
-  display_name: "BaseSwiftUI SwiftUI Review"
-  short_description: "Review modern SwiftUI quality and performance"
-  default_prompt: "Use $baseswiftui-swiftui-review to review this BaseSwiftUI code for correctness, modern APIs, accessibility, and performance."
+  display_name: "BaseSwiftUI Quality and Debugging"
+  short_description: "Review, debug, test, inspect APIs or traces"
+  default_prompt: "Use $baseswiftui-swiftui-review in source, debug, test, api, or trace mode for this task. Load only the relevant references, preserve iOS 17/Swift 5, and distinguish analysis from authorized fixes."

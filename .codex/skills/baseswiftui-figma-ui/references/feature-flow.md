@@ -1,7 +1,7 @@
 # Figma functional-flow mapping
 
-Use for a parent Figma node, multiple screens, or a request to create a complete
-feature/function flow rather than a visual-only screen.
+Use for multiple screens, changed shared contracts, or new domain/data/network
+behavior. One screen with routine Container/items/route/Factory uses `screen`.
 
 ## Build the flow contract first
 
@@ -36,7 +36,8 @@ only when the choice materially changes the flow.
 
 ## Fidelity loop
 
-For each screen, compare the running result or rendered preview to the Figma
-screenshot. Record differences by hierarchy, asset, typography, spacing,
+Compare source against the Figma screenshot first. Compare a running result
+only when runtime access is available and authorized; Simulator needs explicit
+user request. Record differences by hierarchy, asset, typography, spacing,
 color, radius, safe area, and interaction state. Fix the largest visual or flow
 break first; do not rewrite architecture to chase a cosmetic delta.

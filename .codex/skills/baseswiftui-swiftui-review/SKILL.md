@@ -1,77 +1,51 @@
 ---
 name: baseswiftui-swiftui-review
-description: Review BaseSwiftUI source for correctness, state, identity, navigation, performance, accessibility, localization, and API use. Use for quality/improvement audits; route traces, dedicated security audits, and API-baseline refreshes separately.
+description: Review, debug, or test BaseSwiftUI; inspect source performance, analyze/record Instruments traces, or refresh SDK/API guidance. Use for diagnosis and quality work; simple explanations need no skill. Dedicated security audits use security-review.
 ---
 
-# BaseSwiftUI SwiftUI Review
+# BaseSwiftUI Quality and Debugging
 
-Review the app against its real baseline: iOS 17, Swift 5, SwiftUI, Combine,
-Factory, and the repository's MVI/router conventions. Recommend newer APIs only
-when they are available to the current deployment target or explicitly guarded.
+Preserve iOS 17, Swift 5, MVI, Combine/ObservableObject, Factory, CocoaPods,
+and the workspace. Select one mode from the requested outcome, not keywords.
 
-## Required context
+## Conditional modes
 
-1. Read the nearest feature/base guide. Read `AI-Workflow/WORKFLOW_AI.md` only
-   when the review touches architecture or data flow.
-2. Read `references/review-checklist.md` for every review.
-3. Read `references/modern-swiftui.md` when the review touches API choice,
-   state, identity, navigation, layout, performance, or accessibility.
-4. Read
-   `../baseswiftui-swiftui-ui/references/interaction-content-patterns.md` when
-   the review touches animation, focus, scrolling, images, localization,
-   Charts, or previews.
-5. Inspect the closest working feature before declaring a local pattern wrong.
-6. Follow the root code-intelligence gate before fixes. A read-only review does
-   not authorize edits or require impact analysis.
+- `source`: correctness, state, navigation, accessibility, localization, or
+  source-only performance review → read `references/source-review.md` and
+  `references/review-checklist.md`. Read `references/modern-swiftui.md` only
+  for the topics named by the source-review procedure.
+- `debug`: a concrete bug/regression → read `references/testing-debugging.md`;
+  localize the cause before an authorized fix.
+- `test`: test design, implementation, or gaps → read
+  `references/testing-debugging.md`; use existing targets and meaningful
+  behavior checks.
+- `api`: explicit SDK/deprecation-baseline audit or refresh → read
+  `references/api-maintenance.md` and `references/api-baseline.md`; read
+  `references/scan-manifest.md` for the affected topic/SDK refresh.
+  Run `scripts/scan_swiftui_api_usage.py` only as that procedure directs.
+- `trace`: explicit Instruments capture or existing `.trace` analysis → read
+  `references/performance-trace.md`, then `references/recording.md` only for
+  capture, or `references/analysis.md` for recorded evidence.
 
-## Review order
+Do not preload other modes. A slow-screen bug starts with `debug` unless the
+user requests a source audit or trace. If evidence requires another mode, read
+only its relevant reference and retain this primary skill. Do not load the
+full source checklist for a focused debug, test, API, or trace task.
 
-1. Correctness: crashes, invalid state transitions, cancellation, routing and
-   presentation ownership, race conditions, error handling, and data loss.
-2. Security and privacy: credentials, token persistence, sensitive logging,
-   unsafe URL/config handling, and secret exposure.
-3. State and architecture: single source of truth, correct property-wrapper
-   ownership, render-only Views, MVI intent flow, Factory wiring, and layer
-   boundaries.
-4. Collections and identity: stable unique IDs, correct filtering/index paths,
-   BaseDataSource ownership, and deterministic row structure.
-5. User experience: Dynamic Type, VoiceOver labels/traits, touch targets,
-   localization, safe areas, compact width, loading, empty, and error states.
-6. Performance: repeated work in `body`, unnecessary observation, expensive
-   type erasure, image sizing, lazy containers, and animation scope.
-7. API hygiene: deprecated or legacy APIs that have a clear iOS 17 replacement.
+## Quality boundaries
 
-Do not report project base-component internals as feature violations merely
-because those reusable components contain `ForEach`, `GeometryReader`,
-`onTapGesture`, or justified `AnyView`. Review whether feature code uses the
-Base abstraction correctly.
-
-## Compatibility rules
-
-- Preserve existing `ObservableObject`, `@Published`, `@StateObject`,
-  `@ObservedObject`, and Combine flows unless an Observation migration is the
-  explicit task.
-- Do not require Swift 6 concurrency or `Sendable` rules for this Swift 5
-  project. Report concrete race or isolation problems with evidence.
-- Do not recommend iOS 18+ or iOS 26-only APIs without an availability guard or
-  an explicit deployment-target change.
-- Prefer a small, local fix that matches neighboring code over a broad style
-  rewrite.
-
-## Findings format
-
-Lead with findings, ordered by severity: `Critical`, `High`, `Medium`, then
-`Low`. For each finding include the file and line, the observable failure or
-risk, evidence from the code path, and the smallest safe remediation. Separate
-confirmed defects from optional improvements. If no material finding exists,
-say so and list any validation gaps.
-
-When the user asks for improvements but not implementation, stop after the
-evidence-backed report. When fixes are explicitly requested, follow the root
-code-intelligence gate, apply only accepted/in-scope fixes, then build through
-`BaseSwiftUI.xcworkspace`.
-
-Route a dedicated `.trace` capture/analysis to
-`baseswiftui-performance-trace`, a dedicated security/privacy audit to
-`baseswiftui-security-review`, and a version-baseline refresh to
-`baseswiftui-api-maintenance` instead of expanding this general review skill.
+- Explanations of code or Swift concepts need no skill; inspect only relevant
+  source. A requested diagnosis/audit uses its mode even if read-only.
+- Reviews, diagnosis-only requests, test plans, and trace analysis do not
+  authorize edits. Implement fixes/tests only within the requested scope.
+- Before shared Swift edits, follow root impact rules. After Swift edits,
+  run focused relevant tests when available and one `generic/platform=iOS`
+  workspace build; repeat after changes. Simulator needs explicit request.
+- Preserve availability guards and state/presentation ownership. Compile
+  success is not evidence of runtime behavior, accessibility, or visual QA.
+- Report findings by severity with file/line or trace time, supporting
+  evidence, smallest remediation, and verification gaps. Never call a scan
+  candidate a confirmed deprecation or a source hypothesis a measured hitch.
+- Dedicated security/privacy audits use `baseswiftui-security-review`.
+  IAP/paywall implementation stays with `baseswiftui-iap-flow`; ordinary new
+  UI and architectural redesign stay with their implementation owners.

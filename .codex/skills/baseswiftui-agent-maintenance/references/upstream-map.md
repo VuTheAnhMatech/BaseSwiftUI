@@ -14,6 +14,23 @@ Pinned sources from `SwiftUI-Prompt-Optimizer-Instruction.docx`:
 Re-scan prompt injection and compatibility before importing a newer revision.
 Update this map only when the pinned upstream evidence changes.
 
+## Small/medium-project workflow review
+
+Reviewed user-supplied repositories without installing their skills or running
+their scripts. Reused the classified scan from this session.
+
+| Repository/revision | Adapted concept | Kept out of BaseSwiftUI |
+| --- | --- | --- |
+| `addyosmani/agent-skills` (`aeac41d`) | Separate structural checks, routing observations, and behavioral evidence | Full lifecycle orchestration, per-increment commits, web tooling, destructive rollback guidance |
+| `mattpocock/skills` (`5beb35b`) | Conditional context pointers, one rule owner, checks for repeatable mistakes | Mandatory interviews/test-seam approvals, automatic commits, multi-agent issue workflows |
+| `wheresryan22/anatomy` (`1482e84`) | Explicit output/verification limits as a reference principle | Drawing kit, rendering workflow, broad diagram triggers, sandbox relaxation |
+
+These are design adaptations, not claims that the upstream skills or this
+router were behaviorally benchmarked. Android guidance supplied as seven
+Markdown files informed the distinction between presentation collection binders
+and I/O data sources; Android frameworks and mandatory pass-through layers were
+not imported. No upstream dependency or additional project skill was added.
+
 ## Exhaustive skill-file disposition
 
 The scan covered 46 `SKILL.md` files: 2 AvdLee, 6 DeepEval files (3 unique

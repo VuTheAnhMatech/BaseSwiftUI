@@ -1,7 +1,3 @@
----
-name: baseswiftui-ios-guidelines
-description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory, credential, and workspace rules only when guidelines are explicitly requested or a specialist routes here. Never load for a one-node Figma/local-View task.
----
 # BaseSwiftUI iOS Architecture & Guidelines
 
 ## 1. Core Workflow & Philosophy
@@ -16,7 +12,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **Feature Screens**: `BaseSwiftUI/MT-Screens/` (Organized by feature folders containing Views and Containers).
 * **MVI Containers**: Colocated within their respective feature folders under `MT-Screens/`.
 * **Dependency Injection**: `BaseSwiftUI/MT-Factory/` (Centralized Factory registrations).
-* **Domain Entities**: `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/` (App data models, screen/domain entities, static mock data, and sample data such as `MockData`). Use `baseswiftui-model-organization` for all model placement. Put feature-specific entities in a feature subfolder such as `Domain/Entities/CreateEmojiFromText/`; put truly shared app-wide entities under `Domain/Entities/Shared/`; do not leave unrelated feature models together in flat root files.
+* **Model Ownership**: Follow `BaseSwiftUI/MT-CleanArchitecture/README.md`: business entities in Domain, DTOs/storage records in Data, UI-only items in separate files under `MT-Screens/<Feature>`. Defaults stay beside their owning model. Preserve legacy placement unless migration is requested; routine screen items stay with the UI/Figma workflow.
 * **Core Infrastructure**: `BaseSwiftUI/Base/` (Reusable base components and foundation logic).
 * **Global Extensions**: `BaseSwiftUI/Exts/` (Shared Swift system/UI extensions only).
 * **Shared Widgets**: `BaseSwiftUI/Widgets/` owns cross-screen reusable UI, generic UI layouts/adapters, and app-wide overlays. Configure visual widgets through focused types/models and actions rather than a concrete Container. Keep feature UI near its screen and document every Widget contract and call site in `Widgets/README.md`.
@@ -34,7 +30,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **Adaptive BaseButton**: Keep the default `BaseButton` style unless the design explicitly requires no glass. The component owns Liquid Glass on iOS 26+ when enabled and a material fallback on earlier iOS; never duplicate availability checks or glass modifiers at callsites.
 * **Close Icon Size**: Whenever rendering `Image("ic_close")`, always frame it at exactly `width: 40, height: 40`.
 * **Zero One-Off Extensions**: Never create private, screen-isolated extensions for standard types (`View`, `Color`, `String`, etc.). All reusable logic must reside in `BaseSwiftUI/Exts/`.
-* **Entities Outside Views/Containers/Exts**: Never place entities, mock data, static sample data, default lists, screen item structs, tab/section enums, or enums such as `MockData` in SwiftUI view files, MVI containers, services, repositories, factories, or `BaseSwiftUI/Exts/`. Put those files under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`; create a feature subfolder when the model is not shared app-wide and use `Shared/` only for true app-wide models.
+* **Separate Model Files**: Keep business entities, DTOs, and UI items/defaults in separate files in their owning layer. MVI Feature/State/Intent stay with the Container; no feature models in `Exts` or Factory.
 * **Safe Margins**: Ensure all scrollable content surfaces maintain a bottom padding large enough to prevent interactive elements (floating buttons, sticky footers) from overlaying content.
 * **844pt Scroll Switch**: For fixed screen content, a Figma frame above 844pt uses a screen-level `ScrollView`; a frame at or below 844pt uses no screen-level `ScrollView` and must adapt responsively from iPhone SE through iPhone 17 Pro Max. Intrinsically scrolling Base list/grid components are exempt from this screen-level switch.
 * **No One-Off Metrics Containers**: Do not create private `Metrics`, `Constants`, or similar enums/structs only to store small layout literals used once or twice in the same SwiftUI view. Write simple values such as padding, spacing, column counts, ratios, and frame sizes directly at the callsite. Extract a named value only when it is reused meaningfully, shared across files, or represents a cross-layer contract.
@@ -54,7 +50,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 ## 5. Flow & Architecture (MVI + Factory)
 * **Separation of Concerns**: Strictly follow the MVI (Model-View-Intent) container pattern:
   * **SwiftUI View**: Purely structural and passive. Responsible for rendering the state and forwarding user interactions as intents to the Container.
-  * **MVI Container**: Maintains state, owns screen `BaseDataSource` instances when practical, processes intents, executes business logic, manages persistence, handles networking, and triggers side effects. Do not declare model structs/enums in containers.
+  * **MVI Container**: Maintains state, owns presentation `BaseDataSource`, processes intents, maps domain results to UI, and orchestrates existing use cases. Source access and business rules stay in their lower layers; MVI Feature/State/Intent may remain with the Container.
 * **Dependency Injection**: Resolve all instances, repositories, services, and managers using Factory registrations via `Container.shared`. Do not instantiate singletons or dependencies inline within views.
 * **Decoupled Adaptations**: When porting patterns or modules from companion projects, strip away all foreign dependencies and streamline the implementation to fit BaseSwiftUI’s lightweight architecture.
 * **Single Stack for Page Flows**: Push page destinations on their originating router. Do not re-present the same page inside a new full-screen `AppRouter.Stack` unless the flow genuinely crosses root ownership.
@@ -63,7 +59,7 @@ description: Reference BaseSwiftUI architecture, component, asset, MVI, Factory,
 * **Credential Storage**: The current `UserDefaults`-backed `TokenStore` is scaffold-only. Production access/refresh tokens must use a `TokenStoreProtocol` implementation backed by Keychain or another approved secure store. Never log tokens or authorization headers.
 
 ## 6. Validation & Verification
-Before marking a task as complete, execute a Debug build to guarantee code correctness:
+After Swift changes, run one Debug build to verify compilation; it does not prove runtime correctness. Questions and documentation-only tasks skip this build:
 ```sh
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace BaseSwiftUI.xcworkspace -scheme BaseSwiftUI -configuration Debug -destination generic/platform=iOS -derivedDataPath /private/tmp/BaseSwiftUIDerivedData CODE_SIGNING_ALLOWED=NO build
 ```
@@ -74,7 +70,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 - [ ] `BaseButton` keeps adaptive Liquid Glass on iOS 26+ unless the design explicitly requires `.plain`.
 - [ ] Typography uses the requested family when bundled; otherwise it falls back to the app's primary font while preserving size and closest weight.
 - [ ] All collections render through `BaseDataSource` and Base data-source views; no direct feature-view `ForEach`, `LazyVGrid`, `GridItem`, or manual cell-size math remains.
-- [ ] Screen/domain models and default/static sample data live under `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities/`, preferably in a feature subfolder when not shared, not in Views, Containers, or Exts.
+- [ ] Model ownership follows the Clean Architecture README; defaults/mocks stay with their model and existing placement is not migrated incidentally.
 - [ ] One-off layout literals are written directly at callsites instead of being hidden behind private `Metrics`/`Constants` containers.
 - [ ] Asset references precisely match their `.xcassets` paths.
 - [ ] New Figma/screenshot raster assets contain valid `@2x` and `@3x` renditions and no `@1x` rendition.

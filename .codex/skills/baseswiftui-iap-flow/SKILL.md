@@ -10,6 +10,10 @@ Config, analytics, and SDK calls as fragile integration behavior.
 
 ## Inspect
 
+For an exact Figma node, fetch `get_design_context` once (Swift/SwiftUI), reuse
+its evidence within the task, and request a screenshot only if missing or
+unreadable. Keep IAP primary; do not load the ordinary UI or Figma workflow.
+
 1. Inspect the closest IAP screen and search product helpers under `Exts`, SDK
    integration under `Libs`/`Helper`, and related domain/service files.
 2. Reuse existing price, period, trial, discount, sale, product-selection,
@@ -52,5 +56,6 @@ Config, analytics, and SDK calls as fragile integration behavior.
 Verify product/helper reuse; selection and CTA state; purchase and restore SDK
 calls; product IDs and config keys; compact-width/localized pricing; legal
 actions; accessibility; and every changed presentation/dismissal edge. Build
-through `BaseSwiftUI.xcworkspace` when Swift changed. Do not claim sandbox or
+once through `BaseSwiftUI.xcworkspace` for `generic/platform=iOS` when Swift
+changed; repeat after fixes/new changes. Do not claim sandbox or
 StoreKit behavior passed unless it was exercised.

@@ -1,4 +1,4 @@
 interface:
   display_name: "BaseSwiftUI Architecture"
-  short_description: "Refactor BaseSwiftUI app architecture."
-  default_prompt: "Use $baseswiftui-architecture to implement this non-view BaseSwiftUI architecture change following the existing MVI, router, and feature folder structure."
+  short_description: "Architecture, model ownership and guidelines"
+  default_prompt: "Use $baseswiftui-architecture in change, models, or guidelines mode. Load only relevant references; audits stay read-only, routine screen wiring stays with UI/Figma, and new layers need a real responsibility."

@@ -23,5 +23,6 @@
   an app defect.
 
 Report the trace time/window, duration/count, matching symbol/view, and source
-location when available. Route static SwiftUI remediation patterns to
-`baseswiftui-swiftui-review`.
+location when available. Read `modern-swiftui.md` only when source evidence
+needs a static SwiftUI remediation pattern. Keep trace evidence distinct from
+source hypotheses.

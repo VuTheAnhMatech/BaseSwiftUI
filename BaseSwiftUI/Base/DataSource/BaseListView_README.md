@@ -10,7 +10,7 @@ Base components, not feature views.
 SwiftUI feature View
   -> Base data-source View
   -> BaseDataSource
-  -> tappedItemSubject / visibleItemSubject
+  -> selectedValue / visibleValue (or legacy index subjects)
   -> MVI Container
 ```
 
@@ -42,8 +42,7 @@ final class HomeContainer: BaseRouteContainer<HomeFeature, AppNavigationRoute> {
     override init() {
         super.init()
 
-        dataSource.tappedItemSubject
-            .compactMap(\.0)
+        dataSource.selectedValue
             .sink { [weak self] item in self?.send(.select(item)) }
             .store(in: &cancellables)
     }
@@ -67,7 +66,7 @@ BaseListView(dataSource: container.dataSource) { item in
 }
 ```
 
-Selection already sends through `BaseDataSource.selectedItem(at:)`; prefer the
+Selection already sends through `BaseDataSource.select(_:section:)`; prefer the
 Container subscription as the single behavior owner. Use `onSelect` only for a
 small UI-local response that does not duplicate domain/navigation behavior.
 
@@ -75,6 +74,17 @@ small UI-local response that does not duplicate domain/navigation behavior.
 
 - Base views preserve the source-array row in emitted `IndexPath` values even
   when `itemFilter` is used.
+- `select(_:section:)` and `markVisible(_:section:)` resolve an item's stable
+  ID against the current source array. Reordered items emit the latest stored
+  value and current source index. `select` returns the resolved item (or `nil`
+  for a removed item), so UI callbacks receive the same value as subscriptions.
+  `markVisible` returns whether it found the item. Removed items emit nothing.
+- `selectedValue` / `visibleValue` emit non-optional items. Each valid event
+  also reaches `tappedItemSubject` / `visibleItemSubject` for existing consumers.
+  Subscribe to one event family per action to avoid handling it twice.
+- Existing `selectedItem(at:)` and `itemDidAppear(at:)` APIs retain their
+  index-based behavior, including an optional nil item for an invalid row.
+- Data-source mutations and events are isolated to `@MainActor`.
 - Mutate data only through `BaseDataSource` methods or its owning Container.
 - Keep default/static lists with their entity under
   `MT-CleanArchitecture/Domain/Entities`, not in the View.

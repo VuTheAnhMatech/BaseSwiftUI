@@ -1,21 +1,22 @@
 ---
 name: baseswiftui-figma-ui
-description: Implement high-fidelity BaseSwiftUI UI from an exact Figma MCP node with a fast one-View default, bounded evidence escalation, architecture preservation, and optional flow or visual comparison modes.
+description: "Implement BaseSwiftUI UI from an exact Figma node: quick local View, screen with existing-pattern wiring, or multi-screen/data flow. Also analyze, acquire assets, or compare designs. Paywalls belong to iap-flow."
 ---
 
 # BaseSwiftUI Figma UI
 
-Use exact Figma evidence without changing BaseSwiftUI structure.
+Use exact Figma evidence. Paywalls belong to `baseswiftui-iap-flow`.
 
 ## Routes
 
 - `quick` (default): one exact node, local View, fidelity gate, one generic build.
+- `screen`: one screen plus existing-pattern Container/items/route/Factory.
 - `draft`: edit without building only when the user explicitly requests it.
 - `analyze`: report only; do not edit.
 - `assets`: asset-only inspection or acquisition for the selected node.
 - `compare`: use `references/visual-validation.md`.
-- `flow`: multiple screens or any route, Factory, shared/Base, model/list, IAP,
-  domain, data, or network change; read `references/feature-flow.md`.
+- `flow`: multiple screens, changed shared contracts, or new domain/data/network
+  behavior; read `references/feature-flow.md`. File count alone is not a trigger.
 
 Require a node-specific link. Ask for **Copy link to selection** only when its
 `node-id` is absent. Decide the route before inspecting repository code.
@@ -23,8 +24,9 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
 ## Quick route
 
 1. Call `get_design_context` once for the exact node with language `swift` and
-   framework `swiftui`. Use its screenshot as visual truth. If absent or
-   unreadable, request one exact-node screenshot; never request it speculatively.
+   framework `swiftui`; reuse it during this task unless the design changes.
+   Use its screenshot as visual truth; request one exact-node screenshot only
+   if absent or unreadable.
 2. Open only the target View and exact reused component/asset definitions via
    bounded `rg`. If the user says assets exist, reuse them and never export.
 3. Classify `frame · spacing · type · effects · assets · safe area` as Figma
@@ -74,16 +76,15 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    evidence. Build success proves compilation, not visual equality;
    claim runtime pixel validation only when explicitly authorized and executed.
 
-If the edit crosses a quick boundary, switch to `flow`; never weaken MVI,
-Factory, model placement, or Base ownership.
-
-## Draft, flow, assets, and compare
+## Other routes
 
 - `draft`: follow quick rules, skip the build, report unverified compilation.
-- `flow`: inspect the parent node's child screens, read
-  `references/feature-flow.md`, then use only the skill owning the crossed
-  boundary. Establish `frame → State → Intent → Route → Factory → justified
-  Domain` before writing Views.
+- `screen`: keep quick evidence/fidelity rules; expand source reads using
+  `.codex/skills/baseswiftui-swiftui-ui/references/navigation-ownership.md` without
+  loading another skill. Root shared-symbol impact applies; build once.
+- `flow`: read `references/feature-flow.md`; inspect child screens only for
+  multi-screen work. Load only guidance for the contract/data boundary crossed.
+- `analyze`: inspect evidence and report; no edits, build, or indexing.
 - `assets`: prefer an exact existing asset; otherwise acquire only the exact
   selected-node asset. Preserve screen/shared namespaces and scale rules.
 - `compare`: read `references/visual-validation.md`. Simulator build, boot,
@@ -95,4 +96,4 @@ primary bundled font. Preserve Figma size and map weight to the exact or closest
 bundled face. Add no missing font unless requested. Treat generated reference
 code as structural evidence only.
 
-Short invocation: `$baseswiftui-figma-ui quick|draft|analyze|assets|compare|flow <node-url>`
+Short invocation: `$baseswiftui-figma-ui quick|screen|draft|analyze|assets|compare|flow <node-url>`

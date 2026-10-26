@@ -31,3 +31,6 @@
 - External commands, services, MCPs, credentials, and dependencies are either
   available or explicitly optional with a fallback.
 - Existing working behavior remains reachable after routing changes.
+- Validate reference-to-reference links, no-skill routes, and the specialized
+  architecture/review modes when consolidating entry points. Never remove
+  quality checks solely to reduce description or context size.

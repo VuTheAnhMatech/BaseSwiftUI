@@ -7,12 +7,15 @@
 
 import Factory
 
+@MainActor
 extension Container {
+    // Factory stores synchronous @Sendable closures. Resolve UI containers on MainActor,
+    // as FactoryView does; assumeIsolated enforces that boundary at construction.
     var splashContainer: Factory<SplashContainer> {
-        self { SplashContainer() }
+        self { MainActor.assumeIsolated { SplashContainer() } }
     }
 
     var homeContainer: Factory<HomeContainer> {
-        self { HomeContainer() }
+        self { MainActor.assumeIsolated { HomeContainer() } }
     }
 }

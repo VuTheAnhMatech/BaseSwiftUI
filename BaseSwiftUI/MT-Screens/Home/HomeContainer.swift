@@ -36,8 +36,7 @@ final class HomeContainer: BaseRouteContainer<HomeFeature, AppNavigationRoute> {
     }
 
     private func bindDataSource() {
-        dataSource.tappedItemSubject
-            .compactMap(\.0)
+        dataSource.selectedValue
             .sink { [weak self] item in
                 self?.send(.select(item))
             }

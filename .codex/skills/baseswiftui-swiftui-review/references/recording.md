@@ -1,5 +1,8 @@
 # Instruments recording
 
+Use Simulator only when explicitly requested; otherwise prefer an authorized
+physical device. Recording alone does not authorize source instrumentation.
+
 ## Template choice
 
 - Physical iOS device: prefer SwiftUI; use Time Profiler or Animation Hitches

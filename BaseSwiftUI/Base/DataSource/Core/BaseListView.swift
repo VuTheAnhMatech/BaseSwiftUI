@@ -109,15 +109,15 @@ struct BaseListView<
     @ViewBuilder
     private var baseList: some View {
         if sections.isEmpty {
-            List(filteredItems(itemFilter), id: \.element.id) { sourceIndex, item in
-                row(item: item, sourceIndex: sourceIndex, section: section)
+            List(filteredItems(itemFilter)) { item in
+                row(item: item, section: section)
             }
         } else {
             List {
                 ForEach(sections) { listSection in
                     Section {
-                        ForEach(filteredItems(listSection.itemFilter), id: \.element.id) { sourceIndex, item in
-                            row(item: item, sourceIndex: sourceIndex, section: listSection.section)
+                        ForEach(filteredItems(listSection.itemFilter)) { item in
+                            row(item: item, section: listSection.section)
                         }
                     } header: {
                         if let header = listSection.header {
@@ -131,24 +131,23 @@ struct BaseListView<
 }
 
 private extension BaseListView {
-    func filteredItems(_ filter: (Item) -> Bool) -> [(offset: Int, element: Item)] {
-        Array(dataSource.listItem.enumerated()).filter { filter($0.element) }
+    func filteredItems(_ filter: (Item) -> Bool) -> [Item] {
+        dataSource.listItem.filter(filter)
     }
 
-    func row(item: Item, sourceIndex: Int, section: Int) -> some View {
+    func row(item: Item, section: Int) -> some View {
         rowContent(item)
             .contentShape(Rectangle())
             .listRowInsets(EdgeInsets())
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
             .onTapGesture {
-                let indexPath = IndexPath(row: sourceIndex, section: section)
-                dataSource.selectedItem(at: indexPath)
-                onSelect?(item)
+                if let selectedItem = dataSource.select(item, section: section) {
+                    onSelect?(selectedItem)
+                }
             }
             .onAppear {
-                let indexPath = IndexPath(row: sourceIndex, section: section)
-                dataSource.itemDidAppear(at: indexPath)
+                dataSource.markVisible(item, section: section)
             }
     }
 }

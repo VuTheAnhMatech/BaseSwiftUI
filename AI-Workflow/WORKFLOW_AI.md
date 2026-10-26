@@ -1,8 +1,9 @@
 # BaseSwiftUI Workflow
 
 Use this file for app-code architecture and data-flow decisions. Detailed UI,
-IAP, Figma, widget, review, trace, security, and tooling procedures belong to
-their specific skills.
+IAP, Figma, widget, security, and tooling procedures belong to their skills;
+review/debug/test/API/trace use swiftui-review's conditional modes. Screen wiring does not need
+this workflow. Add layers only when they carry real responsibility.
 
 ## Sources of truth
 
@@ -19,15 +20,15 @@ Read only the source relevant to the selected branch.
 
 - `MVI`: UI-only screen → `Feature + Container + View`, with Route/Factory
   only when needed.
-- `Clean`: justified domain/data work →
-  `Service → Repository → UseCase → Container → View`; omit empty layers.
+- `Clean`: follow `Presentation -> Domain <- Data`; data sources/services
+  feed repository implementations, with use cases only when justified.
 - `Network`: API/auth/refresh/upload/decoding → Base request and API service
   contracts, then map responses before presentation.
 - `DataSource`: repeated/list/grid/carousel UI → Container/provider owns
   `BaseDataSource`; View renders with the closest Base data-source view.
 - `Mixed`: a complete feature or Figma flow crossing multiple branches.
-- `Review`, `Trace`, `Security`, `Tooling`: use the matching specific skill;
-  these branches do not authorize unrelated fixes.
+- `Review`/`Trace`: swiftui-review's source/trace mode. `Security`/`Tooling`:
+  matching specialist. These branches do not authorize unrelated fixes.
 
 ## Invariants
 
@@ -41,8 +42,11 @@ Read only the source relevant to the selected branch.
   keep Factory keys, route parameters, and injected types identical.
 - Push destinations stay on the originating stack. Sheet content self-dismisses
   with `@Environment(\.dismiss)`; the presenting router owns `dismissSheet()`.
-- Models, defaults, mock data, and list inputs belong under
-  `MT-CleanArchitecture/Domain/Entities`; repeated UI uses `BaseDataSource`.
+- Model ownership follows `MT-CleanArchitecture/README.md`: business entities
+  in Domain, transport/storage models in Data, UI-only items in Presentation
+  (existing `MT-Screens/<Feature>`). Defaults stay beside their owning model.
+  Preserve existing placement unless migration is requested; collections use
+  presentation-owned `BaseDataSource`.
 
 ## Finish gate
 

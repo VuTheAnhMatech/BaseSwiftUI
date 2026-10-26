@@ -78,18 +78,17 @@ struct BaseScrollView<
 
     @ViewBuilder
     private var cells: some View {
-        ForEach(Array(dataSource.listItem.enumerated()), id: \.element.id) { index, item in
+        ForEach(dataSource.listItem) { item in
             content(item)
                 .id(item.id)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    let indexPath = IndexPath(row: index, section: 0)
-                    dataSource.selectedItem(at: indexPath)
-                    onSelect?(item)
+                    if let selectedItem = dataSource.select(item) {
+                        onSelect?(selectedItem)
+                    }
                 }
                 .onAppear {
-                    let indexPath = IndexPath(row: index, section: 0)
-                    dataSource.itemDidAppear(at: indexPath)
+                    dataSource.markVisible(item)
                 }
         }
     }

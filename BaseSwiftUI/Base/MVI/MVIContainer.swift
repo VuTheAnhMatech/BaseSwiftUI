@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 public protocol MVIContainer: ObservableObject {
     associatedtype F: MVIFeature
     

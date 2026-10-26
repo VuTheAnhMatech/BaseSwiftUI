@@ -56,7 +56,7 @@ struct BaseHorizontalSectionListView<
     var body: some View {
         ScrollView(.vertical, showsIndicators: verticalShowsIndicators) {
             LazyVStack(alignment: .leading, spacing: sectionSpacing) {
-                ForEach(Array(dataSource.listItem.enumerated()), id: \.element.id) { sectionIndex, section in
+                ForEach(dataSource.listItem) { section in
                     VStack(alignment: .leading, spacing: headerToItemsSpacing) {
                         header(section)
                             .padding(.leading, contentInsets.leading)
@@ -78,7 +78,7 @@ struct BaseHorizontalSectionListView<
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .onAppear {
-                        dataSource.itemDidAppear(at: IndexPath(row: sectionIndex, section: 0))
+                        dataSource.markVisible(section)
                     }
                 }
             }

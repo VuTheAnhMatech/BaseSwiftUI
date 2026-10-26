@@ -29,10 +29,15 @@ final class SplashContainer: BaseContainer<SplashFeature> {
     private func startSplashIfNeeded() {
         guard !state.isPresented, !state.isFinished else { return }
 
-        state.isPresented = true
-        Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(1.8))
-            self?.state.isFinished = true
+        runTask(id: "splash", showsLoading: false) { [weak self] in
+            self?.updateState { $0.isPresented = true }
+            do {
+                try await Task.sleep(for: .seconds(1.8))
+                try Task.checkCancellation()
+                self?.updateState { $0.isFinished = true }
+            } catch {
+                self?.updateState { $0.isPresented = false }
+            }
         }
     }
 }

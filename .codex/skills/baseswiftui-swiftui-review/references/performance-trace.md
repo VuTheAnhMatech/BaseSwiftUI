@@ -1,8 +1,3 @@
----
-name: baseswiftui-performance-trace
-description: Record or analyze Instruments traces for BaseSwiftUI hangs, hitches, launch, CPU, main-thread, SwiftUI-update, layout, image, or scrolling problems. Use swiftui-review for source-only performance checks.
----
-
 # BaseSwiftUI Performance Trace
 
 Use trace evidence to localize a performance problem before proposing code
@@ -10,11 +5,12 @@ changes. Recording and analysis do not authorize edits.
 
 ## Workflow
 
-1. Read `references/recording.md` when capturing a trace.
-2. Read `references/analysis.md` when a `.trace` exists.
+1. Read `recording.md` when capturing a trace.
+2. Read `analysis.md` when a `.trace` exists.
 3. Confirm target and scope: launch, attach, device/simulator, interaction, and
    time window. Prefer app-scoped capture.
-4. Inspect available templates/devices with `xcrun xctrace list`.
+4. For new recordings, inspect available templates/devices with
+   `xcrun xctrace list`. Analysis of an existing trace needs no device discovery.
 5. Export the trace table of contents before choosing schemas:
 
    ```sh
@@ -27,6 +23,9 @@ changes. Recording and analysis do not authorize edits.
 7. Return findings ordered by user impact, evidence, suspected owner, and the
    smallest verification/fix. Edit only when requested and after the root
    code-intelligence gate.
+
+Simulator use requires an explicit user request, including selecting a
+Simulator destination for recording. Existing trace analysis needs no build.
 
 ## Privacy
 

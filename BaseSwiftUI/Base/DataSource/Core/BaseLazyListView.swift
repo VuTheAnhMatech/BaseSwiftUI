@@ -63,8 +63,8 @@ struct BaseLazyListView<
         ScrollView(.vertical, showsIndicators: showsIndicators) {
             LazyVStack(alignment: .leading, spacing: spacing) {
                 if sections.isEmpty {
-                    ForEach(filteredItems(itemFilter), id: \.element.id) { sourceIndex, item in
-                        row(item: item, sourceIndex: sourceIndex, section: section)
+                    ForEach(filteredItems(itemFilter)) { item in
+                        row(item: item, section: section)
                     }
                 } else {
                     ForEach(sections) { listSection in
@@ -72,8 +72,8 @@ struct BaseLazyListView<
                             header
                         }
 
-                        ForEach(filteredItems(listSection.itemFilter), id: \.element.id) { sourceIndex, item in
-                            row(item: item, sourceIndex: sourceIndex, section: listSection.section)
+                        ForEach(filteredItems(listSection.itemFilter)) { item in
+                            row(item: item, section: listSection.section)
                         }
                     }
                 }
@@ -83,21 +83,20 @@ struct BaseLazyListView<
 }
 
 private extension BaseLazyListView {
-    func filteredItems(_ filter: (Item) -> Bool) -> [(offset: Int, element: Item)] {
-        Array(dataSource.listItem.enumerated()).filter { filter($0.element) }
+    func filteredItems(_ filter: (Item) -> Bool) -> [Item] {
+        dataSource.listItem.filter(filter)
     }
 
-    func row(item: Item, sourceIndex: Int, section: Int) -> some View {
+    func row(item: Item, section: Int) -> some View {
         rowContent(item)
             .contentShape(Rectangle())
             .onTapGesture {
-                let indexPath = IndexPath(row: sourceIndex, section: section)
-                dataSource.selectedItem(at: indexPath)
-                onSelect?(item)
+                if let selectedItem = dataSource.select(item, section: section) {
+                    onSelect?(selectedItem)
+                }
             }
             .onAppear {
-                let indexPath = IndexPath(row: sourceIndex, section: section)
-                dataSource.itemDidAppear(at: indexPath)
+                dataSource.markVisible(item, section: section)
             }
     }
 }

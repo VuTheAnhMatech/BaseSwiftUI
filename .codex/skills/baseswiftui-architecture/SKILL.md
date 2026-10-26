@@ -1,68 +1,146 @@
 ---
 name: baseswiftui-architecture
-description: Build or refactor BaseSwiftUI non-view architecture, routes, MVI, services, repositories, use cases, factories, and end-to-end flows without Figma. Use figma-ui for Figma-led flows and dedicated UI skills for views.
+description: Design or refactor BaseSwiftUI contracts, data flow, persistence, navigation/DI; audit model ownership or provide explicitly requested project guidelines. Use for architecture and layer decisions; routine screen wiring belongs to UI/Figma. Simple code explanations need no skill.
 ---
 
 # BaseSwiftUI Architecture
 
-## Overview
+Keep new features and refactors aligned with BaseSwiftUI's MVI, router,
+Factory, and Clean Architecture boundaries.
 
-Use this skill to keep new features and refactors aligned with BaseSwiftUI's
-existing MVI, router, factory, and service boundaries.
+Use `baseswiftui-swiftui-ui` for local UI or existing-pattern screen wiring and
+`baseswiftui-iap-flow` for IAP/paywall work.
 
-Use `baseswiftui-swiftui-ui` instead for ordinary normal view creation. Use
-`baseswiftui-iap-flow` instead for IAP/paywall view creation or editing.
+## Modes and conditional context
 
-## Project Map
+- `change`: shared contracts, layers, navigation/DI mechanisms, or data flow.
+  Read `AI-Workflow/WORKFLOW_AI.md` and only the relevant source guide.
+  Use the workflow below; routine UI items/route entries stay with UI/Figma.
+- `models`: dedicated ownership audit or migration. Read
+  `references/model-organization.md` and the ownership section of
+  `BaseSwiftUI/MT-CleanArchitecture/README.md`. Read the workflow only if a
+  migration changes architecture/data flow. Keep this primary skill.
+- `guidelines`: only when complete project guidelines are explicitly requested,
+  read `references/ios-guidelines.md`; do not preload it for ordinary work.
 
-- Router and presentation: existing router types under `BaseSwiftUI/Base`.
-- MVI containers: colocated under `BaseSwiftUI/MT-Screens`.
-- Factory pattern sample: `BaseSwiftUI/MT-Factory`.
-- Feature screens: `BaseSwiftUI/MT-Screens`.
+Questions, design proposals, and audits remain read-only: no moves, build, or
+indexing. Implementation steps below apply only to requested code changes.
+
+## Project map
+
+- Router and presentation foundation: `BaseSwiftUI/Base`.
+- MVI module contract: `BaseSwiftUI/Base/MVI/Module_README.md`.
+- Feature screens and containers: `BaseSwiftUI/MT-Screens`.
+- Factory and route composition: `BaseSwiftUI/MT-Factory`.
+- Clean Architecture source of truth: `BaseSwiftUI/MT-CleanArchitecture`.
 - Shared views: `BaseSwiftUI/Base`.
 - Reusable helpers and type extensions: `BaseSwiftUI/Exts`.
-- Network and app helpers: `BaseSwiftUI/Helper`.
-- Domain entities and mock data: `BaseSwiftUI/MT-CleanArchitecture/Domain/Entities`.
-  Read `.codex/skills/baseswiftui-model-organization/SKILL.md` before moving,
-  creating, or reviewing models, default data, mock data, tab/section/item
-  enums, or datasource-input types.
-- MVI module contract: `BaseSwiftUI/Base/MVI/Module_README.md`.
 - Network contract: `BaseSwiftUI/Base/Network/Network_README.md`.
 - Repeated UI/data-source contract:
   `BaseSwiftUI/Base/DataSource/BaseListView_README.md`.
 
-## Before Editing
+## Workflow
 
-- Inspect a nearby feature with the same shape before creating new files.
-- Search for existing route, container, repository, service, and use case patterns.
-- Decide whether the task is UI-only, domain logic, routing, persistence, networking, or cross-cutting infrastructure.
+1. Inspect a nearby feature with the same shape.
+2. Classify the change as UI-only, domain logic, routing, persistence,
+   networking, or mixed.
+3. Add only justified layers. Do not create empty folders or pass-through
+   types solely to resemble a diagram.
+4. Keep dependency direction `Presentation -> Domain <- Data`; let DI create
+   concrete implementations.
+5. Wire new dependencies through the matching Factory registrations.
+6. Preserve existing behavior while moving code; separate structural moves
+   from behavior changes when practical.
+
+## Canonical feature shape
+
+Use this as the default shape, then omit folders with no real responsibility:
+
+```text
+<Feature>/
+├── Domain/
+│   ├── Entities/
+│   ├── Repositories/
+│   └── UseCases/
+├── Data/
+│   ├── DTOs/
+│   ├── DataSources/{Local,Remote}/
+│   ├── Mappers/
+│   ├── Repositories/
+│   └── Services/
+├── Presentation/
+│   ├── Views/
+│   ├── Containers/
+│   ├── Components/
+│   ├── Representables/
+│   └── State/
+├── Navigation/{Routes,Coordinators}/
+└── DI/<Feature>Factory.swift
+```
+
+BaseSwiftUI may keep app entities in `MT-CleanArchitecture/Domain/Entities`,
+screens in `MT-Screens`, and routes/factories in `MT-Factory`. Preserve those
+roots while applying the same ownership rules.
+
+## Placement guide
+
+| Code | Owner |
+| --- | --- |
+| Business entity/value type | `Domain/Entities` |
+| Repository protocol | `Domain/Repositories` |
+| Business operation | `Domain/UseCases` |
+| API response, DTO, database record | `Data/DTOs` or `Data/DataSources` |
+| DTO-to-entity conversion | `Data/Mappers` |
+| Repository implementation | `Data/Repositories` |
+| API, disk, UserDefaults, SwiftData adapter | `Data/DataSources` or `Data/Services` |
+| SwiftUI View | `Presentation/Views` |
+| MVI Container/ObservableObject | `Presentation/Containers` |
+| UIKit bridge or representable | `Presentation/Representables` |
+| UI-only Color, Font, Image, formatting | `Presentation` or shared UI infrastructure |
+| Route or coordinator | `Navigation` or established `MT-Factory` routing |
+| Concrete dependency construction | `DI` or established Factory registration |
 
 ## Rules
 
-- For generated or updated file header comments, always use
-  `Created by Vu The Anh`; never use `HoanPC`, `CarWidget`, or another
-  project/person name.
-- Follow existing MVI/container patterns for new screens.
-- Keep networking and persistence out of SwiftUI views.
-- Put reusable business logic in use cases, services, repositories, or extensions based on the closest existing pattern.
+- Use `Created by Vu The Anh` in generated or updated file headers.
+- Views render state and send intents; keep networking, persistence, SDK
+  ownership, and business rules outside Views.
+- Containers consume use cases when a domain layer exists; never inject a
+  concrete Data service or repository into a screen.
+- Put repository protocols in Domain and implementations in Data.
+- Keep Domain independent of SwiftUI, UIKit, persistence frameworks,
+  networking clients, platform managers, and concrete SDKs.
+- Keep DTOs, database records, API responses, and mappers in Data; expose
+  domain entities across the Domain boundary.
+- Keep UI-only colors, fonts, images, formatting, and view extensions in
+  Presentation or shared UI infrastructure, not Domain.
 - Prefer router abstractions over direct presentation hacks.
-- Keep page navigation on the originating router stack. `ObservedStack.sheet`
-  wraps presented content in a nested `AppRouter.Stack`, so the injected sheet
-  router does not own the parent's `sheetRoute`.
-- Presented sheet Views self-dismiss with `@Environment(\.dismiss)`. For async
-  completion, publish a dismissal request from the Container and observe it in
-  the View. Reserve `router.dismissSheet()` for the presenting parent router.
-- Keep feature-specific code near the feature folder.
-- Keep all models/entities/default/static/mock data under
-  `MT-CleanArchitecture/Domain/Entities` feature/shared subfolders; do not
-  declare them in Views, Containers, Exts, services, repositories, or factories.
-- Keep reusable type extensions in `BaseSwiftUI/Exts`.
-- Avoid broad refactors unless they directly reduce duplication needed by the requested change.
+- Keep push destinations on the originating router stack. Sheet content
+  self-dismisses with `@Environment(\.dismiss)`; the presenting router owns
+  `dismissSheet()`.
+- Keep feature-specific code near its feature and app-wide primitives in the
+  existing shared Base folders.
+- Avoid broad refactors unless they directly support the requested change.
+
+## Anti-patterns
+
+- Do not put repository protocols beside implementations in Data.
+- Do not return SwiftUI or UIKit types from Domain.
+- Do not leak DTOs or database records into Presentation.
+- Do not let a Container instantiate repositories, API clients, or storage
+  backends.
+- Do not mix unrelated feature DTOs, entities, and presentation items in one
+  global `Models` folder.
+- Do not add a pass-through use case or empty layer only to match a diagram.
 
 ## Validation
 
-- Confirm new code belongs to the selected layer.
-- Check whether names and file placement match neighboring code.
-- Verify no screen gained service or persistence logic that should live in a lower layer.
-- Exercise `push -> sheet -> dismiss -> Back` after navigation changes and
-  confirm presentation ownership remains synchronized.
+- Confirm every dependency crosses toward Domain abstractions.
+- Search Domain for forbidden UI, persistence, network, and SDK imports.
+- Confirm View/Container code does not construct concrete Data dependencies.
+- Check Factory keys, routes, parameters, and injected types match.
+- Inspect `push -> sheet -> dismiss -> Back` after navigation changes; report
+  runtime verification only when actually exercised on an authorized device.
+- Run focused behavior tests for changed contracts where available, then
+  `git diff --check` and one `generic/platform=iOS` workspace build after the
+  coherent change. Repeat after fixes/new changes; no automatic Simulator.
