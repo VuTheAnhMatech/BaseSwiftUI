@@ -12,7 +12,7 @@ typealias RouterController = AppRouter<AppNavigationRoute>
 
 enum AppNavigationRoute: AppRoute {
     case home
-    case detail
+    case detail(HomeItem)
 
     var id: Self { self }
 
@@ -21,8 +21,8 @@ enum AppNavigationRoute: AppRoute {
         switch self {
         case .home:
             Container.shared.homeView()
-        case .detail:
-            SampleDetailView()
+        case .detail(let item):
+            HomeDetailView(item: item)
         }
     }
 }

@@ -53,3 +53,17 @@ Existing BaseSwiftUI roots remain valid:
 
 Views render state and send intents. Containers depend on UseCases. Data
 implementations are selected only at the Factory/DI composition boundary.
+
+Defaults and mocks live beside the model they describe in the same layer.
+UI-only row/tab/section items and preview samples belong in separate files
+under `MT-Screens/<Feature>`, not in Domain, View bodies, or Containers.
+Feature/State/Intent remain with their MVI Container. Do not migrate unrelated
+legacy models just to normalize folder placement.
+
+## Working example
+
+Home implements `HomeContainer -> LoadHomePosts -> HomePostRepository ->
+RemoteHomePostRepository -> APIService`. `HomePostDTO` is decoded in Data,
+`HomePost` crosses the Domain boundary, and `HomeItem` belongs to Presentation.
+Factory constructs the concrete dependencies. Read `docs/home-sample.md` for
+the endpoint, lifecycle behavior, and manual verification scenarios.

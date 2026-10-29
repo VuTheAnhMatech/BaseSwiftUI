@@ -16,6 +16,6 @@ extension Container {
     }
 
     var homeContainer: Factory<HomeContainer> {
-        self { MainActor.assumeIsolated { HomeContainer() } }
+        self { MainActor.assumeIsolated { HomeContainer(loadPosts: self.loadHomePosts()) } }
     }
 }

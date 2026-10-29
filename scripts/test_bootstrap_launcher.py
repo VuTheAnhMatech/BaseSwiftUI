@@ -49,9 +49,9 @@ class LauncherTests(unittest.TestCase):
         self.assertEqual(result.returncode == 0, success, result.stdout + result.stderr)
         return result
 
-    def test_auto_uses_committed_local_snapshot(self):
+    def test_explicit_local_uses_committed_snapshot(self):
         (self.source / "value.txt").write_text("uncommitted edit\n")
-        result = self.run_launcher()
+        result = self.run_launcher("--local", self.source)
         self.assertIn("committed local", result.stdout)
         self.assertEqual((self.target / "generated.txt").read_text(), "committed snapshot\n")
         self.assertEqual((self.source / "value.txt").read_text(), "uncommitted edit\n")
@@ -77,7 +77,7 @@ class LauncherTests(unittest.TestCase):
             self.run_launcher(*args, success=False)
         self.assertFalse((self.target / "generated.txt").exists())
 
-    def test_remote_selection_uses_clone_without_network_in_fixture(self):
+    def remote_environment(self, source=None, fail=False):
         bindir = self.root / "bin"
         bindir.mkdir()
         fake = bindir / "git"
@@ -85,15 +85,46 @@ class LauncherTests(unittest.TestCase):
             "#!/usr/bin/python3\nimport os,sys\n"
             "args=sys.argv[1:]\n"
             "if args[0]=='clone':\n"
+            "    if os.environ.get('FIXTURE_FAIL')=='1': sys.exit(1)\n"
             "    args=['clone','--quiet',os.environ['FIXTURE_SOURCE'],args[-1]]\n"
             "os.execv(os.environ['FIXTURE_GIT'],[os.environ['FIXTURE_GIT'],*args])\n"
         )
         fake.chmod(0o755)
-        env = dict(os.environ, PATH=str(bindir) + os.pathsep + os.environ["PATH"],
-                   FIXTURE_SOURCE=str(self.source), FIXTURE_GIT=GIT)
+        return dict(os.environ, PATH=str(bindir) + os.pathsep + os.environ["PATH"],
+                    FIXTURE_SOURCE=str(source or self.source), FIXTURE_GIT=GIT,
+                    FIXTURE_FAIL="1" if fail else "0")
+
+    def test_remote_selection_uses_clone_without_network_in_fixture(self):
+        env = self.remote_environment()
         result = self.run_launcher("--remote", env=env)
         self.assertIn("Downloading", result.stdout)
         self.assertEqual((self.target / "generated.txt").read_text(), "committed snapshot\n")
+
+    def test_default_fetches_remote_again_even_with_nearby_local_checkout(self):
+        remote = self.root / "Remote"
+        subprocess.run([GIT, "clone", "--quiet", str(self.source), str(remote)], check=True)
+        (self.source / "value.txt").write_text("local-only version\n")
+        self.git("add", "value.txt")
+        self.git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                 "-c", "commit.gpgSign=false", "commit", "-qm", "local-only")
+        env = self.remote_environment(remote)
+        result = self.run_launcher(env=env)
+        self.assertIn("Downloading", result.stdout)
+        self.assertEqual((self.target / "generated.txt").read_text(), "committed snapshot\n")
+        (remote / "value.txt").write_text("new remote version\n")
+        subprocess.run([GIT, "-C", str(remote), "add", "value.txt"], check=True)
+        subprocess.run([GIT, "-C", str(remote), "-c", "user.name=Fixture",
+                        "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgSign=false",
+                        "commit", "-qm", "new remote"], check=True)
+        self.run_launcher(env=env)
+        self.assertEqual((self.target / "generated.txt").read_text(), "new remote version\n")
+
+    def test_download_failure_does_not_use_local_checkout_or_change_destination(self):
+        marker = self.target / "keep.txt"
+        marker.write_text("existing content\n")
+        self.run_launcher(env=self.remote_environment(fail=True), success=False)
+        self.assertEqual(marker.read_text(), "existing content\n")
+        self.assertFalse((self.target / "generated.txt").exists())
 
 
 if __name__ == "__main__":

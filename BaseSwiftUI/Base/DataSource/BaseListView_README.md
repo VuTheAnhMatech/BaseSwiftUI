@@ -35,28 +35,11 @@ mutable display fields or array positions.
 
 ## Container ownership
 
-```swift
-final class HomeContainer: BaseRouteContainer<HomeFeature, AppNavigationRoute> {
-    let dataSource = BaseDataSource<HomeItem>()
-
-    override init() {
-        super.init()
-
-        dataSource.selectedValue
-            .sink { [weak self] item in self?.send(.select(item)) }
-            .store(in: &cancellables)
-    }
-
-    override func handleIntent(_ intent: HomeFeature.Intent) {
-        switch intent {
-        case .load:
-            dataSource.setListItem(HomeItem.defaults)
-        case .select:
-            router?.push(route: .detail)
-        }
-    }
-}
-```
+See `MT-Screens/Home/HomeContainer.swift` for the executable example: it receives
+`LoadHomePostsUseCase`, maps domain posts into presentation `HomeItem` values,
+updates its data source, and subscribes to `selectedValue` to send `.select`.
+Selection pushes `.detail(item)` on the existing router. See
+`docs/home-sample.md` for loading, errors, retry, cancellation, and DI.
 
 ## View rendering
 
@@ -86,8 +69,9 @@ small UI-local response that does not duplicate domain/navigation behavior.
   index-based behavior, including an optional nil item for an invalid row.
 - Data-source mutations and events are isolated to `@MainActor`.
 - Mutate data only through `BaseDataSource` methods or its owning Container.
-- Keep default/static lists with their entity under
-  `MT-CleanArchitecture/Domain/Entities`, not in the View.
+- Keep defaults/static lists beside their owning model in its layer, not in
+  the View or Container. Follow `MT-CleanArchitecture/README.md`: business
+  models in Domain, transport models in Data, UI-only items in `MT-Screens`.
 - Keep a constant top-level row shape and stable identity for smooth diffing.
 - Keep fixed overlays/footers from covering the final item by providing the
   required bottom content inset at the owning layout.

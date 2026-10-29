@@ -1,8 +1,9 @@
 # BaseSwiftUI MVI Module Guide
 
 Use this guide when creating or reviewing a screen module. Mirror the nearest
-feature first; `Home` is the current routed example and `Splash` is the current
-non-routed example.
+feature first; `Home` is the current routed API-backed example and `Splash` is
+the current non-routed example. See `docs/home-sample.md` for Home's full flow,
+dependency construction, lifecycle, and verification scenarios.
 
 ## Module shape
 
@@ -88,7 +89,7 @@ struct ProfileView: View {
     @StateObject var container: ProfileContainer
 
     var body: some View {
-        BaseText(container.state.title)
+        BaseText(container.state.title, font: .plusJakartaSansRegular, size: 17)
             .task { container.send(.appear) }
     }
 }
@@ -104,7 +105,7 @@ final class ProfileContainer: BaseRouteContainer<ProfileFeature, AppNavigationRo
     override func handleIntent(_ intent: ProfileFeature.Intent) {
         switch intent {
         case .didTapPrimary:
-            router?.push(route: .detail)
+            router?.push(route: .home)
         case .appear:
             break
         }
@@ -152,8 +153,10 @@ the nearest parameterized feature rather than inventing a default `String` ID.
 ## Checklist
 
 - Place feature files under `BaseSwiftUI/MT-Screens/<Feature>/`.
-- Place reusable models/default data under
-  `MT-CleanArchitecture/Domain/Entities/<Feature>/`.
+- Follow `MT-CleanArchitecture/README.md` for model ownership: business entities
+  in Domain, transport/storage models in Data, and UI-only items in separate
+  files under `MT-Screens/<Feature>`. Defaults/mocks stay beside their owner in
+  the same layer; keep them out of View bodies and Containers.
 - Keep the View render-only and forward interactions as intents.
 - Keep async work cancellable and owned by the Container/use-case layer.
 - Keep route cases, route content, factories, and injected types consistent.

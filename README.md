@@ -13,7 +13,7 @@ Reusable iOS starter project extracted from EmojiAIMaker's proven foundations.
 - Alamofire-based networking foundation
 - UserDefaults property wrapper
 - Plus Jakarta Sans and reusable color assets
-- A small Home feature demonstrating the expected folder structure
+- An API-backed Home sample with loading, error/retry, empty state, and typed detail navigation
 - Filesystem-synchronized Xcode folders, matching the EmojiAIMaker project
 
 ## Project structure
@@ -33,7 +33,8 @@ BaseSwiftUI/
   Helper/
   Libs/
   MT-CleanArchitecture/
-    Domain/Entities/
+    Domain/{Entities,Repositories,UseCases}/
+    Data/{DTOs,Repositories}/
   MT-Factory/
   MT-Screens/
   Resources/
@@ -49,6 +50,16 @@ BaseSwiftUI/
 - IAP SDK and purchase flows
 - Messages extension and app-specific entitlements
 - Private binary frameworks; dependencies use CocoaPods
+
+## Home sample and CI planning
+
+See [Home sample](docs/home-sample.md) for the complete Container → UseCase →
+Repository → API flow. The sample uses the public JSONPlaceholder posts API;
+it needs internet access but no account or API key. Errors remain visible with
+a retry action; no successful response is silently replaced with fake content.
+
+See [CI options](docs/ci-options.md) for a proposed adoption path. This document
+is advice only; application CI and new test targets have not been configured.
 
 ## Generate and build
 
@@ -82,7 +93,7 @@ contents are deleted before generation. No backup is created. An existing
 `.git` directory is preserved. For safety, a non-empty destination must contain
 a top-level `.xcodeproj`; unrelated non-empty folders are rejected.
 
-### Use a committed template snapshot
+### Use the latest published template
 
 Copy `scripts/BaseSwiftUI.sh` to `~/Desktop/SDKBase/`. From the destination
 project folder, run:
@@ -91,14 +102,15 @@ project folder, run:
 sh /Users/vutheanh/Desktop/SDKBase/BaseSwiftUI.sh
 ```
 
-The launcher prefers the committed HEAD of the nearby
-`~/Desktop/Githubs/BaseSwiftUI` checkout (or its own parent when run from this
-repo's `scripts/`). It exports a clean snapshot, including committed skills
-and references, and validates the agent setup before project generation.
-Uncommitted changes and ignored, untracked files are not included.
+Every default run downloads the latest pushed GitHub `main`, including skills,
+references, and the project bootstrap script. A nearby local checkout does not
+override that source. The launcher prints the selected commit and validates
+agent setup before generation. Internet access is required; download failure
+stops before generation without falling back to potentially stale local code.
 
-Without a nearby checkout it downloads GitHub `main`. Use `--remote` to force
-that source, or `--local /path/to/BaseSwiftUI` to select a checkout explicitly.
-Local commits reach the local launcher immediately; remote users receive them
-only after they are pushed. Run `--help` for usage. The destination replacement
-rules above still apply; the launcher refuses to run in the source checkout.
+`--remote` explicitly selects the same default behavior. For an intentional
+offline/local snapshot, use `--local /path/to/BaseSwiftUI`: this exports that
+checkout's committed HEAD and excludes uncommitted/ignored files. Push new
+template commits to `main` before expecting the default launcher to use them.
+Run `--help` for usage. The destination replacement rules above still apply;
+the launcher refuses to run in the source checkout.

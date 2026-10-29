@@ -4,8 +4,7 @@ set -eu
 
 REPOSITORY_URL="https://github.com/VuTheAnhMatech/BaseSwiftUI.git"
 BRANCH="main"
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-SOURCE_MODE=auto
+SOURCE_MODE=remote
 LOCAL_TEMPLATE=""
 
 fail() {
@@ -26,9 +25,9 @@ case "${1:-}" in
   --help|-h)
     printf '%s\n' \
       'Run from the destination project folder.' \
-      'Default: use committed HEAD of a nearby BaseSwiftUI checkout; otherwise GitHub main.' \
+      'Default: download the latest pushed GitHub main on every run (internet required).' \
       '--local /path/to/BaseSwiftUI: use that checkout committed HEAD (ignores uncommitted files).' \
-      '--remote: download GitHub main.' \
+      '--remote: same as the default; never falls back to a local checkout.' \
       'The project bootstrap may replace an existing Xcode project in the destination.'
     exit 0
     ;;
@@ -43,19 +42,6 @@ fi
 
 command -v git >/dev/null 2>&1 || fail "Máy chưa có Git."
 command -v tar >/dev/null 2>&1 || fail "Máy chưa có tar."
-
-if [ "$SOURCE_MODE" = auto ]; then
-  # Supports both this repository's scripts/ and Desktop/SDKBase/ layout.
-  for candidate in "$SCRIPT_DIR/.." "$SCRIPT_DIR/../Githubs/BaseSwiftUI"; do
-    if [ -f "$candidate/scripts/create_project.sh" ] && \
-       [ -d "$candidate/BaseSwiftUI.xcodeproj" ] && \
-       git -C "$candidate" rev-parse --verify HEAD >/dev/null 2>&1; then
-      LOCAL_TEMPLATE=$candidate
-      SOURCE_MODE=local
-      break
-    fi
-  done
-fi
 
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/BaseSwiftUI-template.XXXXXX")
 trap 'rm -rf "$TEMP_ROOT"' 0

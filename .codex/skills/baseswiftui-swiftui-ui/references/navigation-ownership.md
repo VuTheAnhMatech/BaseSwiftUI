@@ -5,7 +5,7 @@ Read for `screen` mode or changes to routes, sheets, covers, or dismissal.
 ## One screen using existing patterns
 
 The selected UI or Figma skill remains primary. Multiple files alone do not
-require architecture, model-organization, guidelines, or the full workflow.
+require architecture's model/guidelines references or the full workflow.
 
 1. Read one nearest feature and only the route/Factory definitions involved.
    Mirror construction and router injection; do not introduce another pattern.

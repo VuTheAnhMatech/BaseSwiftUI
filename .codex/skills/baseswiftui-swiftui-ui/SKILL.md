@@ -19,7 +19,7 @@ contracts or source-backed data flow belong to `baseswiftui-architecture`.
    `BaseSwiftUI/Base/DataSource`; use its documented contract.
 3. Local UI items/defaults stay beside the feature in separate files. Follow
    the model ownership in `MT-CleanArchitecture/README.md` only when unclear;
-   adding a UI item does not require the model-organization skill.
+   adding a UI item alone does not require architecture's model-ownership mode.
 4. For routes, sheets, or dismissal, read
    `references/navigation-ownership.md`.
 5. For animation, focus, programmatic scrolling, remote images, localization,
