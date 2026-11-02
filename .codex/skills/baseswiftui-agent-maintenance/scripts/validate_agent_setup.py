@@ -25,6 +25,7 @@ MAX_BOOTSTRAP_WORDS = 900
 ROUTE_MODES = {
     "baseswiftui-figma-ui": {"quick", "screen", "draft", "analyze", "assets", "compare", "flow"},
     "baseswiftui-swiftui-ui": {"local", "screen"},
+    "baseswiftui-iphone-duo": {"adapt", "assess"},
     "baseswiftui-architecture": {"change", "models", "guidelines"},
     "baseswiftui-swiftui-review": {"source", "debug", "test", "api", "trace"},
 }
@@ -33,6 +34,7 @@ EXPECTED_SKILLS = {
     "baseswiftui-architecture", "baseswiftui-swiftui-review",
     "baseswiftui-security-review", "baseswiftui-agent-maintenance",
     "baseswiftui-prompt-injection", "weekly-report",
+    "baseswiftui-iphone-duo",
 }
 COUNT_FIELDS = {"builds", "edits", "index_refreshes", "design_context_calls"}
 BOOTSTRAP_BUDGETS = {
@@ -329,7 +331,7 @@ def main() -> int:
                 errors.extend(validate_reference_links(doc))
 
     if names != EXPECTED_SKILLS:
-        errors.append(f"expected nine entry points; missing={sorted(EXPECTED_SKILLS - names)}, unexpected={sorted(names - EXPECTED_SKILLS)}")
+        errors.append(f"expected {len(EXPECTED_SKILLS)} entry points; missing={sorted(EXPECTED_SKILLS - names)}, unexpected={sorted(names - EXPECTED_SKILLS)}")
 
     figma_skill = SKILLS_ROOT / "baseswiftui-figma-ui" / "SKILL.md"
     figma_text = figma_skill.read_text(encoding="utf-8")
@@ -346,8 +348,9 @@ def main() -> int:
         "another project skill, tests, simulator",
         "build the workspace once for `generic/platform=iOS`",
         "word `compare` alone does not grant it",
-        "above 844pt uses a screen-level `ScrollView`",
-        "844pt or below uses no screen-level `ScrollView`",
+        "canvas height is not a scroll switch",
+        ".codex/skills/baseswiftui-swiftui-ui/references/adaptive-windows.md",
+        "Preserve Base renderer scroll ownership",
         "`screen`: one screen plus existing-pattern Container/items/route/Factory",
     ):
         if required not in figma_normalized:

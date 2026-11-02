@@ -1,7 +1,7 @@
 interface:
   display_name: "BaseSwiftUI Figma UI"
   short_description: "Build fast, high-fidelity BaseSwiftUI UI from Figma"
-  default_prompt: "Use $baseswiftui-figma-ui quick for a local View or screen for one screen with existing-pattern wiring. Reuse exact-node evidence and build once; flow is for multiple screens or changed contracts/data behavior."
+  default_prompt: "Use $baseswiftui-figma-ui quick for a local View or screen for existing-pattern wiring. Reuse valid evidence, resolve only concrete gaps, verify asset matches, and rebuild after further Swift edits. Use flow for multiple screens or changed contracts/data behavior."
 
 dependencies:
   tools:

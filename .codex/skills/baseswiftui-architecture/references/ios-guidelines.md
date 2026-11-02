@@ -32,7 +32,7 @@
 * **Zero One-Off Extensions**: Never create private, screen-isolated extensions for standard types (`View`, `Color`, `String`, etc.). All reusable logic must reside in `BaseSwiftUI/Exts/`.
 * **Separate Model Files**: Keep business entities, DTOs, and UI items/defaults in separate files in their owning layer. MVI Feature/State/Intent stay with the Container; no feature models in `Exts` or Factory.
 * **Safe Margins**: Ensure all scrollable content surfaces maintain a bottom padding large enough to prevent interactive elements (floating buttons, sticky footers) from overlaying content.
-* **844pt Scroll Switch**: For fixed screen content, a Figma frame above 844pt uses a screen-level `ScrollView`; a frame at or below 844pt uses no screen-level `ScrollView` and must adapt responsively from iPhone SE through iPhone 17 Pro Max. Intrinsically scrolling Base list/grid components are exempt from this screen-level switch.
+* **Adaptive Windows**: New screens support compact iPhone and resizable iPad windows, with Duo geometry handled where needed. Decide scrolling from actual content/keyboard fit, preserve state and one scroll owner, and follow `.codex/skills/baseswiftui-swiftui-ui/references/adaptive-windows.md`. Figma canvas height is not a scroll switch.
 * **No One-Off Metrics Containers**: Do not create private `Metrics`, `Constants`, or similar enums/structs only to store small layout literals used once or twice in the same SwiftUI view. Write simple values such as padding, spacing, column counts, ratios, and frame sizes directly at the callsite. Extract a named value only when it is reused meaningfully, shared across files, or represents a cross-layer contract.
 
 ## 4. Resource & Asset Management
@@ -66,7 +66,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -workspace B
 **Pre-flight Checklist**:
 - [ ] No local/private color variables are hidden inside view files.
 - [ ] All primary UI typography and actions utilize `BaseText` and `BaseButton`.
-- [ ] Fixed Figma content uses screen-level scroll only above 844pt; content at or below 844pt adapts from iPhone SE through iPhone 17 Pro Max without screen-level scroll.
+- [ ] Content and actions remain accessible in compact, wide and short windows with keyboard/Dynamic Type; scroll ownership and state survive resizing.
 - [ ] `BaseButton` keeps adaptive Liquid Glass on iOS 26+ unless the design explicitly requires `.plain`.
 - [ ] Typography uses the requested family when bundled; otherwise it falls back to the app's primary font while preserving size and closest weight.
 - [ ] All collections render through `BaseDataSource` and Base data-source views; no direct feature-view `ForEach`, `LazyVGrid`, `GridItem`, or manual cell-size math remains.

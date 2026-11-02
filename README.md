@@ -53,6 +53,11 @@ BaseSwiftUI/
 
 ## Home sample and CI planning
 
+Debug currently opens the [wallpaper paywall UI preview](docs/wallpaper-paywall-demo.md)
+from Figma. Close it to reach the [adaptive Translate demo](docs/translation-adaptive-demo.md),
+tap Settings to reopen IAP, or hold Settings → **Open API sample** to open Home. Both previews use local MVI
+state; purchases and translation services are not connected. Release starts with Home.
+
 See [Home sample](docs/home-sample.md) for the complete Container → UseCase →
 Repository → API flow. The sample uses the public JSONPlaceholder posts API;
 it needs internet access but no account or API key. Errors remain visible with
@@ -62,6 +67,17 @@ See [CI options](docs/ci-options.md) for a proposed adoption path. This document
 is advice only; application CI and new test targets have not been configured.
 
 ## Generate and build
+
+The template targets **iPhone and iPad natively** (`TARGETED_DEVICE_FAMILY = 1,2`)
+with iOS 17 minimum and Swift 5. New-screen guidance covers compact iPhone UI,
+resizable iPad windows (including iPadOS 27), and the shared layout/state needs
+of iPhone Duo. See the [adaptive-window contract](.codex/skills/baseswiftui-swiftui-ui/references/adaptive-windows.md).
+Figma, normal UI, IAP and Duo skills read that reference when layout work needs
+it; label/icon edits do not load another workflow.
+
+Device-family support is not a guarantee of every screen's runtime behavior.
+Use a capable SDK and availability checks for Duo-specific APIs; ordinary
+adaptive layout retains the iOS 17 path. Simulator/pose checks remain explicit.
 
 ```sh
 ruby scripts/generate_project.rb

@@ -90,7 +90,7 @@ Record a no-skill run with `primary: null`, no mode (or `mode: null`), and empty
 `loaded_skills`/`loaded_references`. Do not silently convert older observation
 records that lack reference evidence; recover it from the transcript first.
 
-## Nine-entry quality boundary
+## Ten-entry quality boundary
 
 Simple source explanations bypass skills; specialist diagnosis still selects
 a mode. Model ownership and complete guidelines are conditional architecture
@@ -99,7 +99,61 @@ distinct modes of swiftui-review; choosing one does not preload the others.
 The dataset includes read-only diagnosis, test plans, existing-trace analysis,
 and no-build API audits to protect authorization boundaries.
 
-The nine entry points cover this repo only; global/system/plugin skills are
+For bounded-reading changes, compare ordinary entitlement icons, exact-node
+icons, paywall sale copy, and changed unlock behavior. The first two reuse
+existing state with UI/Figma; the latter two keep IAP ownership. Inspect the
+transcript for why each extra file/reference was needed, reuse of unchanged
+evidence, and retained build/impact gates. These are manual observations, not
+properties proven by dataset validation. Changed source/design, new failures,
+or uncertain ownership require fresh evidence and relevant checks; reuse must
+not hide a stale result. Do not enforce an arbitrary file-read ceiling.
+
+The ten entry points cover this repo only; global/system/plugin skills are
 outside this count. Fewer descriptions reduce discovery text, but do not
 prove fewer billed tokens or lower task latency. Keep app-quality evidence
 separate from router/checker tests and measure real tasks before making claims.
+
+## Figma evidence and correction probes
+
+Use the partial-context, asset-mismatch, no-export, post-build-correction, and
+font-fallback cases to review actual transcripts. Check that:
+
+- Additional MCP calls resolve a named gap in the relevant node/property;
+  child-node inspection stays `quick` without unrelated screen traversal.
+- Existing assets are checked for visual match and usable resolution before
+  reuse/export. A no-export request leaves mismatches reported, not downloaded.
+- Further Swift edits trigger another build, even after a successful build;
+  unchanged design evidence is reused rather than fetched again.
+- Font fallback names the requested/used families and remaining fidelity gap;
+  successful compilation is not claimed as visual equality.
+
+Cases with recovery or iterative correction omit a fixed call/build ceiling;
+this does not excuse redundant work. Assess necessity from the transcript.
+The validator checks routing/count declarations, not these visual or causal
+properties. Do not report them as passed without actual session evidence.
+
+## Duo adaptation probes
+
+Use `duo-*` cases for `adapt` versus read-only `assess`, unavailable SDKs,
+hidden secondary panes, BaseDataSource continuity and existing screen wiring.
+Adjacent cases keep exact-node Figma, IAP, architecture and general SDK audits
+with their owners; incidental device mentions and ordinary responsive work do
+not activate Duo. Owners may read one Duo reference without loading its skill.
+
+Inspect the real artifact for iOS 17/Swift 5 compatibility, one stable Container
+and data source, accessible secondary actions, preserved scroll/draft/navigation,
+and no new-API symbols hidden only behind runtime guards on an incapable SDK.
+Check actual content/window fit instead of a fixed canvas-height scroll rule,
+while retaining exact-node visual fidelity. No automatic Simulator, toolchain
+download, CI change or upstream script execution. The case checker does not
+prove any of these behaviors; compare real runs before claiming speed gains.
+
+## Adaptive-window probes
+
+New-screen and responsive-change cases read the shared UI adaptive-window
+reference while keeping one primary skill. Cover iPad dragging, a short
+keyboard-visible Figma window, all-device Duo work, paywalls and normal new
+screens. An incidental device mention or label-only edit must not preload
+the reference. Source checks protect iOS 17, stable Container/data-source
+ownership, legal/action access and one scroll owner. Actual resizing, keyboard
+and continuity observations require an explicitly authorized runtime session.

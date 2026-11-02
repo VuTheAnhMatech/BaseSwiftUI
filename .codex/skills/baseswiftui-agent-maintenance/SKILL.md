@@ -23,7 +23,7 @@ Maintain one concise repository workflow and small, non-overlapping skills.
 ## Workflow
 
 1. Inventory current capability before adding files.
-   Keep the nine repo entry points; simple explanations bypass skills.
+   Keep the ten repo entry points, including Duo; simple explanations bypass skills.
    Preserve specialized procedures as conditional owner references.
 2. Classify each proposal as `enhance existing`, `new distinct skill`, or
    `reject`, with a concrete BaseSwiftUI compatibility reason.

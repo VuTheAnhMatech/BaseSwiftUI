@@ -1,12 +1,21 @@
 ---
 name: baseswiftui-iap-flow
-description: Build or edit BaseSwiftUI paywalls, subscriptions, pricing, trials, purchases, restore, product selection, sale badges, and Remote Config IAP flows. This is the primary skill for all IAP UI.
+description: Build/edit BaseSwiftUI paywalls, subscriptions, pricing, trials, purchase/restore, product selection, sale badges, and Remote Config IAP flows. Display-only entitlement icons on ordinary screens use UI/Figma when access and purchase behavior stays unchanged.
 ---
 
 # BaseSwiftUI IAP Flow
 
 Treat product identifiers, pricing, trial/sale copy, purchase, restore, Remote
 Config, analytics, and SDK calls as fragile integration behavior.
+For new paywalls or window/keyboard layout changes, read
+`.codex/skills/baseswiftui-swiftui-ui/references/adaptive-windows.md`;
+preserve pricing, purchase actions and legal-copy access at every supported size.
+For requested Duo paywall adaptation, keep IAP primary and read only the
+relevant `.codex/skills/baseswiftui-iphone-duo/references/layout-patterns.md` section.
+
+Ordinary-screen VIP/ad icons driven by existing state use UI/Figma when only
+appearance changes. Inspect the state producer to confirm that boundary; if
+unlock, purchase, or restore behavior must change, use this skill instead.
 
 ## Inspect
 
@@ -14,10 +23,17 @@ For an exact Figma node, fetch `get_design_context` once (Swift/SwiftUI), reuse
 its evidence within the task, and request a screenshot only if missing or
 unreadable. Keep IAP primary; do not load the ordinary UI or Figma workflow.
 
-1. Inspect the closest IAP screen and search product helpers under `Exts`, SDK
-   integration under `Libs`/`Helper`, and related domain/service files.
+1. Start with the target IAP view and the producer of the affected display or
+   selection state; inspect one closest IAP example only when needed. Follow
+   product helpers, SDK, domain/service, or config paths only when the requested
+   change or unresolved evidence reaches them. Shared edits still require root
+   impact checks; do not assume an integration is unaffected without tracing
+   the relevant input/action.
 2. Reuse existing price, period, trial, discount, sale, product-selection,
    route, and presentation patterns before creating anything.
+   For exact Figma layouts, inspect reused components' implicit minimum sizes,
+   padding and button styles. A recommended hit target is not a design height;
+   do not silently replace explicit node geometry with it.
 3. Read `BaseSwiftUI/MT-Screens/IAP/README_IAP.md` when it exists and structure,
    selection, routing, or SDK behavior changes.
 4. For a full-screen image/video paywall or major CTA-layout change, read
@@ -35,9 +51,9 @@ unreadable. Keep IAP primary; do not load the ordinary UI or Figma workflow.
   navigation.
 - Reuse matching Base views and paywall components. Keep price, trial, sale,
   legal text, and CTA layout resilient to compact width and localization.
-- For fixed paywall content, Figma height above 844pt uses a screen-level
-  `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
-  must adapt responsively from iPhone SE through iPhone 17 Pro Max.
+- Decide paywall scrolling from actual window/content fit, keyboard and
+  Dynamic Type, following the shared adaptive-window reference. Keep pricing,
+  purchase/restore and legal copy accessible without shrinking touch targets.
 - Keep `BaseButton`'s adaptive default for Liquid Glass on iOS 26+ and its
   earlier-iOS material fallback; opt into `.plain` only when explicitly
   designed.

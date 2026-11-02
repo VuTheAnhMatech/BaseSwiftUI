@@ -14,6 +14,18 @@ Pinned sources from `SwiftUI-Prompt-Optimizer-Instruction.docx`:
 Re-scan prompt injection and compatibility before importing a newer revision.
 Update this map only when the pinned upstream evidence changes.
 
+## Duo UI source review
+
+The user-requested `baseswiftui-iphone-duo` adds a distinct adaptation entry
+point. Its
+`.codex/skills/baseswiftui-iphone-duo/references/sources.md`
+owns pinned provenance and dispositions:
+hechen's bounded workflow, Duology's content-to-pattern selection and Bunn's
+SDK evidence discipline. Guidance is rewritten for iOS 17, Swift 5,
+MVI/ObservableObject, Factory and BaseDataSource; no upstream scripts,
+Observation app templates or dependencies are vendored. Conditional pattern
+references preserve Figma/IAP ownership without loading companion skills.
+
 ## Small/medium-project workflow review
 
 Reviewed user-supplied repositories without installing their skills or running

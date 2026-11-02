@@ -23,16 +23,16 @@ Documentation, metadata, and skill-only edits need no impact analysis.
 
 ## Routing and context
 
-- Simple explanations need no skill: inspect source/direct callers;
-  no edits/build/indexing. If unclear, inspect locally before routing.
-- Use one primary skill: IAP, otherwise Figma/UI;
-  architecture for contracts/data flow/model ownership; swiftui-review for
-  review/debug/test/API/trace; security-review for security audits;
-  agent-maintenance for tooling. Read mode-specific references.
+- Simple explanations: inspect source/direct callers; no skill/edit/build/index.
+- Choose one primary: IAP; exact-node Figma; Duo adaptation (`iphone-duo`);
+  ordinary UI; architecture (contracts/models); swiftui-review
+  (review/debug/test/API/trace); security-review; agent-maintenance (tooling).
+- Read target/direct dependencies; expand for uncertainty, failures, or shared contracts.
+  Never preload neighboring skills.
 - One local Figma View uses `quick`: no companion skill, workflow, GitNexus,
   tests, or Simulator. One screen with existing-pattern Container/items/route/
   Factory uses `screen`; shared-symbol impact applies. File count cannot escalate scope.
-- Load conditional references only; reuse unchanged context.
+- Load required references only; reuse unchanged source/design evidence.
   Read `AI-Workflow/WORKFLOW_AI.md` only for architecture/data-flow decisions.
 - After Swift edits, build once for `generic/platform=iOS`; repeat after
   changes. Simulator requires explicit user request.

@@ -7,6 +7,9 @@ description: Review, debug, or test BaseSwiftUI; inspect source performance, ana
 
 Preserve iOS 17, Swift 5, MVI, Combine/ObservableObject, Factory, CocoaPods,
 and the workspace. Select one mode from the requested outcome, not keywords.
+Focused Duo UI adaptation/assessment uses `baseswiftui-iphone-duo`;
+general audits, test work and SDK reviews stay here. If needed, read only the
+relevant Duo reference without loading its implementation workflow.
 
 ## Conditional modes
 

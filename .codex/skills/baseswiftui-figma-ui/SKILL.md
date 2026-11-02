@@ -9,7 +9,7 @@ Use exact Figma evidence. Paywalls belong to `baseswiftui-iap-flow`.
 
 ## Routes
 
-- `quick` (default): one exact node, local View, fidelity gate, one generic build.
+- `quick` (default): one exact node, local View, fidelity gate, build after edits.
 - `screen`: one screen plus existing-pattern Container/items/route/Factory.
 - `draft`: edit without building only when the user explicitly requests it.
 - `analyze`: report only; do not edit.
@@ -23,23 +23,24 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
 
 ## Quick route
 
-1. Call `get_design_context` once for the exact node with language `swift` and
-   framework `swiftui`; reuse it during this task unless the design changes.
-   Use its screenshot as visual truth; request one exact-node screenshot only
-   if absent or unreadable.
+1. Call `get_design_context` once initially for the exact node (Swift/SwiftUI).
+   Reuse evidence unless design changes. If truncated, missing, or ambiguous, name the gap and
+   query only the relevant child node/property; use metadata to locate it if needed.
+   This does not change `quick` to `flow`. Retry failed calls only when useful;
+   report inaccessible evidence rather than inventing values or repeating broad calls.
+   Use its exact-node screenshot as visual truth; request one only if absent or unreadable.
 2. Open only the target View and exact reused component/asset definitions via
-   bounded `rg`. If the user says assets exist, reuse them and never export.
+   bounded `rg`. Check assets against design/resolution and controls for implicit minimums/padding; layout bounds differ from hit targets.
+   Export only missing/mismatched/insufficient assets; honor explicit no-export requests.
 3. Classify `frame · spacing · type · effects · assets · safe area` as Figma
-   evidence, project mapping, or unresolved; output no plan. Resolve only
-   material unknowns with the specific evidence call needed. Load no generic
-   Figma guideline resources.
-4. Edit the View once while keeping these contracts:
+   evidence, project mapping, or unresolved; output no plan. Load no generic Figma guidelines.
+4. Make a coherent edit; correct concrete defects or fidelity gaps while keeping these contracts:
    - Render state and forward intents; keep business logic outside Views. Reuse Base components/tokens. Put cross-screen typed UI, generic UI adapters/layouts, and app-wide overlays in `Widgets` with a README contract; never bind them to one Container or move feature-local UI there.
    - Preserve explicit Figma icon, button, artwork, card-height, radius, spacing,
      typography, and effect values. Only Auto Layout stretch/fill regions become
      flexible. Compress flexible space first on small devices; never apply a
      whole-screen ratio, `scaleEffect`, or silent element resize.
-   - Fixed content above 844pt uses a screen-level `ScrollView`; 844pt or below uses no screen-level `ScrollView` and adapts from iPhone SE through iPhone 17 Pro Max. Intrinsic Base lists/grids keep their scroll contract.
+   - For new screens or responsive/window/keyboard layout changes, read `.codex/skills/baseswiftui-swiftui-ui/references/adaptive-windows.md`; keep Figma primary. Decide scrolling from actual available space, content, keyboard and Dynamic Type; canvas height is not a scroll switch. Preserve Base renderer scroll ownership. Only explicit Duo geometry work loads the relevant Duo pattern reference.
    - Only backgrounds may `ignoresSafeArea()`. Foreground anchors to dynamic
      iOS safe areas; never hard-code 44pt/34pt or branch by device. Treat system
      insets separately from design spacing, and never convert Figma status-bar
@@ -49,7 +50,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
      `safeAreaInset`, or explicit calculation—so it is never added twice.
    - Reuse an exact app asset. Group new sets in namespaced screen folders and
      reference paths such as `Home/ic_setting`; cross-screen assets belong in
-     `Shared`. If missing, acquire the exact Figma asset rather than redraw it.
+     `Shared`. Acquire exact assets when reuse fails; never redraw them or overwrite shared assets blindly.
      Raster imports use `@2x`/`@3x` only; omit `@1x` and never upscale.
    - Reuse catalog RGBA via typed resources (`Color(.OP.OP_01)`), never strings;
      never RGB/hex. If missing, use the Figma variable/style path
@@ -66,12 +67,12 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
    - interactive Figma glass maps to
      `BaseButton(style: .liquidAdaptive, ...)`; static glass uses an equivalent
      surface with matching shape/effect and earlier-iOS fallback;
-   - header and bottom content anchor to their dynamic safe areas exactly once;
-     responsive and 844pt rules preserve the baseline design.
+   - header/footer apply dynamic safe areas once; distinguish node padding from sibling gaps, and preserve Figma row heights instead of silently enlarging them for hit targets;
+     adaptive layout preserves the reference design and keeps actions reachable.
 6. Do not run prompt-injection scanning, GitNexus, `WORKFLOW_AI.md`, another
    project skill, tests, simulator, runtime capture, or pixel diff. Run
    `git diff --check`, then build the workspace once for `generic/platform=iOS`.
-   Rebuild only after fixing a compiler error.
+   Rebuild after further Swift changes, including visual fixes after a successful build.
 7. Report files, reused/acquired assets/components, compile status, and unresolved
    evidence. Build success proves compilation, not visual equality;
    claim runtime pixel validation only when explicitly authorized and executed.
@@ -81,9 +82,9 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
 - `draft`: follow quick rules, skip the build, report unverified compilation.
 - `screen`: keep quick evidence/fidelity rules; expand source reads using
   `.codex/skills/baseswiftui-swiftui-ui/references/navigation-ownership.md` without
-  loading another skill. Root shared-symbol impact applies; build once.
-- `flow`: read `references/feature-flow.md`; inspect child screens only for
-  multi-screen work. Load only guidance for the contract/data boundary crossed.
+  loading another skill. Root shared-symbol impact and step 6 build rules apply.
+- `flow`: read `references/feature-flow.md` for the contract/data boundary crossed;
+  child-node evidence alone does not require this mode.
 - `analyze`: inspect evidence and report; no edits, build, or indexing.
 - `assets`: prefer an exact existing asset; otherwise acquire only the exact
   selected-node asset. Preserve screen/shared namespaces and scale rules.
@@ -93,7 +94,7 @@ Require a node-specific link. Ask for **Copy link to selection** only when its
 
 Use the Figma family when bundled and registered; otherwise use the app's
 primary bundled font. Preserve Figma size and map weight to the exact or closest
-bundled face. Add no missing font unless requested. Treat generated reference
-code as structural evidence only.
+bundled face. For fallback, report requested/used fonts and unresolved wrapping/metric differences.
+Add no missing font unless requested; generated code is structural evidence only.
 
 Short invocation: `$baseswiftui-figma-ui quick|screen|draft|analyze|assets|compare|flow <node-url>`

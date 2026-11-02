@@ -1,6 +1,6 @@
 ---
 name: baseswiftui-swiftui-ui
-description: Edit normal BaseSwiftUI UI or add one screen with existing-pattern Container, UI items, route and Factory wiring. Excludes exact Figma nodes, paywalls, and changes to shared architecture contracts or data flow.
+description: Edit normal BaseSwiftUI UI or add one screen with existing-pattern Container, UI items, route and Factory wiring. Excludes Duo adaptation, exact Figma nodes, paywalls, and changes to shared architecture contracts or data flow.
 ---
 
 # BaseSwiftUI SwiftUI UI
@@ -9,10 +9,19 @@ Use `local` for an existing View/component edit; `screen` for one screen with
 existing-pattern Container/items/route/Factory. Exact Figma nodes belong to
 `baseswiftui-figma-ui`, paywalls to `baseswiftui-iap-flow`. Changed shared
 contracts or source-backed data flow belong to `baseswiftui-architecture`.
+Explicit Duo layout adaptation uses `baseswiftui-iphone-duo`; an incidental
+device mention or ordinary iPad/responsive work stays here.
+
+Display-only VIP/ad icons on ordinary screens stay here (or Figma for an exact
+node) when item type and entitlement state already exist. Paywalls, pricing,
+purchase/restore, or changes to unlock rules belong to `baseswiftui-iap-flow`.
 
 ## Inspect only what is needed
 
-1. Read the target and direct reused definitions. For `screen`, inspect one
+1. Read the target, direct state producer, and reused definitions needed for
+   the requested behavior. Stop expanding when those contracts are clear;
+   follow additional callers only for a concrete uncertainty or shared edit.
+   For `screen`, inspect one
    closest feature and `references/navigation-ownership.md`; do not survey all Base,
    Widgets, Exts, or screens. Reuse unchanged context within the task.
 2. For repeated UI, inspect the closest component under
@@ -25,6 +34,9 @@ contracts or source-backed data flow belong to `baseswiftui-architecture`.
 5. For animation, focus, programmatic scrolling, remote images, localization,
    Charts, or previews, read only the relevant section of
    `references/interaction-content-patterns.md`.
+6. For new screens or responsive/window/keyboard layout changes, read
+   `references/adaptive-windows.md`. It covers iPhone, resizable iPad and the
+   shared Duo foundation; simple label/icon edits do not preload it.
 
 ## Implement
 
@@ -67,10 +79,9 @@ contracts or source-backed data flow belong to `baseswiftui-architecture`.
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.
-- For fixed screen content, Figma height above 844pt uses a screen-level
-  `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
-  must adapt responsively from iPhone SE through iPhone 17 Pro Max. Base
-  list/grid components remain intrinsically scrollable regardless of height.
+- Decide scrolling from available space, intrinsic content, keyboard and
+  Dynamic Type; Figma canvas height is not a scroll switch. Preserve Base
+  renderer scroll ownership and state, as `references/adaptive-windows.md` describes.
 - Keep layouts responsive to compact width. `Image("ic_close")` remains
   exactly 40×40.
 - Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local

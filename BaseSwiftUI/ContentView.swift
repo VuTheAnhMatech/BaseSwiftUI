@@ -22,7 +22,12 @@ struct ContentView: View {
                     .transition(.opacity.combined(with: .scale(scale: 1.04)))
             } else {
                 RouterController.Stack {
+                    #if DEBUG
+                    WallpaperPaywallDemoHost()
+                        .toolbar(.hidden, for: .navigationBar)
+                    #else
                     Container.shared.homeView()
+                    #endif
                 }
                 .transition(.opacity)
             }
