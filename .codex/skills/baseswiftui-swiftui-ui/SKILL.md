@@ -1,42 +1,29 @@
 ---
 name: baseswiftui-swiftui-ui
-description: Edit normal BaseSwiftUI UI or add one screen with existing-pattern Container, UI items, route and Factory wiring. Excludes Duo adaptation, exact Figma nodes, paywalls, and changes to shared architecture contracts or data flow.
+description: Build, edit, or polish normal BaseSwiftUI views, screens, shared UI, layouts, view routes, and view-local MVI wiring. Excludes IAP and paywalls.
 ---
 
 # BaseSwiftUI SwiftUI UI
 
-Use `local` for an existing View/component edit; `screen` for one screen with
-existing-pattern Container/items/route/Factory. Exact Figma nodes belong to
-`baseswiftui-figma-ui`, paywalls to `baseswiftui-iap-flow`. Changed shared
-contracts or source-backed data flow belong to `baseswiftui-architecture`.
-Explicit Duo layout adaptation uses `baseswiftui-iphone-duo`; an incidental
-device mention or ordinary iPad/responsive work stays here.
-
-Display-only VIP/ad icons on ordinary screens stay here (or Figma for an exact
-node) when item type and entitlement state already exist. Paywalls, pricing,
-purchase/restore, or changes to unlock rules belong to `baseswiftui-iap-flow`.
+Complete workflow for normal in-app UI. Route paywalls/IAP to
+`baseswiftui-iap-flow`.
 
 ## Inspect only what is needed
 
-1. Read the target, direct state producer, and reused definitions needed for
-   the requested behavior. Stop expanding when those contracts are clear;
-   follow additional callers only for a concrete uncertainty or shared edit.
-   For `screen`, inspect one
-   closest feature and `references/navigation-ownership.md`; do not survey all Base,
-   Widgets, Exts, or screens. Reuse unchanged context within the task.
+1. Inspect the closest screen with the same shape and reuse from
+   `BaseSwiftUI/Base`, `Widgets`, `Exts`, resources, and the nearby feature.
 2. For repeated UI, inspect the closest component under
    `BaseSwiftUI/Base/DataSource`; use its documented contract.
-3. Local UI items/defaults stay beside the feature in separate files. Follow
-   the model ownership in `MT-CleanArchitecture/README.md` only when unclear;
-   adding a UI item alone does not require architecture's model-ownership mode.
+3. If models, enums, defaults, mocks, or list inputs change, also use
+   `baseswiftui-model-organization`.
 4. For routes, sheets, or dismissal, read
    `references/navigation-ownership.md`.
 5. For animation, focus, programmatic scrolling, remote images, localization,
    Charts, or previews, read only the relevant section of
    `references/interaction-content-patterns.md`.
-6. For new screens or responsive/window/keyboard layout changes, read
-   `references/adaptive-windows.md`. It covers iPhone, resizable iPad and the
-   shared Duo foundation; simple label/icon edits do not preload it.
+
+For requested iPad/window adaptation, read `references/adaptive-windows.md`
+and use content fit instead of the 844pt rule. Duo adaptation uses `baseswiftui-iphone-duo`.
 
 ## Implement
 
@@ -49,9 +36,9 @@ purchase/restore, or changes to unlock rules belong to `baseswiftui-iap-flow`.
   overlays in `Widgets`. Configure visual widgets by focused types/models and
   action closures, document the contract and call site in `Widgets/README.md`,
   and keep Container state/intents and feature-specific UI outside.
-- Keep business entities in Domain and UI-only items in `MT-Screens/<Feature>`;
-  defaults stay beside their model. Preserve legacy placement unless moving
-  models is requested. Keep Feature/State/Intent with the Container.
+- Put screen/domain entities and reusable default/mock data under
+  `MT-CleanArchitecture/Domain/Entities`, using a feature folder unless truly
+  shared app-wide.
 - Use existing router and Factory patterns for navigation and dependencies.
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
@@ -79,9 +66,10 @@ purchase/restore, or changes to unlock rules belong to `baseswiftui-iap-flow`.
 - Render repeated content with `BaseDataSource` plus `BaseGridView`,
   `BaseScrollView`, `BaseStackView`, `BaseLazyListView`, or `BaseListView`.
   Feature Views do not create direct collection loops or manual cell widths.
-- Decide scrolling from available space, intrinsic content, keyboard and
-  Dynamic Type; Figma canvas height is not a scroll switch. Preserve Base
-  renderer scroll ownership and state, as `references/adaptive-windows.md` describes.
+- For fixed screen content, Figma height above 844pt uses a screen-level
+  `ScrollView`; height at or below 844pt uses no screen-level `ScrollView` and
+  must adapt responsively from iPhone SE through iPhone 17 Pro Max. Base
+  list/grid components remain intrinsically scrollable regardless of height.
 - Keep layouts responsive to compact width. `Image("ic_close")` remains
   exactly 40×40.
 - Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local
@@ -94,10 +82,10 @@ purchase/restore, or changes to unlock rules belong to `baseswiftui-iap-flow`.
 Check render-only View ownership, model/list placement, reuse, route/Factory
 consistency, compact width, clipping, Dynamic Type, VoiceOver labels/order,
 touch targets, Reduce Motion where relevant, and the states changed by the
-task. Inspect affected navigation and dismissal edges; runtime checks require
-an available authorized device. Build once through `BaseSwiftUI.xcworkspace`
-for `generic/platform=iOS` when Swift changed; repeat after fixes/new changes. Never
+task. Exercise affected navigation and dismissal edges. Build through
+`BaseSwiftUI.xcworkspace` for `generic/platform=iOS` when Swift changed. Never
 select, build, boot, or open Simulator unless the user explicitly requests it.
 
-Use `baseswiftui-swiftui-review` for a dedicated audit or Instruments trace, and
+Use `baseswiftui-swiftui-review` for a dedicated audit,
+`baseswiftui-performance-trace` for Instruments, and
 `baseswiftui-security-review` for a dedicated trust-boundary review.

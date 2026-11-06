@@ -22,8 +22,8 @@ an ordinary UI edit into adaptation. Simple code explanations need no skill.
    verify the selected SDK and current Apple declaration. Reuse unchanged
    evidence. Ordinary iOS 17 layout work does not need a full SDK scan.
 4. Keep one primary skill: exact-node work uses Figma, paywalls use IAP,
-   shared architecture redesign uses architecture, general review/test/API
-   audits use swiftui-review. Those owners may read the relevant Duo reference
+   shared architecture redesign uses architecture, reviews use swiftui-review,
+   debug/tests use ios, SDK audits use api-maintenance and traces use performance-trace. Those owners may read the relevant Duo reference
    without loading this workflow. Camera capture/dual-display pipelines are
    outside this UI skill; scope their architecture and permissions separately.
 

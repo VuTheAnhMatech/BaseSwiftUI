@@ -32,10 +32,7 @@
 - Confirm BaseDataSource is owned outside the View and feature screens do not
   duplicate raw collection loops.
 - Verify filtered items still emit the correct source-array `IndexPath`.
-- Follow `BaseSwiftUI/MT-CleanArchitecture/README.md` ownership: business
-  entities in Domain, transport models in Data, UI-only items in Presentation.
-  Defaults/mocks stay beside their model; legacy folder placement alone is not
-  a correctness bug or authorization to migrate it.
+- Keep entities, enums, defaults, and mock/sample data under Domain/Entities.
 
 ## UI and accessibility
 
