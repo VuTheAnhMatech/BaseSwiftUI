@@ -2,7 +2,10 @@
 
 Read the relevant pattern only. A screen uses the same functionality and state
 at narrow and wide sizes; extra space may expose supporting content. Do not
-make opening the device a requirement for accessing an action.
+make opening the device a requirement for accessing an action. The same screen
+composition also serves iPad windows; the shared adaptive-windows reference owns
+window dragging, geometry observation and scroll-fit rules. Add Duo region
+handling only to affected content, not to every iPad layout.
 
 ## Choose from the content relationship
 
@@ -16,12 +19,15 @@ make opening the device a requirement for accessing an action.
 
 Size class describes available space, not device identity. Inspect both width
 and height where content fit matters, including sheets and narrow windows.
+Size classes are optional: `== .regular` establishes an expanded class;
+`!= .compact` also accepts nil. Available space and content fit still matter.
 
 ## List and detail
 
 Keep the current push flow functional before adding a wide presentation.
 `HomeView`/`HomeContainer` under `BaseSwiftUI/Presentation/Screens/Home` illustrate the
-base's data source, selection intent, load/cancellation and injected router;
+base's data source, selection intent and load/cancellation. HomeContainer emits
+navigation Effects; HomeView receives them and uses its Environment router;
 they are not already a Duo split implementation.
 
 - Preserve one selected item ID and the originating navigation path. Do not
@@ -42,14 +48,21 @@ ArrangementView only after SDK/API checks; this is not required for all Duo UI.
 
 - Split keeps views in separate spaces; overlay layers them until the system
   separates them around the fold. Choose by content relationship, not pose name.
-- Axis restrictions can hide the secondary view. Provide a working button,
-  sheet or existing route to its actions when it is not visible.
+- Axis restrictions can hide the secondary view. Apple's ArrangementView
+  reference also describes primary-only presentation on the closed outer
+  display in landscape. Keep a button, sheet or existing route to secondary
+  actions; do not assume both children stay visible just because they fit.
+- In split style, primary is leading/top; in overlay style, primary is above
+  secondary on the z-axis when flat, then trailing/bottom when folded. Choose
+  primary by that relationship, not by a label such as “main content”.
 - Keep one owner for comments/draft/selection across inline and sheet versions.
   Do not dismiss and re-present sheets merely because geometry changed. If a
   product explicitly transfers editing inline, preserve draft and focus.
-- Keep navigation outside an arrangement and scrolling content inside its
-  content views. Avoid nesting arrangements with NavigationSplitView in either
-  direction without targeted evidence: Apple sources have differed here.
+- Keep navigation ownership outside the arrangement's children and scrolling
+  inside the content panes. Do not place an arrangement inside List, ScrollView
+  or Grid. Avoid combining it with NavigationSplitView in either direction
+  without targeted evidence; `sources.md` records the conflicting Apple
+  nesting guidance. Do not create another navigation owner to work around it.
 - Keep exact declarations, availability and coordinate behavior verified;
   do not turn a remembered API name into an app helper guessed to exist.
 
@@ -113,11 +126,23 @@ actual content/keyboard fit and existing renderer contracts decide scrolling,
 not mockup height. Report the adaptive arrangement where the design supplies
 only one state; do not silently invent new artwork or product behavior.
 
-Only decorative backgrounds extend into safe areas. Read each edge from the
-relevant View/scene, not a global first key window; each inset has one owner.
-ReservedRegion frames already include margins. Use the same coordinate space
-for region and content, including RTL mirroring. A displacement algorithm must
-check other controls and bounds after moving, not just clear the fold.
+Keep readable and interactive content clear of system UI; decorative backgrounds
+can extend into safe areas. Read each edge from the relevant View/scene, not a
+global first key window; each inset has one owner. For a custom pinned bar,
+`safeAreaInset` works within the iOS 17 baseline and reserves content space.
+On a capable SDK/runtime, `ContentMarginGuide.container` provides container
+margins that can be asymmetric; do not turn documented point ranges into constants.
+
+Query reserved regions at the view positioning the affected content, and react
+to geometry updates rather than caching once in onAppear. The default query
+returns active intersecting regions; `.includeInactive` is for deliberate
+planning, not evidence of a current obstruction. A partially overlapping frame
+can have negative coordinates or extend outside the view: intersect it with
+usable bounds before deriving pane dimensions, and handle insufficient space.
+Frames already include margins. SwiftUI mirrors them by default for RTL;
+use `.fixed` only with placement that does not mirror. In custom Layout, keep
+calculations in the query's coordinates and add `bounds.origin` at placement.
+After moving content, check bounds, other controls and remaining regions too.
 
 Lists and scrolling containers do not automatically split items around a
 division. Allow content across it when usable; adapt items whose readability
@@ -129,6 +154,6 @@ System navigation toolbars adapt according to supported SDK/runtime behavior.
 A custom BaseNavBar does not become vertical simply by adding a modifier.
 Preserve existing back, dismissal, loading and action contracts when choosing
 a system-toolbar presentation; do not replace the shared navbar globally.
-Keep actions reachable when moved to overflow, with labels and accessibility.
-Check actual toolbar-edge behavior instead of assuming trailing or a fixed
-bar width. Use iOS 17 presentation below new API availability.
+Use `bars-and-presentations.md` for edge semantics, action priorities and
+sheets, and `accessibility.md` when pane order or focus changes. Keep the
+existing iOS 17 presentation below new API availability.

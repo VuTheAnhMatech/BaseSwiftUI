@@ -23,7 +23,8 @@ Documentation, metadata, and skill-only edits need no impact analysis.
 
 ## Routing and context
 
-- Requested Duo uses `baseswiftui-iphone-duo`; iPad uses UI's adaptive-window reference.
+- Duo/iPad window-resize uses `baseswiftui-iphone-duo`; ordinary iPad UI uses UI.
+  Share adaptive-window guidance; retain Figma/paywall owners.
 
 - Use the smallest matching `.codex/skills/baseswiftui-*` skill. Use
   `baseswiftui-ios` only when the route is unclear.

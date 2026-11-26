@@ -1,4 +1,4 @@
 interface:
-  display_name: "BaseSwiftUI iPhone Duo"
-  short_description: "Adapt Duo UI with existing BaseSwiftUI patterns."
-  default_prompt: "Use $baseswiftui-iphone-duo adapt for the requested Duo UI change or assess for read-only advice; preserve BaseSwiftUI state, routing and iOS 17 support."
+  display_name: "BaseSwiftUI Duo & iPad Adaptive"
+  short_description: "Adapt shared Duo and resizable iPad views."
+  default_prompt: "Use $baseswiftui-iphone-duo adapt for Duo or iPad window resizing, or assess for read-only advice; reuse one screen composition and preserve BaseSwiftUI state, routing and iOS 17 support."

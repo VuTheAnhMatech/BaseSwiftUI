@@ -20,6 +20,39 @@ app-wide audit. The current UI/Figma/IAP/Duo owner remains primary.
 - A universal target permits native iPad execution; it does not prove every
   screen works at every size or that Duo-specific SDK behavior is available.
 
+## One screen composition for iPhone, iPad and Duo
+
+Keep one feature View entry point, Container/data source and intent/effect flow.
+Extract small reusable child Views rather than duplicating entire IPadScreen and
+DuoScreen implementations. Layout variations may be local subviews; “one View”
+does not require one giant body. Use the same child identities under AnyLayout
+where a layout type changes; hoisting a model alone does not preserve replaced
+scroll, focus, UIKit host or player-view state.
+
+Native navigation/presentation containers already adapt: avoid swapping a
+TabView root for a NavigationSplitView solely when a width threshold changes.
+Keep selections/routes above any unavoidable presentation boundary and preserve
+compact access to supporting content. Multi-window support still needs a distinct
+state owner per scene; sharing a View type does not mean sharing all scene state.
+
+For a UIKit/SDK representable, keep the host mounted and pass updated local size
+and environment through its update path. Size-class information comes from the
+representable's context.environment when needed. Do not rebuild the host by
+setting its identity to dimensions or reload its document when the frame changes.
+
+## iPad system-window dragging
+
+Here resizing means dragging the system window frame/corner in Windowed Apps or
+Stage Manager, or changing the app's multitasking allocation. SwiftUI receives
+new content proposals. Do not add a DragGesture or a stored root frame to imitate
+system resizing. Moving/resizing an object inside an editor is a separate task.
+
+Follow width and height continuously, including narrow, short and square windows.
+A drag can change usable height without changing horizontalSizeClass. The window
+may move as well as resize; global origins and owning-window safe regions can
+change independently. Prefer local geometry so movement alone needs no relayout.
+Keyboard, system bars and window controls can reduce the usable content area.
+
 ## Choose layout from content and current space
 
 Start with the closest feature and one usable compact presentation. At wider
@@ -86,6 +119,28 @@ View/scene and are applied once per edge; avoid UIApplication.connectedScenes
 first-window helpers for scene-specific layout. A content-size preference is
 not a guarantee that a rotated window can never become smaller.
 
+## Geometry observation and bridges
+
+Read the proposal directly for ordinary layout. When state needs a geometry
+notification, transform GeometryProxy into the smallest Equatable value that
+actually changes the decision: for example an overflow Bool or relevant size.
+Do not publish every frame into a shared Container or invalidate the whole app.
+A size-class callback alone is insufficient when the decision depends on height.
+
+The one-new-value onGeometryChange overload supports iOS 16+ in a declaring SDK;
+the old/new-value overload requires iOS 18+. Preserve iOS 17 and check the exact
+overload. An older build SDK can still lack a back-deployed API. Existing bounded
+GeometryReader/preference measurement remains a fallback; no toolchain upgrade
+is required merely for window adaptation.
+
+Use a UIKit window probe only for a demonstrated hosting/coordinate mismatch.
+Read the probe's own window and convert its safe rectangle into the consuming
+view's coordinates; intersect with local bounds. Do not reapply window insets
+to an already-safe SwiftUI proposal. React to window attachment, safe-area and
+layout changes; deduplicate updates and discard deferred callbacks after detach
+or newer geometry. Window-level measurements must not override a narrower
+sheet/column's own proposal or keyboard avoidance.
+
 ## State and performance while dragging
 
 Keep the existing Container, BaseDataSource, router path, selected ID, draft,
@@ -99,12 +154,15 @@ networking/playback. Coalesce expensive image/render-resource work only when
 necessary; normal layout must continue following the drag.
 
 Optional `onInteractiveResizeChange` (iOS 26+) reports whether the window is
-being interactively resized. It is not a size callback. Keep an iOS 17 path
-and use it only when expensive work actually benefits from deferral.
+being interactively resized. It is not a size callback or a fold event. Keep an
+iOS 17 path and use it only when expensive work actually benefits from deferral;
+ordinary SwiftUI layout, hit testing and essential state continue updating.
 `windowResizability`/`defaultSize` have iOS 17 availability in the checked SDK;
 they express sizing behavior/defaults, not a replacement for adaptive content.
-Check platform behavior before adding window preferences; do not impose an
-arbitrary global minimum that hides layout defects.
+Default size is an initial preference; restored/user-resized windows can differ.
+Availability and a macOS example are not proof of identical behavior on every
+iPadOS window mode. Check that context before adding scene preferences; do not
+impose an arbitrary global minimum that hides layout defects.
 
 ## Duo adds a separate geometry concern
 
@@ -135,12 +193,38 @@ build success do not prove drag smoothness, state continuity or Duo geometry.
 No automatic Simulator, screenshots or whole-app sweep. On unavailable SDKs,
 complete baseline layout work and identify deferred API/runtime checks.
 
-## Official evidence checked 2026-10-30
+## GameEmu examples: selective reuse
+
+The 2026-11-26 source review of GameEmu informed these patterns:
+
+- GameLibraryDetailView keeps one ScrollView and switches its child layout with
+  AnyLayout; it measures content at the resolved width to control scrolling.
+- SettingScreenView changes VStack/ZStack layout while retaining the scroll
+  content and SDK footer host. Preserve both identity and geometry constraints.
+- GamesHomeTabView owns Container/stores above presentation branches; IntroScreenView
+  owns page selection/media above its resized page canvas. Copy ownership, not
+  their Factory API or business workflows.
+- EmulatorWindowSafeAreaReader/EmulatorWindowFrameReader use their own attached
+  window, local coordinate conversion and deduplicated callbacks. They are
+  examples for justified bridges, not a requirement for every SwiftUI screen.
+
+Do not copy emulator-specific width caps, 1.15/1.30 control scaling, ad proportions,
+whole-page fold exemptions, modal geometry freezing or native-tab delegate tricks
+into the base. Retaining a modal's presenting frame must never freeze a real
+window resize or newly obstructed controls. Public system layout is the default.
+Detailed source paths, revision and evidence limits are recorded in the Duo
+skill's `references/sources.md`; GameEmu is not a dependency of generated apps.
+
+## Official evidence checked 2026-11-26
 
 - [Multitasking](https://developer.apple.com/documentation/uikit/multitasking-on-ipad-mac-and-apple-vision-pro): adapt to window size and observe geometry where needed.
 - [TN3192](https://developer.apple.com/documentation/technotes/tn3192-migrating-your-app-from-the-deprecated-uirequiresfullscreen-key): SDK 27 changes UIRequiresFullScreen to discrete scene resizing when that key applies; it is not an opt-out. Older compatibility scaling is not continuous relayout.
-- [Interactive resize](https://developer.apple.com/documentation/swiftui/view/oninteractiveresizechange(_:)): iOS 26+; declaration checked in installed SDK 27.0.
-- [Window sizing](https://developer.apple.com/documentation/swiftui/scene/windowresizability(_:)): sizing strategy, checked iOS 17 availability.
+- [Interactive resize](https://developer.apple.com/documentation/swiftui/view/oninteractiveresizechange(_:)): iOS 26+, start/end rather than size.
+- [Window sizing](https://developer.apple.com/documentation/swiftui/scene/windowresizability(_:)) and [defaultSize](https://developer.apple.com/documentation/swiftui/scene/defaultsize(width:height:)): iOS 17 declarations checked in SDK 27.1; behavior depends on the window context.
+- [onGeometryChange](https://developer.apple.com/documentation/swiftui/view/ongeometrychange(for:of:action:)): narrow observation; one-value iOS 16 and two-value iOS 18 declarations checked in SDK 27.1.
+- [HIG Layout](https://developer.apple.com/design/human-interface-guidelines/layout) and [iPadOS](https://developer.apple.com/design/human-interface-guidelines/designing-for-ipados): window/content adaptation and input modes.
+- [scrollDisabled](https://developer.apple.com/documentation/swiftui/view/scrolldisabled(_:)) and [scrollBounceBehavior](https://developer.apple.com/documentation/swiftui/view/scrollbouncebehavior(_:axes:)): scrolling and bouncing are different policies.
+- [effectiveGeometry](https://developer.apple.com/documentation/uikit/uiwindowscene/effectivegeometry): UIKit scene changes when a bridge actually needs them.
 
 Windowed Apps arrived in iPadOS 26; Stage Manager supported resizing earlier.
 Do not describe all window resizing as a new iPadOS 27 or Duo-only feature.

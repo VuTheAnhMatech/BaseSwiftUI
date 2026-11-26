@@ -9,10 +9,14 @@ Use only when the task is ambiguous or explicitly asks for debugging/testing
 without matching a specialist. Never load this router before or beside an
 already selected skill.
 
-Choose one primary destination:
+Explicit debugging or test planning/implementation stays here unless a dedicated
+review/trace/security/API specialist applies. A known layout fix is adaptation;
+a request to investigate its cause or design tests follows testing-debugging.
+For other work, choose one primary destination:
 
 - Figma node or design-led function flow → `baseswiftui-figma-ui`
-- Normal in-app UI → `baseswiftui-swiftui-ui`
+- Requested Duo or iPad window-resize adaptation → `baseswiftui-iphone-duo`
+- Normal in-app UI, including ordinary iPad layout → `baseswiftui-swiftui-ui`
 - IAP/paywall/purchase → `baseswiftui-iap-flow`
 - Non-view architecture or a non-Figma end-to-end flow →
   `baseswiftui-architecture`
