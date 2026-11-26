@@ -96,6 +96,15 @@ sets the bundle identifier to `com.emoji.ai.maker.stickermaker`, then runs
 commit so GitNexus can index immediately. It does not copy template Git
 history, generated build files, Pods, Xcode user data, or `.team-tools/.env`.
 
+Generated projects use **Splash → minimal Home** in both Debug and Release.
+Home displays its title without API requests. The starter profile removes the
+Translate/paywall/detail demo screens and their assets from the copied app;
+the demos stay in this base repository. All architecture layers, shared UI,
+agent guidance and skills are retained. Data-layer examples remain available
+for future features but are not called by the starter flow.
+Demo-dependent host tests stay in this base; run
+`python3 scripts/test_starter_profile.py` here to verify generated content.
+
 If the destination already contains an app or Xcode project, its existing
 contents are deleted before generation. No backup is created. An existing
 `.git` directory is preserved. For safety, a non-empty destination must contain

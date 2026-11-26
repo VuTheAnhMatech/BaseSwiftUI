@@ -45,6 +45,10 @@ command -v perl >/dev/null 2>&1 || fail "Máy chưa có perl."
 command -v ruby >/dev/null 2>&1 || fail "Máy chưa có Ruby."
 command -v pod >/dev/null 2>&1 || fail "Máy chưa có CocoaPods. Hãy cài bằng: sudo gem install cocoapods"
 command -v git >/dev/null 2>&1 || fail "Máy chưa có Git."
+command -v python3 >/dev/null 2>&1 || fail "Máy chưa có Python 3."
+
+# Validate the starter before touching an existing destination.
+python3 -B "$SCRIPT_DIR/apply_starter_profile.py" --check
 
 if [ -z "${DEVELOPER_DIR:-}" ] && [ -d "/Applications/Xcode.app/Contents/Developer" ]; then
   DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
@@ -73,6 +77,8 @@ printf 'Creating %s from %s...\n' "$PROJECT_NAME" "$TEMPLATE_ROOT"
 
 rsync -a \
   --exclude '.git/' \
+  --exclude '.gitnexus/' \
+  --exclude '__pycache__/' \
   --exclude '.DS_Store' \
   --exclude 'Pods/' \
   --exclude 'Podfile.lock' \
@@ -83,8 +89,11 @@ rsync -a \
   --exclude '.team-tools/.env' \
   "$TEMPLATE_ROOT/" "$DESTINATION_ROOT/"
 
+python3 -B "$SCRIPT_DIR/apply_starter_profile.py" "$DESTINATION_ROOT"
+
 mv "$DESTINATION_ROOT/$TEMPLATE_NAME" "$DESTINATION_ROOT/$PROJECT_NAME"
 mv "$DESTINATION_ROOT/$TEMPLATE_NAME.xcodeproj" "$DESTINATION_ROOT/$PROJECT_NAME.xcodeproj"
+mv "$DESTINATION_ROOT/scripts/starter/$TEMPLATE_NAME" "$DESTINATION_ROOT/scripts/starter/$PROJECT_NAME"
 
 OLD_SCHEME="$DESTINATION_ROOT/$PROJECT_NAME.xcodeproj/xcshareddata/xcschemes/$TEMPLATE_NAME.xcscheme"
 NEW_SCHEME="$DESTINATION_ROOT/$PROJECT_NAME.xcodeproj/xcshareddata/xcschemes/$PROJECT_NAME.xcscheme"

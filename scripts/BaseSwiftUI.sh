@@ -25,6 +25,7 @@ case "${1:-}" in
   --help|-h)
     printf '%s\n' \
       'Run from the destination project folder.' \
+      'Generated app: Splash -> minimal Home, with demo screens/assets omitted.' \
       'Default: download the latest pushed GitHub main on every run (internet required).' \
       '--local /path/to/BaseSwiftUI: use that checkout committed HEAD (ignores uncommitted files).' \
       '--remote: same as the default; never falls back to a local checkout.' \
