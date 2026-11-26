@@ -2,10 +2,9 @@
 
 ## Current state
 
-BaseSwiftUI does not currently contain a complete paywall flow, IAP route,
-purchase SDK bridge, product-selection screen, restore flow, or Remote Config
-mapping. `AppNavigationRoute` currently exposes only the sample Home/detail
-routes. StoreKit-related error helpers alone do not constitute an IAP feature.
+BaseSwiftUI contains a routed wallpaper paywall UI preview. Purchase, restore,
+entitlements and Remote Config are not connected. AppRoute exposes the preview;
+Core/DI constructs its Container. StoreKit error helpers do not implement billing.
 
 Do not generate references to `CustomRoute.iap`, `IAPMTSDK`,
 `BaseIAPScreenBinding`, `IAPRouteHostView`, or numbered companion-project
@@ -23,7 +22,7 @@ When the user requests an IAP implementation:
    entitlement state, errors, and test/store configuration.
 4. Keep StoreKit/SDK calls behind a service protocol and inject dependencies
    through Factory. Paywall Views render state and forward actions.
-5. Add a typed `AppNavigationRoute` case only when the paywall is routed.
+5. Add a typed `AppRoute` case only when the paywall is routed.
 6. Store no secrets in source. Product identifiers and Remote Config keys are
    configuration contracts; change them deliberately.
 7. Add legal links, accessibility, localization, loading/error states, and

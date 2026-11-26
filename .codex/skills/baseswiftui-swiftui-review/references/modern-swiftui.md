@@ -50,15 +50,11 @@ unversioned mandate.
 
 ## Navigation and accessibility
 
-- Keep page flows on their originating router stack. A sheet created by
-  `ObservedStack.sheet` owns a nested router; its View should self-dismiss with
-  `@Environment(\.dismiss)`, while only the presenting router owns
-  `sheetRoute` and may call `dismissSheet()`.
-- Give icon-only controls accessible labels, combine or hide child elements
-  intentionally, preserve sufficient touch targets, and do not encode meaning
-  with color alone.
-- Verify VoiceOver order, Dynamic Type, Reduce Motion-sensitive animation, and
-  localized text expansion for user-facing screens.
+- Keep page flows on their originating navigation node. Views receive one-shot
+  Effects and use Environment router. Sheet/modal/fade each own a path; current
+  router.dismiss closes that presentation. Native sheet/modal content may also
+  use Environment dismiss. Read Core/Navigation/README.md for root replacement.
+
 
 ## Security baseline
 

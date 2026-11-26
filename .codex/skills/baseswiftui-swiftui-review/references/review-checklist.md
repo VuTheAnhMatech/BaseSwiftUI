@@ -12,14 +12,15 @@
 
 ## Correctness and architecture
 
-- Trace View action -> Intent -> Container -> dependency/router -> updated
-  State, including cancellation and failure paths.
+- Trace View action → queued Intent → Container → UseCase/State/Effect → View
+  router, including cancellation, reappearance and failure paths.
 - Confirm Views do not perform service, repository, persistence, purchase, or
   navigation decisions directly.
 - Confirm Factory registrations, route parameters, builders, and injected
   types agree.
-- Exercise `push -> sheet -> dismiss -> Back`. Sheet content must dismiss its
-  presentation, not ask its nested router to dismiss the parent's sheet.
+- Exercise push → sheet → dismiss → Back, root replacement, native dismissal
+  completion and callback-once behavior. Use the current presentation router;
+  native sheet/modal content may also use Environment dismiss.
 - Check loading, empty, error, retry, duplicate-tap, and repeated-appearance
   behavior.
 - For authenticated networking, verify a 401 refresh is bounded and applies
@@ -32,7 +33,9 @@
 - Confirm BaseDataSource is owned outside the View and feature screens do not
   duplicate raw collection loops.
 - Verify filtered items still emit the correct source-array `IndexPath`.
-- Keep entities, enums, defaults, and mock/sample data under Domain/Entities.
+- Business models belong in Domain/Entities, transport models in Data/DTOs,
+  and UI-only items in Presentation/Screens. Defaults/mocks stay with their model.
+  State/Intent/Effect belong with the feature Container. Read docs/architecture.md.
 
 ## UI and accessibility
 
@@ -47,8 +50,8 @@
 - Look for repeated expensive work in `body`, broad observation, unstable
   identity, oversized images, unnecessary type erasure, and unbounded tasks.
 - Check secrets, production URLs/config, sensitive logs, and credential
-  storage. The current UserDefaults-backed `TokenStore` is scaffold-only;
-  production authentication requires a secure implementation.
+  storage. TokenStore is Keychain-backed; inspect migration failure, save/delete
+  errors and logout behavior. No plaintext fallback on a secure-storage error.
 - Header redaction is insufficient when DEBUG logging prints response bodies;
   check auth and personal-data endpoints for field- or endpoint-aware redaction.
 

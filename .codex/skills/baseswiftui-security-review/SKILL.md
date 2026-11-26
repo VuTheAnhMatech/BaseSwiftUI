@@ -16,7 +16,7 @@ skill adds security gates, not a parallel networking layer.
    redirects, networking, Remote Config, and uploads.
 3. Read `references/secret-data-flow.md` for credentials, personal data,
    storage, logs, analytics, and response projection.
-4. Read `BaseSwiftUI/Base/Network/Network_README.md` and inspect the actual
+4. Read `BaseSwiftUI/Core/Network/Network_README.md` and inspect the actual
    request/interceptor/token-store path.
 
 ## Workflow
@@ -36,7 +36,8 @@ skill adds security gates, not a parallel networking layer.
 
 ## BaseSwiftUI known baseline
 
-- The current `UserDefaults` token store is scaffold-only, not production-safe.
+- TokenStore uses Keychain. Review legacy migration, secure-storage errors and
+  logout/delete handling; do not reintroduce a UserDefaults token fallback.
 - DEBUG response-body logging can expose authentication or personal data even
   when authorization headers are redacted.
 - A 401 refresh/retry path must be bounded to one refresh for requests that

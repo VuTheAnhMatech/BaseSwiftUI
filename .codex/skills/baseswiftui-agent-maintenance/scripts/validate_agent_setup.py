@@ -99,6 +99,15 @@ def validate_skill(skill_dir: Path) -> list[str]:
 
 def main() -> int:
     errors: list[str] = []
+    # Keep the review checklist aligned with the preserved architecture layers.
+    checklist = (SKILLS_ROOT / "baseswiftui-swiftui-review" / "references" /
+                 "review-checklist.md").read_text(encoding="utf-8")
+    for model_path in ("Domain/Entities", "Data/DTOs", "Presentation/Screens"):
+        if model_path not in checklist:
+            errors.append(f"review checklist: missing model ownership for {model_path}")
+    if "mock/sample data under Domain/Entities" in checklist:
+        errors.append("review checklist: obsolete rule flattens all models into Domain")
+
     names: set[str] = set()
     project_description_words = 0
     bootstrap_words = 0

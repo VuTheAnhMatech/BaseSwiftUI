@@ -12,7 +12,7 @@ Map design evidence into one compact table:
 | Screen/frame and visual state | SwiftUI View |
 | User action | MVI Intent |
 | Loading/empty/error/selected state | Feature State |
-| Navigation/presentation edge | `AppNavigationRoute` + router owner |
+| Navigation/presentation edge | `AppRoute` + router owner |
 | Business rule | UseCase when justified |
 | API/persistence | Service/Repository boundary |
 | Construction/input | Factory registration/builder |

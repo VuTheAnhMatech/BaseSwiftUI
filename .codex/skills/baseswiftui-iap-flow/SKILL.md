@@ -13,11 +13,11 @@ For requested iPad/Duo adaptation, keep IAP primary and read the relevant
 
 ## Inspect
 
-1. Inspect the closest IAP screen and search product helpers under `Exts`, SDK
-   integration under `Libs`/`Helper`, and related domain/service files.
+1. Inspect the closest IAP screen and search product helpers under `Utils/Extensions`, SDK
+   integration under `Libs`/`Utils/Helpers`, and related domain/service files.
 2. Reuse existing price, period, trial, discount, sale, product-selection,
    route, and presentation patterns before creating anything.
-3. Read `BaseSwiftUI/MT-Screens/IAP/README_IAP.md` when it exists and structure,
+3. Read `BaseSwiftUI/Presentation/Screens/IAP/README_IAP.md` when it exists and structure,
    selection, routing, or SDK behavior changes.
 4. For a full-screen image/video paywall or major CTA-layout change, read
    `references/paywall-layout.md`.
@@ -27,7 +27,7 @@ For requested iPad/Duo adaptation, keep IAP primary and read the relevant
 - Mirror the nearest IAP structure. New/updated headers use
   `Created by Vu The Anh`.
 - Keep screen-specific selection state in the paywall. Reusable product display
-  logic and wording belong in dedicated files under `BaseSwiftUI/Exts`.
+  logic and wording belong in dedicated files under `BaseSwiftUI/Utils/Extensions`.
 - Keep purchase, restore, event logging, Remote Config, and SDK calls in their
   existing IAP-facing layers. Preserve product IDs and configuration keys.
 - Wire presentation through existing IAP routes/stores; do not add ad hoc

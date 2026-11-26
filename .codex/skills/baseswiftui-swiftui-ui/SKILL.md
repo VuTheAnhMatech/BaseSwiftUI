@@ -11,9 +11,9 @@ Complete workflow for normal in-app UI. Route paywalls/IAP to
 ## Inspect only what is needed
 
 1. Inspect the closest screen with the same shape and reuse from
-   `BaseSwiftUI/Base`, `Widgets`, `Exts`, resources, and the nearby feature.
+   `BaseSwiftUI/Presentation/Views`, `Widgets`, `Utils/Extensions`, resources, and the nearby feature.
 2. For repeated UI, inspect the closest component under
-   `BaseSwiftUI/Base/DataSource`; use its documented contract.
+   `BaseSwiftUI/Presentation/DataSource`; use its documented contract.
 3. If models, enums, defaults, mocks, or list inputs change, also use
    `baseswiftui-model-organization`.
 4. For routes, sheets, or dismissal, read
@@ -36,10 +36,9 @@ and use content fit instead of the 844pt rule. Duo adaptation uses `baseswiftui-
   overlays in `Widgets`. Configure visual widgets by focused types/models and
   action closures, document the contract and call site in `Widgets/README.md`,
   and keep Container state/intents and feature-specific UI outside.
-- Put screen/domain entities and reusable default/mock data under
-  `MT-CleanArchitecture/Domain/Entities`, using a feature folder unless truly
-  shared app-wide.
-- Use existing router and Factory patterns for navigation and dependencies.
+- Keep business entities in Domain, DTOs in Data and UI-only items in Presentation;
+  defaults/mocks stay beside their model. Read the model-organization skill.
+- Use AppRouteFactory/Environment router and Core/DI factories. Containers emit Effects.
   Add broader layers only when behavior requires them.
 - Prefer `BaseText`, `BaseButton`, `BaseNavBar`, matching widgets, existing
   assets, and global color tokens. Preserve the local visual language.
@@ -72,7 +71,7 @@ and use content fit instead of the 844pt rule. Duo adaptation uses `baseswiftui-
   list/grid components remain intrinsically scrollable regardless of height.
 - Keep layouts responsive to compact width. `Image("ic_close")` remains
   exactly 40×40.
-- Put reusable extensions in `BaseSwiftUI/Exts`; do not create screen-local
+- Put reusable extensions in `BaseSwiftUI/Utils/Extensions`; do not create screen-local
   type extensions or feature color namespaces.
 - Keep simple one-off layout values at the callsite. Extract only meaningful
   reuse or a cross-file contract. Avoid unrelated refactors.

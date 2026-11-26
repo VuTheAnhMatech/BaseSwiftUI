@@ -20,7 +20,7 @@ and height where content fit matters, including sheets and narrow windows.
 ## List and detail
 
 Keep the current push flow functional before adding a wide presentation.
-`HomeView`/`HomeContainer` under `BaseSwiftUI/MT-Screens/Home` illustrate the
+`HomeView`/`HomeContainer` under `BaseSwiftUI/Presentation/Screens/Home` illustrate the
 base's data source, selection intent, load/cancellation and injected router;
 they are not already a Duo split implementation.
 
@@ -85,7 +85,7 @@ state. It is useful for alternative stateless labels/control arrangements.
 
 ## Feed and grid
 
-Inspect `BaseSwiftUI/Base/DataSource/Core/BaseGridView.swift` and the closest
+Inspect `BaseSwiftUI/Presentation/DataSource/Core/BaseGridView.swift` and the closest
 call site. It accepts columns/columnCount, contentInsets, scrollPosition and
 isScrollEnabled; it does not claim to implement hinge avoidance.
 

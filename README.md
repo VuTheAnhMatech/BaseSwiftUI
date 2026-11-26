@@ -1,46 +1,38 @@
 # BaseSwiftUI
 
-Reusable iOS starter project extracted from EmojiAIMaker's proven foundations.
+SwiftUI starter using **ProjMaker as the primary base**, with BaseSwiftUI's
+Domain, UseCase, Repository, DTO, network, persistence and shared UI layers retained.
 
 ## Included
 
-- SwiftUI app targeting iOS 17+
-- MVI containers with state and intent boundaries
-- Factory dependency injection
-- Typed navigation supporting push, sheet, fullscreen cover, and fade cover
-- BaseDataSource collection views
-- Reusable text, button, input, navigation, loading, and web-view components
-- Alamofire-based networking foundation
-- UserDefaults property wrapper
-- Plus Jakarta Sans and reusable color assets
-- An API-backed Home sample with loading, error/retry, empty state, and typed detail navigation
-- Filesystem-synchronized Xcode folders, matching the EmojiAIMaker project
+- iOS 17+, Swift 5, native iPhone/iPad, SwiftUI and Combine/ObservableObject
+- ProjMaker-style State–Intent–Effect, async dispatch and attached lifecycle
+- Cancellable task manager with replacement protection and concurrent loading
+- AppRoute/AppRouteFactory/Environment router with independent presentation stacks
+- Push, sheet, modal, fade cover, pop-to-route and complete root replacement
+- App-owned DI split into Service/Repository/UseCase/Screen, backed by Factory
+- Alamofire networking, Keychain tokens, CoreData, UserDefaults, BaseDataSource and shared Base UI
+- API-backed Home plus existing Translate and wallpaper paywall UI previews
+- CocoaPods workspace, project generator and existing bootstrap launchers
 
 ## Project structure
 
 ```text
 BaseSwiftUI/
-  Base/
-    AppRouter/
-    CoreData/
-    DataSource/
-    Helpers/
-    MVI/
-    Network/
-    UserDefault/
-    Views/
-  Exts/
-  Helper/
-  Libs/
-  MT-CleanArchitecture/
-    Domain/{Entities,Repositories,UseCases}/
-    Data/{DTOs,Repositories}/
-  MT-Factory/
-  MT-Screens/
-  Resources/
-  Utils/
+  Core/{App,Container,Navigation,DI,Network,CoreData,Helpers}/
+  Presentation/{Screens,Views,DataSource}/
+  Domain/{Entities,Repositories,UseCases}/
+  Data/{DTOs,Repositories,Services}/
+  Utils/{Extensions,Helpers}/
   Widgets/
+  Libs/
+  Resources/
 ```
+
+Read [architecture](docs/architecture.md),
+[Container](BaseSwiftUI/Core/Container/README.md),
+[Navigation](BaseSwiftUI/Core/Navigation/README.md) and
+[DI](BaseSwiftUI/Core/DI/README.md) for the current contracts.
 
 ## Intentionally excluded
 
@@ -53,7 +45,7 @@ BaseSwiftUI/
 
 ## Home sample and CI planning
 
-Debug currently opens the [wallpaper paywall UI preview](docs/wallpaper-paywall-demo.md)
+Debug opens the [wallpaper paywall UI preview](docs/wallpaper-paywall-demo.md)
 from Figma. Close it to reach the [adaptive Translate demo](docs/translation-adaptive-demo.md),
 tap Settings to reopen IAP, or hold Settings → **Open API sample** to open Home. Both previews use local MVI
 state; purchases and translation services are not connected. Release starts with Home.

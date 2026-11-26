@@ -5,7 +5,7 @@ CocoaPods, and `BaseSwiftUI.xcworkspace`. Keep changes scoped.
 
 ## Code intelligence
 
-For edits to existing shared Swift symbols in `Base`, `Widgets`, `Exts`,
+For edits to existing shared Swift symbols in `Core`, `Presentation`, `Widgets`, `Utils`,
 routes, Factory, services, repositories, or use cases:
 
 1. Use GitNexus impact first when indexed; refresh a stale index and report

@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI Performance Trace"
+  short_description: "Record and analyze Instruments traces"
+  default_prompt: "Use $baseswiftui-performance-trace to record or analyze this BaseSwiftUI Instruments trace and localize the performance cause."

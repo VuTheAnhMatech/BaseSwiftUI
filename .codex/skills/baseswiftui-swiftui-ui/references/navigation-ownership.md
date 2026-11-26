@@ -1,21 +1,17 @@
 # Navigation and presentation ownership
 
-Read this only when a UI task changes routes, sheets, full-screen covers, or
-dismissal.
+Read only when changing routes, sheets, modal/fade covers or dismissal.
+Use `BaseSwiftUI/Core/Navigation/README.md` as the current ProjMaker-first contract.
 
-- Keep page destinations on the originating router stack. Do not re-present a
-  pushed page inside a new full-screen stack unless ownership crosses a real
-  root boundary.
-- A route rendered by `ObservedStack.sheet` is wrapped in a nested
-  `AppRouter.Stack`. Its injected router does not own the presenting stack's
-  `sheetRoute`.
-- Sheet content self-dismisses with `@Environment(\.dismiss)`. For async
-  completion, Container state publishes a dismissal request and the View calls
-  `dismiss()`.
-- Only the presenting parent router calls `dismissSheet()`.
-- Add and map the route using the existing `AppNavigationRoute` and Factory
-  style. Keep route parameters, Factory keys, and injected types identical.
+- Views use Environment router; Containers emit one-shot Effects.
+- Push and pop stay on the originating navigation node.
+- Every sheet/modal/fade child owns its own path and router.
+- Current-node router.dismiss closes its presentation. Native sheet/modal Views
+  may use Environment dismiss; fade overlays require router.dismiss.
+- asRoot replaces the full tree; detached routers cannot mutate the new root.
+- AppRoute contains data, AppRouteFactory maps it, ScreenDIFactory builds Containers.
+- Never resolve Container.shared or inject a router into a Container.
 
-After editing, exercise `push → sheet → dismiss → Back` and any changed
-presentation edge. Confirm one page stack, correct state restoration, and no
-transition flash.
+Verify `push → sheet → push → Back → dismiss → Back` and affected nested routes
+using state regressions. Native gesture/animation verification requires a device;
+Simulator use requires an explicit user request.

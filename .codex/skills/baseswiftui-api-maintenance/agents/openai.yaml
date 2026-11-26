@@ -1,0 +1,4 @@
+interface:
+  display_name: "BaseSwiftUI API Maintenance"
+  short_description: "Refresh the iOS 17 SwiftUI API baseline"
+  default_prompt: "Use $baseswiftui-api-maintenance to verify deprecated SwiftUI usage and refresh BaseSwiftUI's versioned API guidance."

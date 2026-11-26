@@ -20,16 +20,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6DE44DD1213CC225A27F380C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		6DE44DD1213CC225A27F380C /* Exceptions for "BaseSwiftUI" folder in "BaseSwiftUI" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Base/CoreData/README.md,
-				Base/Helpers/README.md,
-				Helper/README.md,
-				Libs/README.md,
-				"MT-CleanArchitecture/README.md",
 				Resources/Info.plist,
+				Core/DI/README.md,
+				Core/Network/Network_README.md,
+				Core/Navigation/README.md,
+				Core/CoreData/README.md,
+				Core/Container/README.md,
+				Core/Helpers/README.md,
 				Utils/README.md,
+				Utils/Helpers/README.md,
+				Libs/README.md,
+				Presentation/DataSource/BaseListView_README.md,
 				Widgets/README.md,
 			);
 			target = 37FB174E014EDCD441153C48 /* BaseSwiftUI */;
@@ -37,7 +41,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FE32B0C133F0C0B3A00833F9 /* BaseSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6DE44DD1213CC225A27F380C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = BaseSwiftUI; sourceTree = "<group>"; };
+		FE32B0C133F0C0B3A00833F9 /* BaseSwiftUI */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6DE44DD1213CC225A27F380C /* Exceptions for "BaseSwiftUI" folder in "BaseSwiftUI" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = BaseSwiftUI;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */

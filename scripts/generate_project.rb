@@ -23,16 +23,10 @@ target.file_system_synchronized_groups << app_group
 info_plist_exception = project.new(
   Xcodeproj::Project::Object::PBXFileSystemSynchronizedBuildFileExceptionSet
 )
-info_plist_exception.membership_exceptions = [
-  "Resources/Info.plist",
-  "Base/CoreData/README.md",
-  "Base/Helpers/README.md",
-  "Helper/README.md",
-  "Libs/README.md",
-  "MT-CleanArchitecture/README.md",
-  "Utils/README.md",
-  "Widgets/README.md"
-]
+info_plist_exception.membership_exceptions = ["Resources/Info.plist"] +
+  Dir.glob(File.join(root, "BaseSwiftUI", "**", "*.md")).map {
+    |path| path.delete_prefix(File.join(root, "BaseSwiftUI") + "/")
+  }
 info_plist_exception.target = target
 app_group.exceptions << info_plist_exception
 

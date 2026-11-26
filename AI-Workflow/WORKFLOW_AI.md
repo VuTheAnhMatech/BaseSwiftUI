@@ -1,52 +1,47 @@
 # BaseSwiftUI Workflow
 
-Use this file for app-code architecture and data-flow decisions. Detailed UI,
-IAP, Figma, widget, review, trace, security, and tooling procedures belong to
-their specific skills.
+Use ProjMaker as the primary architecture reference, with BaseSwiftUI's full
+Domain/UseCase/Repository/DTO, Network, DataSource and shared UI layers retained.
+Use this file only for architecture/data-flow decisions.
 
 ## Sources of truth
 
-- MVI: `BaseSwiftUI/Base/MVI/Module_README.md`
-- Clean Architecture: `BaseSwiftUI/MT-CleanArchitecture/README.md`
-- Network: `BaseSwiftUI/Base/Network/Network_README.md`
-- Lists: `BaseSwiftUI/Base/DataSource/BaseListView_README.md`
-- Navigation/DI: `BaseSwiftUI/MT-Factory/AppNavigationRoute.swift` and
-  matching `Factory*.swift` files
+- Architecture and ownership: `docs/architecture.md`
+- MVI: `BaseSwiftUI/Core/Container/README.md`
+- Routes: `BaseSwiftUI/Core/Navigation/README.md`
+- DI: `BaseSwiftUI/Core/DI/README.md`
+- Network: `BaseSwiftUI/Core/Network/Network_README.md`
+- Lists: `BaseSwiftUI/Presentation/DataSource/BaseListView_README.md`
 
 Read only the source relevant to the selected branch.
 
 ## Branch router
 
-- `MVI`: UI-only screen → `Feature + Container + View`, with Route/Factory
-  only when needed.
-- `Clean`: justified domain/data work →
-  `Service → Repository → UseCase → Container → View`; omit empty layers.
-- `Network`: API/auth/refresh/upload/decoding → Base request and API service
-  contracts, then map responses before presentation.
-- `DataSource`: repeated/list/grid/carousel UI → Container/provider owns
-  `BaseDataSource`; View renders with the closest Base data-source view.
-- `Mixed`: a complete feature or Figma flow crossing multiple branches.
-- `Review`, `Trace`, `Security`, `Tooling`: use the matching specific skill;
-  these branches do not authorize unrelated fixes.
+- `MVI`: State/Intent/Effect + Container + View with attachContainer lifecycle.
+- `Clean`: `View → Container → UseCase → Repository → Service`; retain Domain
+  repository protocols, Data implementations and DTO mapping.
+- `Network`: request/auth/upload/decoding through Core/Network contracts.
+- `DataSource`: Container/provider owns BaseDataSource; View renders it.
+- `Mixed`: a flow crossing multiple branches.
+- `Review`, `Trace`, `Security`, `Tooling`: use the matching specific skill.
 
 ## Invariants
 
-- Views render state and forward action-named intents; no networking,
-  persistence, or business rules in Views.
-- Containers consume UseCases when a domain layer exists; screens never inject
-  Services directly.
-- New dependencies use matching Factory registrations. Add repository/use-case
-  factories only when those layers exist.
-- Routed screens add and map `AppNavigationRoute`, use the existing router, and
-  keep Factory keys, route parameters, and injected types identical.
-- Push destinations stay on the originating stack. Sheet content self-dismisses
-  with `@Environment(\.dismiss)`; the presenting router owns `dismissSheet()`.
-- Models, defaults, mock data, and list inputs belong under
-  `MT-CleanArchitecture/Domain/Entities`; repeated UI uses `BaseDataSource`.
+- Views render state and forward intents. Containers implement dispatch and
+  dispatchSystem, mutate through updateState, and send one-shot Effects.
+- Views observe Effects and use Environment router. Containers do not own routers.
+- AppRouteFactory maps AppRoute. AppDIFactory owns the Factory registry;
+  registrations stay grouped by Service/Repository/UseCase, with ScreenDIFactory
+  building Containers. No pass-through wrappers or Container.shared in UI.
+- Each presentation owns its stack. Use the current router for push/pop/dismiss;
+  native sheets can self-dismiss. asRoot replaces the complete navigation tree.
+- Domain owns business entities, Data owns DTOs, Presentation owns UI-only items;
+  defaults/mocks stay with their model. Repeated UI uses BaseDataSource.
+- Preserve iOS 17, Swift 5, ObservableObject/Combine, Factory, CocoaPods, workspace,
+  native iPhone/iPad support and all existing architectural layers.
 
 ## Finish gate
 
-Verify only what the change touched: render-only View, justified layers,
-route/presentation ownership, Factory wiring, model placement, list ownership,
-tests, and workspace build. Return changed files, validation evidence, and any
-remaining uncertainty.
+Check layer ownership, lifecycle/cancellation/effects, route/DI wiring and changed
+flows. Run relevant host regressions and generic iOS workspace build. Simulator
+validation requires an explicit user request. Report validation limits honestly.
